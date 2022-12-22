@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Invoice {
 
+    private int id;
     private LocalDate date;
     private double totalPrice;
     private Project project;
@@ -17,6 +18,14 @@ public class Invoice {
         this.totalPrice = totalPrice;
         this.project = project;
         this.closed = closed;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {

@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 public class WorkingTime {
 
+    private int id;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -21,6 +22,14 @@ public class WorkingTime {
         this.endTime = endTime;
         this.timeWorked = timeWorked;
         this.consultant = consultant;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {

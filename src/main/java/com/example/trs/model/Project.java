@@ -1,14 +1,29 @@
 package com.example.trs.model;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity(name="project")
+@Table(name="projects")
 public class Project {
 
+    @SequenceGenerator(name="seqGen",sequenceName="projects_seq", allocationSize = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seqGen")
+    @Column(name="projects_id")
+    private int id;
+    @ManyToOne
+    @JoinColumn (name="company_id")
     private Company client;
+    @Column(name="projectname")
     private String name;
+    @Column(name="description")
     private String description;
+    @Column(name="hourlyrate")
     private double hourlyRate;
+    @Column(name="startdate")
     private LocalDate startDate;
+    @Column(name="enddate")
     private LocalDate endDate;
 
     public Project() {
@@ -21,6 +36,14 @@ public class Project {
         this.hourlyRate = hourlyRate;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Company getClient() {
