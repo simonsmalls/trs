@@ -17,6 +17,8 @@ public class AbisProjectService implements ProjectService {
 
     @Autowired
     CompanyJpaRepo companyJpaRepo;
+
+
     @Override
     public List<Company> getAllCompanies() {
         return null;
@@ -24,7 +26,7 @@ public class AbisProjectService implements ProjectService {
 
     public Company getCompanyByIdAndName(int id, String name){
 
-        return null;
+        return companyJpaRepo.findCompanyByIdAndCompanyName(id,name);
     }
 
     @Override

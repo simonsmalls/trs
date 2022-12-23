@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CompanyJpaRepo extends JpaRepository<Company, Integer> {
 
 
-
+        Company findCompanyByIdAndCompanyName(int id,String name);
 
 }
