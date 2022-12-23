@@ -40,7 +40,7 @@ public class AbisProjectService implements ProjectService {
     public Company getCompanyByName(String name) throws CompanyNotFoundException {
         name = name.toUpperCase();      // ignoreCase effect
         return companyJpaRepo.findCompanyByCompanyName(name)
-                .orElseThrow(()-> new CompanyNotFoundException("Dit bedrijf werd niet gevonden."));
+                .orElseThrow(()-> new CompanyNotFoundException("Er werd geen bedrijf gevonden met deze naam."));
     }
 
     @Override
@@ -50,17 +50,22 @@ public class AbisProjectService implements ProjectService {
 
     @Override
     public Project getProjectById(int id) throws ProjectNotFoundException {
-        return projectJpaRepo.findById(id).orElseThrow(()-> new ProjectNotFoundException("Dit project werd niet gevonden"));
+        return projectJpaRepo.findById(id).orElseThrow(()-> new ProjectNotFoundException("Dit project werd niet gevonden."));
     }
 
     @Override
-    public List<Project> getProjectByName(String name) {
-        return null;
+    public List<Project> getProjectsByName(String name) throws ProjectNotFoundException {
+        List<Project> projects = projectJpaRepo.findByName(name);
+        if (projects.size() == 0) throw new ProjectNotFoundException("Er werden geen projecten gevonden met deze naam.");
+        return projects;
     }
 
     @Override
-    public List<Project> getProjectsByCompany(Company company) {
-        return null;
+    public List<Project> getProjectsByCompany(Company company) throws ProjectNotFoundException, CompanyNotFoundException {
+        getCompanyByName(company.getCompanyName()); // checks if company is already registered
+        List<Project> projects = projectJpaRepo.findByClient(company.getId());
+        if (projects.size() == 0) throw new ProjectNotFoundException("Er werden geen projecten gevonden voor dit bedrijf.");
+        return projects;
     }
 
     @Override

@@ -16,8 +16,8 @@ public interface ProjectService {
 
     List<Project> getAllProjects();
     Project getProjectById(int id) throws ProjectNotFoundException;
-    List<Project> getProjectByName(String name);
-    List<Project> getProjectsByCompany(Company company);
+    List<Project> getProjectsByName(String name) throws ProjectNotFoundException;
+    List<Project> getProjectsByCompany(Company company) throws ProjectNotFoundException, CompanyNotFoundException;
 
     void addProject(Project project);
     void addCompany(Company company) throws CompanyAlreadyExists;

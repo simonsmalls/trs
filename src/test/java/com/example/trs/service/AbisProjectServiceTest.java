@@ -71,6 +71,39 @@ class AbisProjectServiceTest {
     }
 
     @Test
+    void findProjectByByNameTest() throws ProjectNotFoundException {
+        assertEquals(1, projectService.getProjectsByName("projectnaam").stream().findFirst()
+                .orElseThrow(NullPointerException::new).getId());
+    }
+
+    @Test
+    void findProjectByNameThrowsExceptionTest() {
+        assertThrows(ProjectNotFoundException.class, ()-> projectService.getProjectsByName("lalaLand.com"));
+    }
+
+    @Test
+    void findProjectsByCompanyTest() throws CompanyNotFoundException, ProjectNotFoundException {
+        assertEquals(2, projectService.getProjectsByCompany(projectService.getCompanyById(1)).stream().findFirst()
+                .orElseThrow(NullPointerException::new).getId());
+    }
+
+    @Test
+    void findProjectByCompanyThrowsNoCompanyFoundExceptionTest() {
+        Company company = new Company("Unexisting_Company");
+        assertThrows(CompanyNotFoundException.class, () -> projectService.getProjectsByCompany(company));
+    }
+
+    @Test
+    @Transactional
+    void findProjectByCompanyThrowsNoProjectsFoundException() throws CompanyAlreadyExists {
+        Company company = new Company("Newly_Created_Company");
+        projectService.addCompany(company);
+        assertThrows(ProjectNotFoundException.class, ()-> projectService.getProjectsByCompany(company));
+    }
+
+
+
+    @Test
     @Transactional
     void addProjectTest() throws CompanyNotFoundException {
         int count = projectService.getAllProjects().size();
