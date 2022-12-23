@@ -7,20 +7,18 @@ public class Employee {
     private int id;
     private String firstName;
     private String lastName;
-    private String abbriviation;
-    private String password;
+    private String abbreviation;
 
     private List<String> roles;
 
     public Employee() {
     }
 
-    public Employee(int id, String firstName, String lastName, String abbriviation, String password, List<String> roles) {
+    public Employee(int id, String firstName, String lastName, String abbreviation, String password, List<String> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.abbriviation = abbriviation;
-        this.password = password;
+        this.abbreviation = abbreviation;
         this.roles = roles;
     }
 
@@ -52,20 +50,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public String getAbbriviation() {
-        return abbriviation;
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
-    public void setAbbriviation(String abbriviation) {
-        this.abbriviation = abbriviation;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
     public List<String> getRoles() {
