@@ -1,9 +1,0 @@
-public class Activity {
-  description:string;
-  employeeId: number;
-  employeeName:string;
-  categoryName: string;
-  startTime: Date;
-  endTime: Date;
-  timeSpent: number;
-}
