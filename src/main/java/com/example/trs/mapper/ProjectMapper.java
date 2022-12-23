@@ -1,6 +1,7 @@
 package com.example.trs.mapper;
 
 import com.example.trs.dto.ProjectDTO;
+import com.example.trs.model.Company;
 import com.example.trs.model.Project;
 import com.example.trs.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,13 @@ public class ProjectMapper {
     public static Project toProject(ProjectDTO dto
     ){
         Project project=new Project();
-        if( dto.getClientName()!=null) {
-            project.setClient(projectService.getCompanyByIdAndName(dto.getClientId(), dto.getClientName()));
+        if( dto.getId()!=0) {
+            project.setClient(projectService.getCompanyById(dto.getClientId()));
+        }else{
+            Company c=new Company();
+            c.setId(dto.getClientId());
+            c.setCompanyName(dto.getClientName());
+            project.setClient(c);
         }
         if( dto.getDescription()!=null) {
             project.setDescription(dto.getDescription());
@@ -44,11 +50,19 @@ public class ProjectMapper {
     public static ProjectDTO toDTO(Project project){
         ProjectDTO dto=new ProjectDTO();
 
-        dto.setClientId(project.getId());
+        dto.setId(project.getId());
         if(project.getEndDate()!=null) {
             dto.setEnd(project.getEndDate());
         }
         dto.setStart(project.getStartDate());
+        dto.setHourlyRate(project.getHourlyRate());
+        dto.setClientId(project.getClient().getId());
+        dto.setClientName(project.getClient().getCompanyName());
+        dto.setName(project.getName());
+        if(project.getDescription()!=null) {
+            dto.setDescription(project.getDescription());
+        }
+
 
 
         return dto;
