@@ -16,7 +16,7 @@ class CompanyJpaRepoTest {
     CompanyJpaRepo companyJpaRepo;
 
     @Test
-    void findNoCompany() {
+    void findNumbersOfCompany() {
         assertEquals(2,  companyJpaRepo.count());
     }
 
