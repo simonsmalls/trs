@@ -6,6 +6,10 @@ import java.util.Date;
 public class ActivityDTO {
     private String description;
     private int employeeId;
+
+    private int projectId;
+
+    private String projectName;
    private  String employeeName;
     private String categoryName;
     private Date startTime;
@@ -69,5 +73,21 @@ public class ActivityDTO {
 
     public void setTimeSpent(LocalTime timeSpent) {
         this.timeSpent = timeSpent;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }
