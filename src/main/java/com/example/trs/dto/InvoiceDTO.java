@@ -4,15 +4,24 @@ import java.time.LocalDate;
 
 public class InvoiceDTO {
 
-   public LocalDate date;
-   public double totalPrice;
-   public int projectId;
-  public String  projectName;
-  public int clientId;
-   public String clientName;
-   public boolean closed;
+    private int id;
+   private LocalDate date;
+    private double totalPrice;
+    private  int projectId;
+    private String  projectName;
+    private int clientId;
+    private String clientName;
+    private boolean closed;
 
     public InvoiceDTO() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {

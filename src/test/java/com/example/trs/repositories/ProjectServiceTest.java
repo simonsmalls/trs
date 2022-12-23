@@ -1,28 +1,30 @@
 package com.example.trs.repositories;
 
+import com.example.trs.model.Project;
+import com.example.trs.service.ProjectService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class CompanyJpaRepoTest {
+class ProjectServiceTest {
 
     @Autowired
-    CompanyJpaRepo companyJpaRepo;
+    ProjectService projectService;
 
     @Test
-    void findNumbersOfCompany() {
-        assertEquals(2,  companyJpaRepo.count());
-    }
+    void findByNameAndId() {
 
-    @Test
-    void findNameOfCompany() {
-        assertEquals("SMALS", companyJpaRepo.findById(2).orElseThrow(NullPointerException::new).getCompanyName().trim());
+        System.out.println(projectService.getCompanyByIdAndName(1,"ABIS").getCompanyName());
+
     }
 
 }
