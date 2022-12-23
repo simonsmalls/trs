@@ -14,6 +14,7 @@ public interface ProjectService {
     Project getProjectById(int id);
     Project getProjectByName(String name);
     List<Project> getProjectsByCompany(Company company);
+    Company getCompanyByIdAndName(int id, String name);
 
     void addProject(Project project);
 
