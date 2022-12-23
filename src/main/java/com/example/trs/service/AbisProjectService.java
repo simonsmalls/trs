@@ -1,6 +1,11 @@
 package com.example.trs.service;
 
+import com.example.trs.dto.InvoiceDTO;
+import com.example.trs.dto.ProjectDTO;
+import com.example.trs.mapper.InvoiceMapper;
+import com.example.trs.mapper.ProjectMapper;
 import com.example.trs.model.Company;
+import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
 import com.example.trs.repositories.CompanyJpaRepo;
 import com.example.trs.repositories.ProjectJpaRepo;
@@ -27,6 +32,14 @@ public class AbisProjectService implements ProjectService {
     public Company getCompanyByIdAndName(int id, String name){
 
         return companyJpaRepo.findCompanyByIdAndCompanyName(id,name);
+    }
+
+    public Invoice toInvoice(InvoiceDTO dto){
+     return InvoiceMapper.toInvoice(dto, getProjectById(dto.getProjectId()));
+    }
+
+    public Project toProject(ProjectDTO dto){
+        return ProjectMapper.toProject(dto, getCompanyById(dto.getClientId()));
     }
 
     @Override

@@ -7,23 +7,16 @@ import com.example.trs.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProjectMapper {
-    @Autowired
-    static
-    ProjectService projectService;
 
 
 
-    public static Project toProject(ProjectDTO dto
+
+    public static Project toProject(ProjectDTO dto,Company company
     ){
         Project project=new Project();
-        if( dto.getId()!=0) {
-            project.setClient(projectService.getCompanyById(dto.getClientId()));
-        }else{
-            Company c=new Company();
-            c.setId(dto.getClientId());
-            c.setCompanyName(dto.getClientName());
-            project.setClient(c);
-        }
+
+        project.setClient(company);
+
         if( dto.getDescription()!=null) {
             project.setDescription(dto.getDescription());
         }

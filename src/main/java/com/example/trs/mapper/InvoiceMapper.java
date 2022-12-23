@@ -2,15 +2,14 @@ package com.example.trs.mapper;
 
 import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.model.Invoice;
+import com.example.trs.model.Project;
 import com.example.trs.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class InvoiceMapper {
-    @Autowired
-            static
-    ProjectService projectService;
 
-    public static Invoice toInvoice(InvoiceDTO dto){
+
+    public static Invoice toInvoice(InvoiceDTO dto, Project project){
 
         Invoice invoice=new Invoice();
 
@@ -18,7 +17,7 @@ public class InvoiceMapper {
         invoice.setTotalPrice(dto.getTotalPrice());
         invoice.setId(dto.getId());
         invoice.setDate(dto.getDate());
-        invoice.setProject(projectService.getProjectById(dto.getProjectId()));
+        invoice.setProject(project);
 
 
         return invoice;
