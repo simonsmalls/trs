@@ -131,8 +131,10 @@ create table activities
     employee_id int,
     project_id int,
     category_id int,
-    startTime timestamp,
-    endTime timestamp,
+    startDate date,
+    startTime time,
+    endDate date,
+    endTime time,
     timeSpent int,
     constraint FK_PERSONS foreign key (employee_id) references employees,
     constraint FK_PROJECTS foreign key (project_id) references projects,
@@ -143,7 +145,6 @@ create table activities
 
 create table personRoles
 (
-
     employee_id int,
     personRole char(45),
     constraint FK_EMPLOYEES foreign key (employee_id) references employees
@@ -151,42 +152,42 @@ create table personRoles
 );
 
 
-insert into employees values (1, 'JS', 'JAN', 'SMITH', 'js123', null, 'e');
-insert into employees values (2, 'PT', 'PETER', 'TAVERNIER', 'pt456', null, 'e');
-insert into employees values (3, 'RN', 'RUUD', 'NIEHOF', 'rn123', 500.00, 'c');
-insert into employees values (4, 'GVG', 'GERT', 'VAN HEIJKOOP', 'gvd34', 450.00, 'c');
-insert into employees values (5, 'ADG', 'ATY', 'DE GROOT', 'art34', null, 'e');
-insert into employees values (6, 'MP', 'MARIA', 'PEREZ', '1233', null, 'e');
-insert into employees values (7, 'FL', 'FRANCOIS', 'LEVIER', 'FL123', null, 'e');
-insert into employees values (8, 'BDB', 'BOB', 'DE BOUWER', 'bobby123', 600.00, 'c');
-insert into employees values (9, 'LL', 'LAURA', 'NIETLYNN', 'LL123', 450.00, 'c');
-insert into employees values (10, 'CL', 'CHRISTINE', 'LUTZ', 'LUTZ234', 500.00, 'c');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('JS', 'JAN', 'SMITH', 'js123', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('PT', 'PETER', 'TAVERNIER', 'pt456', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('RN', 'RUUD', 'NIEHOF', 'rn123', 500.00, 'c');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('GVG', 'GERT', 'VAN HEIJKOOP', 'gvd34', 450.00, 'c');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('ADG', 'ATY', 'DE GROOT', 'art34', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('MP', 'MARIA', 'PEREZ', '1233', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('FL', 'FRANCOIS', 'LEVIER', 'FL123', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('BDB', 'BOB', 'DE BOUWER', 'bobby123', 600.00, 'c');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('LL', 'LAURA', 'NIETLYNN', 'LL123', 450.00, 'c');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('CL', 'CHRISTINE', 'LUTZ', 'LUTZ234', 500.00, 'c');
 
-insert into companies values (1, 'ABIS');
-insert into companies values (2, 'SMALS');
+insert into companies (companyName) values ('ABIS');
+insert into companies (companyName)values ('SMALS');
 
-insert into projects values (1, 2, 'projectnaam', 'projectomschrijving', 2000.00,'2022-08-31', '2022-12-20');
-insert into projects values (2, 1, 'abisproject', 'abisprojectomschrijving', 1000.00,'2022-09-14', '2023-01-22');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'projectnaam', 'projectomschrijving', 2000.00,'2022-08-31', '2022-12-20');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'abisproject', 'abisprojectomschrijving', 1000.00,'2022-09-14', '2023-01-22');
 
-insert into workingtimes values (1, '2022-12-21', '09:00:00', '14:30:00', 280, 9);
-insert into workingtimes values (2, '2022-12-22', '08:00:00', '17:00:00', 480, 10);
-insert into workingtimes values (3, '2022-12-22', '08:00:00', '17:00:00', 480, 3);
-insert into workingtimes values (4, '2022-12-22', '08:00:00', '17:00:00', 480, 4);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-21', '09:00:00', '14:30:00', 280, 9);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 10);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 3);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 4);
 
-insert into categories values (1, 'Teaching');
-insert into categories values (2, 'Administration');
-insert into categories values (3, 'Accounting');
-insert into categories values (4, 'Sales');
-insert into categories values (5, 'Studying');
-insert into categories values (6, 'Food prep');
+insert into categories (categoryName) values ('Teaching');
+insert into categories (categoryName) values ('Administration');
+insert into categories (categoryName) values ('Accounting');
+insert into categories (categoryName) values ('Sales');
+insert into categories (categoryName) values ('Studying');
+insert into categories (categoryName) values ('Food prep');
 
-insert into invoices values (1, '2021-01-28', 20000.00, 1, true);
-insert into invoices values (2, null, null, 2, false);
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2021-01-28', 20000.00, 1, true);
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) values (null, null, 2, false);
 
-insert into activities (description, employee_id,  project_id, category_id, startTime, endTime, timeSpent) values ('uh', 3, 2, 4, '2022-12-22 14:00:00', '2022-12-22  15:00:00', '60');
-insert into activities (description, employee_id, project_id, category_id, startTime, endTime, timeSpent) values (null,  4, 2, 6, '2022-12-22 11:00:00', '2022-12-22  12:30:00', '90');
-insert into activities ( description, employee_id, project_id, category_id, startTime, endTime, timeSpent) values ('ja', 5, 1, 3, '2022-08-11 13:15:00', '2022-08-11 16:00:00', '165');
-insert into activities (description, employee_id, project_id, category_id, startTime, endTime, timeSpent) values (null, 6, 1, 5, '2022-08-10 09:00:00', '2022-08-10  11:45:00', '165');
+insert into activities (description, employee_id,  project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values ('uh', 3, 2, 4, '2022-12-22', '14:00:00', '2022-12-22', '15:00:00', '60');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null,  4, 2, 6, '2022-12-22', '11:00:00', '2022-12-22',  '12:30:00', '90');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values ('ja', 5, 1, 3, '2022-08-11', '13:15:00', '2022-08-11', '16:00:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 6, 1, 5, '2022-08-10', '09:00:00', '2022-08-10',  '11:45:00', '165');
 
 
 insert into personRoles values (1, 'Teacher');

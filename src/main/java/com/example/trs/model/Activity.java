@@ -3,6 +3,7 @@ package com.example.trs.model;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -25,24 +26,18 @@ public class Activity {
     @ManyToOne
     @JoinColumn (name="category_id")
     private Category category;
+    @Column(name = "startdate")
+    private LocalDate startDate ;
     @Column(name = "starttime")
-    private LocalDateTime startActivity;
+    private LocalTime startTime;
+    @Column(name = "enddate")
+    private LocalDate endDate;
     @Column(name = "endtime")
-    private LocalDateTime endActivity;
+    private LocalTime endTime;
     @Column(name = "timespent")
-    private LocalTime timeSpent;
+    private int timeSpent;
 
     public Activity() {
-    }
-
-    public Activity(String description, Employee employee, Project project, Category category, LocalDateTime startActivity, LocalDateTime endActivity, LocalTime timeSpent) {
-        this.description = description;
-        this.employee_id = employee.getId();
-        this.project = project;
-        this.category = category;
-        this.startActivity = startActivity;
-        this.endActivity = endActivity;
-        this.timeSpent = timeSpent;
     }
 
     public int getId() {
@@ -85,27 +80,43 @@ public class Activity {
         this.category = category;
     }
 
-    public LocalDateTime getStartActivity() {
-        return startActivity;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setStartActivity(LocalDateTime startActivity) {
-        this.startActivity = startActivity;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getEndActivity() {
-        return endActivity;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setEndActivity(LocalDateTime endActivity) {
-        this.endActivity = endActivity;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalTime getTimeSpent() {
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(LocalTime timeSpent) {
+    public void setTimeSpent(int timeSpent) {
         this.timeSpent = timeSpent;
     }
 }
