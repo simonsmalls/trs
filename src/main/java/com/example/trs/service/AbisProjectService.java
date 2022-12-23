@@ -1,5 +1,7 @@
 package com.example.trs.service;
 
+import com.example.trs.exceptions.CompanyAlreadyExists;
+import com.example.trs.exceptions.CompanyNotFoundException;
 import com.example.trs.model.Company;
 import com.example.trs.model.Project;
 import com.example.trs.repositories.CompanyJpaRepo;
@@ -17,19 +19,27 @@ public class AbisProjectService implements ProjectService {
 
     @Autowired
     CompanyJpaRepo companyJpaRepo;
+
     @Override
     public List<Company> getAllCompanies() {
-        return null;
+        return companyJpaRepo.findAll();
     }
 
     public Company getCompanyByIdAndName(int id, String name){
-
         return null;
     }
 
     @Override
-    public Company getCompanyById(int id) {
-        return null;
+    public Company getCompanyById(int id) throws CompanyNotFoundException {
+        return companyJpaRepo.findById(id)
+                .orElseThrow(()-> new CompanyNotFoundException("Dit bedrijf werd niet gevonden."));
+    }
+
+    @Override
+    public Company getCompanyByName(String name) throws CompanyNotFoundException {
+        name = name.toUpperCase();      // ignoreCase effect
+        return companyJpaRepo.findCompanyByCompanyName(name)
+                .orElseThrow(()-> new CompanyNotFoundException("Dit bedrijf werd niet gevonden."));
     }
 
     @Override
@@ -54,6 +64,19 @@ public class AbisProjectService implements ProjectService {
 
     @Override
     public void addProject(Project project) {
+        projectJpaRepo.save(project);
+    }
 
+    @Override
+    public void addCompany(Company company) throws CompanyAlreadyExists {
+        boolean newCompanyAdded = false;
+        try {
+            getCompanyByName(company.getCompanyName()); }
+        catch (CompanyNotFoundException e) {
+            company.setCompanyName(company.getCompanyName().toUpperCase());  // moves to Upper Case
+            companyJpaRepo.save(company);
+            newCompanyAdded = true;
+        }
+        if (!newCompanyAdded) throw new CompanyAlreadyExists("Dit bedrijf is al geregistreerd");
     }
 }
