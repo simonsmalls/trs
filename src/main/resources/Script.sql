@@ -37,21 +37,21 @@ drop sequence personroles_seq;
 
 
 
-CREATE SEQUENCE employees_seq START WITH 1 increment 1;
+CREATE SEQUENCE employees_seq START WITH 100 increment 1;
 
-CREATE SEQUENCE	workingtimes_seq START WITH 1 increment 1;
+CREATE SEQUENCE	workingtimes_seq START WITH 100 increment 1;
 
-CREATE SEQUENCE invoices_seq START WITH 1 increment 1;
+CREATE SEQUENCE invoices_seq START WITH 100 increment 1;
 
-CREATE SEQUENCE categories_seq START WITH 1 increment 1;
+CREATE SEQUENCE categories_seq START WITH 100 increment 1;
 
-CREATE SEQUENCE projects_seq START WITH 1 increment 1;
+CREATE SEQUENCE projects_seq START WITH 100 increment 1;
 
-CREATE SEQUENCE activities_seq START WITH 1 increment 1;
+CREATE SEQUENCE activities_seq START WITH 100 increment 1;
 
-CREATE SEQUENCE companies_seq START WITH 1 increment 1;
+CREATE SEQUENCE companies_seq START WITH 100 increment 1;
 
-create sequence personroles_seq start with 1 increment 1;
+create sequence personroles_seq start with 100 increment 1;
 
 
 
@@ -59,13 +59,13 @@ CREATE TABLE employees
 
 	(employees_id int PRIMARY KEY DEFAULT nextval('employees_seq'),
 
-	abbreviation char(45) NOT NULL,
+	abbreviation varchar(45) NOT NULL,
 
-	firstName char(45) NOT NULL,
+	firstName varchar(45) NOT NULL,
 
-	lastName char (45) NOT NULL,
+	lastName varchar (45) NOT NULL,
 
-	pass char(20) NOT NULL,
+	pass varchar(100) NOT NULL,
 
     hourlyRate  numeric(9, 2),
 
@@ -77,7 +77,7 @@ create table companies
 
 (
     companies_id int primary key default nextval('companies_seq'),
-    companyName char(45) not null
+    companyName varchar(45) not null
 );
 
 create table projects
@@ -85,8 +85,8 @@ create table projects
 (
     projects_id int primary key default nextval('projects_seq'),
     company_id  int,
-    projectName char(45) not null,
-    description char(45) not null,
+    projectName varchar(45) not null,
+    description varchar(45) not null,
     hourlyRate  numeric(9, 2),
     startDate   date,
     endDate     date,
@@ -109,7 +109,7 @@ create table categories
 
 (
     categories_id int primary key default nextval('categories_seq'),
-    categoryName char(45) not null
+    categoryName varchar(45) not null
 );
 
 create table invoices
@@ -127,7 +127,7 @@ create table invoices
 create table activities
 (
     activities_id int primary key default nextval('activities_seq'),
-    description char(45),
+    description varchar(45),
     employee_id int,
     project_id int,
     category_id int,
@@ -145,7 +145,7 @@ create table personRoles
 (
 
     employee_id int,
-    personRole char(45),
+    personRole varchar(45),
     constraint FK_EMPLOYEES foreign key (employee_id) references employees
 
 );
