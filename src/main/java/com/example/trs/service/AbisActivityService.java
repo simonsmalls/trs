@@ -1,6 +1,7 @@
 package com.example.trs.service;
 
 import com.example.trs.dto.ActivityDTO;
+import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Category;
@@ -30,7 +31,7 @@ public class AbisActivityService implements ActivityService {
 
 
     @Override
-    public Activity addActivity(ActivityDTO activityDTO) {
+    public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException {
         Project project = projectService.getProjectById(activityDTO.getProjectId());
         Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
         Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
@@ -38,7 +39,7 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity editActivity(ActivityDTO activityDTO) {
+    public Activity editActivity(ActivityDTO activityDTO) throws ProjectNotFoundException {
         Project project = projectService.getProjectById(activityDTO.getProjectId());
         Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
         Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
