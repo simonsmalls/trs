@@ -1,6 +1,5 @@
 package com.example.trs.model;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -10,17 +9,17 @@ public class WorkingTime {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private LocalTime timeWorked;
+    private int timeWorkedMin;
     private Consultant consultant;
 
     public WorkingTime() {
     }
 
-    public WorkingTime(LocalDate date, LocalTime startTime, LocalTime endTime, LocalTime timeWorked, Consultant consultant) {
+    public WorkingTime(LocalDate date, LocalTime startTime, LocalTime endTime, int timeWorkedMin, Consultant consultant) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.timeWorked = timeWorked;
+        this.timeWorkedMin = timeWorkedMin;
         this.consultant = consultant;
     }
 
@@ -56,12 +55,12 @@ public class WorkingTime {
         this.endTime = endTime;
     }
 
-    public LocalTime getTimeWorked() {
-        return timeWorked;
+    public int getTimeWorkedMin() {
+        return timeWorkedMin;
     }
 
-    public void setTimeWorked(LocalTime timeWorked) {
-        this.timeWorked = timeWorked;
+    public void setTimeWorkedMin(int timeWorkedMin) {
+        this.timeWorkedMin = timeWorkedMin;
     }
 
     public Consultant getConsultant() {

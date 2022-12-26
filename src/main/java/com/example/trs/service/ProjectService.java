@@ -11,15 +11,16 @@ import java.util.List;
 public interface ProjectService {
 
     List<Company> getAllCompanies();
-    Company getCompanyById(int id);
-
-    List<Project> getAllProjects();
-    Project getProjectById(int id);
-    Project getProjectByName(String name);
-    List<Project> getProjectsByCompany(Company company);
+    Company getCompanyById(int id) throws CompanyNotFoundException;
+    Company getCompanyByName(String name) throws CompanyNotFoundException;
     Company getCompanyByIdAndName(int id, String name);
     Project toProject(ProjectDTO dto);
     Invoice toInvoice(InvoiceDTO dto);
+
+    List<Project> getAllProjects();
+    Project getProjectById(int id) throws ProjectNotFoundException;
+    List<Project> getProjectsByName(String name) throws ProjectNotFoundException;
+    List<Project> getProjectsByCompany(Company company) throws ProjectNotFoundException, CompanyNotFoundException;
 
     void addProject(Project project);
 
