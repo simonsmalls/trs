@@ -1,6 +1,6 @@
 package com.example.trs.service;
 
-import com.example.trs.exception.EmployeeNotFoundException;
+import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;

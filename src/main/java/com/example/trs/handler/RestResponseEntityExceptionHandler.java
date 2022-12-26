@@ -3,7 +3,7 @@ package com.example.trs.handler;
 
 
 import com.example.trs.error.ApiError;
-import com.example.trs.exception.EmployeeNotFoundException;
+import com.example.trs.exceptions.EmployeeNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

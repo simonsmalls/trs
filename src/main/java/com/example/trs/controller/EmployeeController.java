@@ -1,19 +1,16 @@
 package com.example.trs.controller;
 
 ;
-import com.example.trs.dto.EmployeeDTO;
 import com.example.trs.dto.LoginDTO;
-import com.example.trs.exception.EmployeeNotFoundException;
+import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.model.Employee;
 import com.example.trs.service.EmployeeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "employees")

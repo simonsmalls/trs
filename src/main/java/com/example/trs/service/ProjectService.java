@@ -2,6 +2,9 @@ package com.example.trs.service;
 
 import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
+import com.example.trs.exceptions.CompanyAlreadyExists;
+import com.example.trs.exceptions.CompanyNotFoundException;
+import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Company;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
@@ -14,8 +17,8 @@ public interface ProjectService {
     Company getCompanyById(int id) throws CompanyNotFoundException;
     Company getCompanyByName(String name) throws CompanyNotFoundException;
     Company getCompanyByIdAndName(int id, String name);
-    Project toProject(ProjectDTO dto);
-    Invoice toInvoice(InvoiceDTO dto);
+    Project toProject(ProjectDTO dto) throws CompanyNotFoundException;
+    Invoice toInvoice(InvoiceDTO dto) throws ProjectNotFoundException;
 
     List<Project> getAllProjects();
     Project getProjectById(int id) throws ProjectNotFoundException;
@@ -25,5 +28,5 @@ public interface ProjectService {
     void addProject(Project project);
 
 
-
+    void addCompany(Company company) throws CompanyAlreadyExists;
 }

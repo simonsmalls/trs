@@ -1,4 +1,4 @@
-package com.example.trs.exception;
+package com.example.trs.exceptions;
 
 public class EmployeeNotFoundException extends Exception {
     public EmployeeNotFoundException(String message) {

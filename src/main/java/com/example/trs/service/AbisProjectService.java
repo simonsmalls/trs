@@ -43,11 +43,11 @@ public class AbisProjectService implements ProjectService {
                 .orElseThrow(()-> new CompanyNotFoundException("Dit bedrijf werd niet gevonden."));
     }
 
-    public Invoice toInvoice(InvoiceDTO dto){
+    public Invoice toInvoice(InvoiceDTO dto) throws ProjectNotFoundException {
      return InvoiceMapper.toInvoice(dto, getProjectById(dto.getProjectId()));
     }
 
-    public Project toProject(ProjectDTO dto){
+    public Project toProject(ProjectDTO dto) throws CompanyNotFoundException {
         return ProjectMapper.toProject(dto, getCompanyById(dto.getClientId()));
     }
 
