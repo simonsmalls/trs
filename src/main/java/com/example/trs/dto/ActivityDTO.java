@@ -1,5 +1,7 @@
 package com.example.trs.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -10,11 +12,16 @@ public class ActivityDTO {
     private int projectId;
 
     private String projectName;
-   private  String employeeName;
+    private  String employeeName;
     private String categoryName;
-    private Date startTime;
-   private  Date endTime;
-   private LocalTime timeSpent;
+
+    private LocalDate startDate;
+    private LocalTime startTime;
+
+    private LocalDate endDate;
+
+    private LocalTime endTime;
+    private int timeSpent;
 
     public ActivityDTO() {
     }
@@ -35,6 +42,22 @@ public class ActivityDTO {
         this.employeeId = employeeId;
     }
 
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
     public String getEmployeeName() {
         return employeeName;
     }
@@ -51,43 +74,43 @@ public class ActivityDTO {
         this.categoryName = categoryName;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
-    public LocalTime getTimeSpent() {
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(LocalTime timeSpent) {
+    public void setTimeSpent(int timeSpent) {
         this.timeSpent = timeSpent;
-    }
-
-    public int getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 }
