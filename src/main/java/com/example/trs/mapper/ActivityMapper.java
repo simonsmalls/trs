@@ -27,4 +27,25 @@ public class ActivityMapper {
 
         return activity;
     }
+
+    public static ActivityDTO toDTO(Activity activity){
+
+        ActivityDTO dto= new ActivityDTO();
+        dto.setId(activity.getId());
+        dto.setDescription(activity.getDescription());
+        dto.setEmployeeId(activity.getEmployee_id());
+        dto.setProjectId(activity.getProject().getId());
+        dto.setProjectName(activity.getProject().getName());
+        //todo employeename
+
+        dto.setCategoryName(activity.getCategory().getName());
+        dto.setStartDate(activity.getStartDate());
+        dto.setStartTime(activity.getStartTime());
+        dto.setEndTime(activity.getEndTime());
+        dto.setTimeSpent(activity.getTimeSpent());
+
+
+        return dto;
+
+    }
 }
