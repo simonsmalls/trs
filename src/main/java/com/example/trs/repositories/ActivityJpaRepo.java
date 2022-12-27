@@ -1,6 +1,7 @@
 package com.example.trs.repositories;
 
 import com.example.trs.model.Activity;
+import com.example.trs.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +10,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
@@ -25,6 +27,11 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
     Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
                                                    @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
                                                    @Param("dend") LocalDate endDate, @Param("tend") LocalTime endTime);
+
+    Activity findActivityById(int id);
+
+    @Query(value = "select * from activities where employee_id= :employee_id and startdate = :date ", nativeQuery = true)
+    List<Activity> findActivitiesByEmployee_idAndDate(@Param("employee_id")int employee_id,@Param("date") LocalDate date);
 
 
 

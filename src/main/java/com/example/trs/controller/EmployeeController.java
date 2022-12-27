@@ -42,7 +42,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<? extends Object> getById(@RequestParam("id") int id) throws EmployeeNotFoundException {
+    ResponseEntity<? extends Object> getById(@PathVariable("id") int id) throws EmployeeNotFoundException {
         return null;
     }
 

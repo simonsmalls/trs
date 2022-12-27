@@ -37,21 +37,21 @@ drop sequence personroles_seq;
 
 
 
-CREATE SEQUENCE employees_seq START WITH 100 increment 1;
+CREATE SEQUENCE employees_seq START WITH 1 increment 1;
 
-CREATE SEQUENCE	workingtimes_seq START WITH 100 increment 1;
+CREATE SEQUENCE	workingtimes_seq START WITH 1 increment 1;
 
-CREATE SEQUENCE invoices_seq START WITH 100 increment 1;
+CREATE SEQUENCE invoices_seq START WITH 1 increment 1;
 
-CREATE SEQUENCE categories_seq START WITH 100 increment 1;
+CREATE SEQUENCE categories_seq START WITH 1 increment 1;
 
-CREATE SEQUENCE projects_seq START WITH 100 increment 1;
+CREATE SEQUENCE projects_seq START WITH 1 increment 1;
 
-CREATE SEQUENCE activities_seq START WITH 100 increment 1;
+CREATE SEQUENCE activities_seq START WITH 1 increment 1;
 
-CREATE SEQUENCE companies_seq START WITH 100 increment 1;
+CREATE SEQUENCE companies_seq START WITH 1 increment 1;
 
-create sequence personroles_seq start with 100 increment 1;
+create sequence personroles_seq start with 1 increment 1;
 
 
 
@@ -162,6 +162,7 @@ insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_ki
 insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('BDB', 'BOB', 'DE BOUWER', 'bobby123', 600.00, 'c');
 insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('LL', 'LAURA', 'NIETLYNN', 'LL123', 450.00, 'c');
 insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('CL', 'CHRISTINE', 'LUTZ', 'LUTZ234', 500.00, 'c');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('admin', 'admin', 'admin', 'admin', 500.00, 'c');
 
 insert into companies (companyName) values ('ABIS');
 insert into companies (companyName)values ('SMALS');
@@ -188,6 +189,10 @@ insert into activities (description, employee_id,  project_id, category_id, star
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null,  4, 2, 6, '2022-12-22', '11:00:00', '2022-12-22',  '12:30:00', '90');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values ('ja', 5, 1, 3, '2022-08-11', '13:15:00', '2022-08-11', '16:00:00', '165');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 6, 1, 5, '2022-08-10', '09:00:00', '2022-08-10',  '11:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '09:00:00', '2022-08-10',  '11:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '12:00:00', '2022-08-10',  '13:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '14:00:00', '2022-08-10',  '15:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-27', '14:00:00', '2022-08-10',  '15:45:00', '165');
 
 
 insert into personRoles values (1, 'Teacher');

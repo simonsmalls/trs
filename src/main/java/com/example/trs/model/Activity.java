@@ -31,9 +31,11 @@ public class Activity {
     @Column(name = "starttime")
     private LocalTime startTime;
     @Column(name = "enddate")
+    //todo enddate no longer needed?
     private LocalDate endDate;
     @Column(name = "endtime")
     private LocalTime endTime;
+    //todo timespent in data base and how to set it
     @Column(name = "timespent")
     private int timeSpent;
 
