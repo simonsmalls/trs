@@ -5,6 +5,7 @@ import com.example.trs.dto.DateDTO;
 import com.example.trs.dto.EmployeeDTO;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.exceptions.ActivityAlreadyExistsException;
+import com.example.trs.exceptions.ActivityDoesNotExistsException;
 import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.ActivityMapper;
@@ -36,6 +37,12 @@ public class ActivityController {
     void   addActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException {
 
         activityService.addActivity(dto);
+    }
+
+    @PostMapping("edit")
+    void   editActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException {
+
+        activityService.editActivity(dto);
     }
 
     @PostMapping("dayactivities/{id}")
