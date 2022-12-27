@@ -31,8 +31,8 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/start/" + consultantId);
             HttpHeaders headers = new HttpHeaders();
             HttpEntity httpEntity = new HttpEntity(headers);
-            //ResponseEntity g =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime.class);
-            ResponseEntity responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, httpEntity, WorkingTime.class);
+            ResponseEntity responseEntity =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime.class);
+            //ResponseEntity responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, httpEntity, WorkingTime.class);
 
             return (WorkingTime) responseEntity.getBody();
         } catch (HttpStatusCodeException e){
