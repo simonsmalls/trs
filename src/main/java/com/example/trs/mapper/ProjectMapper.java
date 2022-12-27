@@ -23,7 +23,7 @@ public class ProjectMapper {
         project.setName(dto.getName());
 
 
-        // todo
+
         if( dto.getHourlyRate()!=0) {
             project.setHourlyRate(dto.getHourlyRate());
         }

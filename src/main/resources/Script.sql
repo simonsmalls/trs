@@ -192,7 +192,7 @@ insert into activities (description, employee_id, project_id, category_id, start
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '09:00:00', '2022-08-10',  '11:45:00', '165');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '12:00:00', '2022-08-10',  '13:45:00', '165');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '14:00:00', '2022-08-10',  '15:45:00', '165');
-insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-27', '14:00:00', '2022-08-10',  '15:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 2, 5, '2022-12-27', '14:00:00', '2022-08-10',  '15:45:00', '165');
 
 
 insert into personRoles values (1, 'Teacher');

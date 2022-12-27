@@ -4,6 +4,7 @@ import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.WorkingTimeCannotStartException;
 import com.example.trs.exceptions.WrongTypeException;
+import com.example.trs.model.Employee;
 import com.example.trs.model.WorkingTime;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,9 +31,12 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/start/" + consultantId);
             HttpHeaders headers = new HttpHeaders();
             HttpEntity httpEntity = new HttpEntity(headers);
+            //ResponseEntity g =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime.class);
             ResponseEntity responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, httpEntity, WorkingTime.class);
+
             return (WorkingTime) responseEntity.getBody();
         } catch (HttpStatusCodeException e){
+
             if (HttpStatus.NOT_FOUND == e.getStatusCode()){
                 String serr = e.getResponseBodyAsString();
                 ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);

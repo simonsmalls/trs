@@ -5,8 +5,10 @@ import com.example.trs.dto.DateDTO;
 import com.example.trs.dto.EmployeeDTO;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.exceptions.ActivityAlreadyExistsException;
+import com.example.trs.exceptions.ActivityDoesNotExistsException;
 import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
+import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Employee;
 import com.example.trs.service.ActivityService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 ;
 
@@ -36,22 +39,31 @@ public class ActivityController {
         activityService.addActivity(dto);
     }
 
-    @PostMapping("dayactivities/{id}")
-    List<Activity>   dayActivities(@RequestBody DateDTO dto, @PathVariable("id") int id)  {
+    @PostMapping("edit")
+    void   editActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException {
 
-        return activityService.findActivitiesByEmployeeIdAndDate(id, LocalDate.of(dto.getYear(),dto.getMonth(), dto.getDay()));
+        activityService.editActivity(dto);
+    }
+
+    @PostMapping("dayactivities/{id}")
+    List<ActivityDTO>   dayActivities(@RequestBody DateDTO dto, @PathVariable("id") int id)  {
+
+        List<Activity> list=  activityService.findActivitiesByEmployeeIdAndDate(id, LocalDate.of(dto.getYear(),dto.getMonth(), dto.getDay()));
+        return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    List<Activity>   activitiesById( @PathVariable("id") int id)  {
-        System.out.println("in id ");
-        return activityService.findActivitiesByPersonId(id);
+    List<ActivityDTO>   activitiesById( @PathVariable("id") int id)  {
+
+        List<Activity> list=  activityService.findActivitiesByPersonId(id);
+        return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
     }
 
     @GetMapping("")
-    List<Activity>   getAll()  {
-        System.out.println("in getall ");
-        return activityService.getAll();
+    List<ActivityDTO>   getAll()  {
+
+        List<Activity> list=  activityService.getAll();
+        return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
     }
 
 
