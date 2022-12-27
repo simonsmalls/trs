@@ -3,8 +3,12 @@ package com.example.trs.controller;
 ;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.exceptions.EmployeeNotFoundException;
+import com.example.trs.exceptions.WorkingTimeCannotStartException;
+import com.example.trs.exceptions.WrongTypeException;
 import com.example.trs.model.Employee;
+import com.example.trs.model.WorkingTime;
 import com.example.trs.service.EmployeeService;
+import com.example.trs.service.WorkingTimeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +23,21 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    WorkingTimeService workingTimeService;
+
     @PostMapping("login")
     Employee checkLogin(@RequestBody LoginDTO login) throws EmployeeNotFoundException, JsonProcessingException {
 
         return employeeService.checkLogin(login.getAbbreviation(), login.getPassword());
+    }
+
+
+
+    @GetMapping("/workingtime/start/{id}")
+    WorkingTime startClock(@PathVariable("id") int consultantId) throws WrongTypeException, WorkingTimeCannotStartException, JsonProcessingException, EmployeeNotFoundException {
+
+        return workingTimeService.startWorkingTime(consultantId);
     }
 
     @GetMapping("")

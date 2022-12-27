@@ -4,6 +4,8 @@ package com.example.trs.handler;
 
 import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
+import com.example.trs.exceptions.WorkingTimeCannotStartException;
+import com.example.trs.exceptions.WrongTypeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +31,28 @@ public class RestResponseEntityExceptionHandler
     }
 
 
+    @ExceptionHandler(value = WorkingTimeCannotStartException.class)
+    protected ResponseEntity<? extends Object> workingTimeCannotBeStarted
+            ( WorkingTimeCannotStartException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("bestaat al", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+
+    @ExceptionHandler(value = WrongTypeException.class)
+    protected ResponseEntity<? extends Object> wrongTypeException
+            ( WrongTypeException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("wrong type", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
 
 
 }
