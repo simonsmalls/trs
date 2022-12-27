@@ -22,7 +22,7 @@ public class AbisWorkingTimeService implements WorkingTimeService {
 
     @Autowired
     private RestTemplate rt;
-    String baseUrl = "http://localhost:8080/employees";
+    String baseUrl = "http://localhost:8080/employees/workingtime";
     @Override
     public WorkingTime startWorkingTime(int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException, WorkingTimeCannotStartException {
 
