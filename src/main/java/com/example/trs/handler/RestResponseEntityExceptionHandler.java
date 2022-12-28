@@ -31,7 +31,7 @@ public class RestResponseEntityExceptionHandler
 
     @ExceptionHandler(value = ActivityInThePastException.class)
     protected ResponseEntity<? extends Object> activityInThePastException
-            ( EmployeeNotFoundException ance, WebRequest request) {
+            ( ActivityInThePastException ance, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("activiteit in het verleden", status.value(), ance.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
