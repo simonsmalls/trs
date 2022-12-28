@@ -65,11 +65,13 @@ CREATE TABLE employees
 
 	lastName char (45) NOT NULL,
 
-	pass char(20) NOT NULL,
+	pass char NOT NULL,
 
     hourlyRate  numeric(9, 2),
 
-    e_kind varchar (1)
+    e_kind varchar (1),
+
+	constraint min_length_pass check ( pass > 80 )
 
 	);
 
@@ -146,7 +148,7 @@ create table activities
 create table personRoles
 (
     employee_id int,
-    personRole char(45),
+    personRole varchar(45),
     constraint FK_EMPLOYEES foreign key (employee_id) references employees
 
 );

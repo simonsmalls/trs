@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public class ActivityDTO {
+
+    private int activityId;
     private String description;
     private int employeeId;
 
@@ -112,5 +114,13 @@ public class ActivityDTO {
 
     public void setTimeSpent(int timeSpent) {
         this.timeSpent = timeSpent;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
     }
 }

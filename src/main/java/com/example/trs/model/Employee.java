@@ -7,7 +7,7 @@ public class Employee {
     private int id;
     private String firstName;
     private String lastName;
-    private String abbriviation;
+    private String abbreviation;
     private String password;
 
     private List<String> roles;
@@ -15,11 +15,11 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String firstName, String lastName, String abbriviation, String password, List<String> roles) {
+    public Employee(int id, String firstName, String lastName, String abbreviation, String password, List<String> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.abbriviation = abbriviation;
+        this.abbreviation = abbreviation;
         this.password = password;
         this.roles = roles;
     }
@@ -53,11 +53,11 @@ public class Employee {
     }
 
     public String getAbbriviation() {
-        return abbriviation;
+        return abbreviation;
     }
 
     public void setAbbriviation(String abbriviation) {
-        this.abbriviation = abbriviation;
+        this.abbreviation = abbriviation;
     }
 
     public String getPassword() {

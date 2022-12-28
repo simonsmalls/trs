@@ -1,5 +1,7 @@
 package com.example.trs.service;
 
+import com.example.trs.exceptions.ActivityNotFoundException;
+import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Company;
 import com.example.trs.model.Project;
 import com.example.trs.repositories.CompanyJpaRepo;
@@ -40,8 +42,8 @@ public class AbisProjectService implements ProjectService {
     }
 
     @Override
-    public Project getProjectById(int id) {
-        return null;
+    public Project getProjectById(int id) throws ProjectNotFoundException {
+        return projectJpaRepo.findById(id).orElseThrow(()-> new ProjectNotFoundException("Dit project werd niet gevonden."));
     }
 
     @Override
