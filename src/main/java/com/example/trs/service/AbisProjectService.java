@@ -15,6 +15,7 @@ import com.example.trs.repositories.ProjectJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -86,6 +87,11 @@ public class AbisProjectService implements ProjectService {
     @Override
     public void addProject(Project project) {
         projectJpaRepo.save(project);
+    }
+
+    @Override
+    public List<Project> ongoingProjects() {
+        return projectJpaRepo.onGoingProjects(LocalDate.now());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.trs.service;
 import com.example.trs.dto.ActivityDTO;
 import com.example.trs.exceptions.ActivityAlreadyExistsException;
 import com.example.trs.exceptions.ActivityDoesNotExistsException;
+import com.example.trs.exceptions.ActivityInThePastException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
@@ -78,6 +79,22 @@ public class AbisActivityService implements ActivityService {
     @Override
     public List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date) {
         return activityJpaRepo.findActivitiesByEmployee_idAndDate(personId,date);
+    }
+
+    @Override
+    public void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException {
+        Activity activity=findActivityByid(id);
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteiten in het verleden verwijderen");
+        activityJpaRepo.delete(activity);
+    }
+
+    @Override
+    public Activity findActivityByid(int id) throws ActivityDoesNotExistsException {
+        Activity activity= activityJpaRepo.findActivityById(id);
+        if(activity==null) {
+            throw new ActivityDoesNotExistsException("deze activiteit bestaat niet");
+        }
+        return  activity;
     }
 
 
