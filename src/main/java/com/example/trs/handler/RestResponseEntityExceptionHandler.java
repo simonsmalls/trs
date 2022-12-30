@@ -44,7 +44,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = WorkingTimeCannotEndException.class)
     protected ResponseEntity<? extends Object> workingTimeCannotBeEnded
-            ( WorkingTimeCannotStartException wtexc, WebRequest request) {
+            ( WorkingTimeCannotEndException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("geen uren open", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();

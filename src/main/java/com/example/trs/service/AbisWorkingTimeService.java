@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -97,8 +98,25 @@ public class AbisWorkingTimeService implements WorkingTimeService {
     }
 
     @Override
-    public List<WorkingTime> getByConsultantId(int consultantId) {
+    public List<WorkingTime> getByConsultantIdToday(int consultantId) throws JsonProcessingException, EmployeeNotFoundException {
+        try {
+            UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/" + consultantId);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity httpEntity = new HttpEntity(headers);
+            ResponseEntity responseEntity =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime[].class);
+
+            WorkingTime[] list = (WorkingTime[]) responseEntity.getBody();
+            return Arrays.asList(list);
+        } catch (HttpStatusCodeException e){
+
+            if (HttpStatus.NOT_FOUND == e.getStatusCode()){
+                String serr = e.getResponseBodyAsString();
+                ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+                throw new EmployeeNotFoundException(ae.getDescription());
+            }
+        }
         return null;
+
     }
 
     @Override

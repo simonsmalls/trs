@@ -35,18 +35,6 @@ public class EmployeeController {
 
 
 
-    @GetMapping("/workingtime/start/{id}")
-    WorkingTime startClock(@PathVariable("id") int consultantId) throws WrongTypeException, WorkingTimeCannotStartException, JsonProcessingException, EmployeeNotFoundException {
-
-        return workingTimeService.startWorkingTime(consultantId);
-    }
-
-    @GetMapping("/workingtime/end/{id}")
-    WorkingTime endClock(@PathVariable("id") int consultantId) throws WrongTypeException, JsonProcessingException, EmployeeNotFoundException, WorkingTimeCannotEndException {
-
-        return workingTimeService.endWorkingTime(consultantId);
-    }
-
     @GetMapping("")
     List<Employee> getAllEmployees(){
 
