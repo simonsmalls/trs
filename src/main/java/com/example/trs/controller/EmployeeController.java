@@ -3,6 +3,7 @@ package com.example.trs.controller;
 ;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.exceptions.EmployeeNotFoundException;
+import com.example.trs.exceptions.WorkingTimeCannotEndException;
 import com.example.trs.exceptions.WorkingTimeCannotStartException;
 import com.example.trs.exceptions.WrongTypeException;
 import com.example.trs.model.Employee;
@@ -38,6 +39,12 @@ public class EmployeeController {
     WorkingTime startClock(@PathVariable("id") int consultantId) throws WrongTypeException, WorkingTimeCannotStartException, JsonProcessingException, EmployeeNotFoundException {
 
         return workingTimeService.startWorkingTime(consultantId);
+    }
+
+    @GetMapping("/workingtime/end/{id}")
+    WorkingTime endClock(@PathVariable("id") int consultantId) throws WrongTypeException, JsonProcessingException, EmployeeNotFoundException, WorkingTimeCannotEndException {
+
+        return workingTimeService.endWorkingTime(consultantId);
     }
 
     @GetMapping("")

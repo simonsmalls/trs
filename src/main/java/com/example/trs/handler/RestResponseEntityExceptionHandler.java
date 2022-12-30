@@ -4,6 +4,7 @@ package com.example.trs.handler;
 
 import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
+import com.example.trs.exceptions.WorkingTimeCannotEndException;
 import com.example.trs.exceptions.WorkingTimeCannotStartException;
 import com.example.trs.exceptions.WrongTypeException;
 import org.springframework.http.HttpHeaders;
@@ -16,8 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class RestResponseEntityExceptionHandler
-        extends ResponseEntityExceptionHandler {
+public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = EmployeeNotFoundException.class)
     protected ResponseEntity<? extends Object> personNotFound
@@ -36,6 +36,17 @@ public class RestResponseEntityExceptionHandler
             ( WorkingTimeCannotStartException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("bestaat al", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = WorkingTimeCannotEndException.class)
+    protected ResponseEntity<? extends Object> workingTimeCannotBeEnded
+            ( WorkingTimeCannotStartException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("geen uren open", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
