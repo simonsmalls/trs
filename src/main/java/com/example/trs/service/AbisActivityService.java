@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -105,6 +106,16 @@ public class AbisActivityService implements ActivityService {
 
         }
         return foundActivityDTOList;
+    }
+
+    @Override
+    public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
+        return activityJpaRepo.findActivitiesForProjectOfMonth(projectId, startDate ,endDate);
+    }
+
+    @Override
+    public List<Activity> getAll() {
+        return activityJpaRepo.findAll();
     }
 
 }
