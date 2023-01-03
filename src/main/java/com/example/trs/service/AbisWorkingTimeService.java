@@ -2,6 +2,7 @@ package com.example.trs.service;
 
 import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
+import com.example.trs.exceptions.WorkingTimeCannotEndException;
 import com.example.trs.exceptions.WorkingTimeCannotStartException;
 import com.example.trs.exceptions.WrongTypeException;
 import com.example.trs.model.Employee;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,8 +33,8 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/start/" + consultantId);
             HttpHeaders headers = new HttpHeaders();
             HttpEntity httpEntity = new HttpEntity(headers);
-            //ResponseEntity g =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime.class);
-            ResponseEntity responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, httpEntity, WorkingTime.class);
+            ResponseEntity responseEntity =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime.class);
+            //ResponseEntity responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, httpEntity, WorkingTime.class);
 
             return (WorkingTime) responseEntity.getBody();
         } catch (HttpStatusCodeException e){
@@ -56,6 +58,36 @@ public class AbisWorkingTimeService implements WorkingTimeService {
     }
 
     @Override
+    public WorkingTime endWorkingTime(int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException, WorkingTimeCannotEndException {
+
+        try {
+            UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/end/" + consultantId);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity httpEntity = new HttpEntity(headers);
+            ResponseEntity responseEntity =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime.class);
+
+            return (WorkingTime) responseEntity.getBody();
+        } catch (HttpStatusCodeException e){
+
+            if (HttpStatus.NOT_FOUND == e.getStatusCode()){
+                String serr = e.getResponseBodyAsString();
+                ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+                throw new EmployeeNotFoundException("deze medewerker bestaat niet");
+            } else if (HttpStatus.CONFLICT == e.getStatusCode()){
+                String serr = e.getResponseBodyAsString();
+                ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+                if (ae.getTitle().equals("geen open uren")){
+                    throw new WorkingTimeCannotEndException(ae.getDescription());
+                } else if (ae.getTitle().equals("wrong type")){
+                    throw new WrongTypeException(ae.getDescription());
+                }
+            }
+
+        }
+        return null;
+    }
+
+    @Override
     public List<WorkingTime> getAll() {
         return null;
     }
@@ -66,8 +98,25 @@ public class AbisWorkingTimeService implements WorkingTimeService {
     }
 
     @Override
-    public List<WorkingTime> getByConsultantId(int consultantId) {
+    public List<WorkingTime> getByConsultantIdToday(int consultantId) throws JsonProcessingException, EmployeeNotFoundException {
+        try {
+            UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/" + consultantId);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity httpEntity = new HttpEntity(headers);
+            ResponseEntity responseEntity =rt.getForEntity(uriBuilder.toUriString(),  WorkingTime[].class);
+
+            WorkingTime[] list = (WorkingTime[]) responseEntity.getBody();
+            return Arrays.asList(list);
+        } catch (HttpStatusCodeException e){
+
+            if (HttpStatus.NOT_FOUND == e.getStatusCode()){
+                String serr = e.getResponseBodyAsString();
+                ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+                throw new EmployeeNotFoundException(ae.getDescription());
+            }
+        }
         return null;
+
     }
 
     @Override

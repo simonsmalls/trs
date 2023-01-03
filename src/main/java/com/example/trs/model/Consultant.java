@@ -5,6 +5,9 @@ public class Consultant extends Employee {
 
     private double hourlyRate;
 
+    public Consultant() {
+    }
+
     public Consultant(double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
