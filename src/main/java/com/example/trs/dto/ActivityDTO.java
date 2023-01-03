@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class ActivityDTO {
 
-    private int activityId;
+    private int id;
     private String description;
     private int employeeId;
 
@@ -26,6 +26,14 @@ public class ActivityDTO {
     private int timeSpent;
 
     public ActivityDTO() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -114,13 +122,5 @@ public class ActivityDTO {
 
     public void setTimeSpent(int timeSpent) {
         this.timeSpent = timeSpent;
-    }
-
-    public int getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(int activityId) {
-        this.activityId = activityId;
     }
 }

@@ -1,8 +1,12 @@
 package com.example.trs.handler;
 
 
+
 import com.example.trs.error.ApiError;
-import com.example.trs.exceptions.ActivityNotFoundException;
+import com.example.trs.exceptions.EmployeeNotFoundException;
+import com.example.trs.exceptions.WorkingTimeCannotEndException;
+import com.example.trs.exceptions.WorkingTimeCannotStartException;
+import com.example.trs.exceptions.WrongTypeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,13 +19,51 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = ActivityNotFoundException.class)
-    protected ResponseEntity<? extends Object> handleActivityNotFound(ActivityNotFoundException activityNotFoundException, WebRequest request) {
-
+    @ExceptionHandler(value = EmployeeNotFoundException.class)
+    protected ResponseEntity<? extends Object> personNotFound
+            ( EmployeeNotFoundException ance, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        ApiError error = new ApiError("Activity not found", status.value(), activityNotFoundException.getMessage());
+        ApiError err = new ApiError("not found", status.value(), ance.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("content-type", MediaType.APPLICATION_PROBLEM_JSON_VALUE);
-        return new ResponseEntity<ApiError>(error, responseHeaders, status);
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
+
+
+    @ExceptionHandler(value = WorkingTimeCannotStartException.class)
+    protected ResponseEntity<? extends Object> workingTimeCannotBeStarted
+            ( WorkingTimeCannotStartException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("bestaat al", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = WorkingTimeCannotEndException.class)
+    protected ResponseEntity<? extends Object> workingTimeCannotBeEnded
+            ( WorkingTimeCannotEndException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("geen uren open", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+
+    @ExceptionHandler(value = WrongTypeException.class)
+    protected ResponseEntity<? extends Object> wrongTypeException
+            ( WrongTypeException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("wrong type", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+
 }

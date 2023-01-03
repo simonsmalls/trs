@@ -57,21 +57,21 @@ create sequence personroles_seq start with 1 increment 1;
 
 CREATE TABLE employees
 
-(employees_id int PRIMARY KEY DEFAULT nextval('employees_seq'),
+	(employees_id int PRIMARY KEY DEFAULT nextval('employees_seq'),
 
- abbreviation varchar(45) NOT NULL,
+	abbreviation varchar(45) NOT NULL,
 
- firstName varchar(45) NOT NULL,
+	firstName varchar(45) NOT NULL,
 
- lastName varchar (45) NOT NULL,
+	lastName varchar (45) NOT NULL,
 
- pass varchar(100) NOT NULL,
+	pass varchar(100) NOT NULL,
 
- hourlyRate  numeric(9, 2),
+    hourlyRate  numeric(9, 2),
 
- e_kind varchar (1)
+    e_kind varchar (1)
 
-);
+	);
 
 create table companies
 
@@ -128,13 +128,13 @@ create table activities
 (
     activities_id int primary key default nextval('activities_seq'),
     description varchar(45),
-    employee_id int not null,
-    project_id int not null,
-    category_id int not null,
-    startDate date not null,
-    startTime time not null,
+    employee_id int,
+    project_id int,
+    category_id int,
+    startDate date,
+    startTime time,
     endDate date,
-    endTime time not null,
+    endTime time,
     timeSpent int,
     constraint FK_PERSONS foreign key (employee_id) references employees,
     constraint FK_PROJECTS foreign key (project_id) references projects,
@@ -169,7 +169,6 @@ insert into companies (companyName)values ('SMALS');
 
 insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'projectnaam', 'projectomschrijving', 2000.00,'2022-08-31', '2022-12-20');
 insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'abisproject', 'abisprojectomschrijving', 1000.00,'2022-09-14', '2023-01-22');
-insert into projects (company_id, projectName, description, hourlyRate, startDate) values (1, 'third proj', 'abisprojectomschrijving', 1000.00,'2022-09-14');
 
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-21', '09:00:00', '14:30:00', 280, 9);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 10);
@@ -188,11 +187,10 @@ insert into invoices  (invoiceDate, totalPrice, project_id, closed) values (null
 
 insert into activities (description, employee_id,  project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values ('uh', 3, 2, 4, '2022-12-22', '14:00:00', '2022-12-22', '15:00:00', '60');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null,  4, 2, 6, '2022-12-22', '11:00:00', '2022-12-22',  '12:30:00', '90');
-insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values ('ja', 5, 1, 3, '2022-11-11', '13:15:00', '2022-08-11', '16:00:00', '165');
-insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 6, 1, 5, '2022-11-10', '09:00:00', '2022-08-10',  '11:45:00', '165');
-insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2023-12-26', '09:00:00', '2022-08-10',  '11:45:00', '165');
-insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2023-12-26', '12:00:00', '2022-08-10',  '13:45:00', '165');
-insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2023-12-26', '14:00:00', '2022-08-10',  '15:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values ('ja', 5, 1, 3, '2022-08-11', '13:15:00', '2022-08-11', '16:00:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 6, 1, 5, '2022-08-10', '09:00:00', '2022-08-10',  '11:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '09:00:00', '2022-08-10',  '11:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '12:00:00', '2022-08-10',  '13:45:00', '165');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 1, 5, '2022-12-26', '14:00:00', '2022-08-10',  '15:45:00', '165');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endDate, endTime, timeSpent) values (null, 11, 2, 5, '2022-12-27', '14:00:00', '2022-08-10',  '15:45:00', '165');
 
@@ -200,3 +198,11 @@ insert into activities (description, employee_id, project_id, category_id, start
 insert into personRoles values (1, 'Teacher');
 insert into personRoles values (8, 'Manager');
 insert into personRoles values (9, 'Accountant');
+
+
+
+
+
+
+
+	

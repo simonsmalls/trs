@@ -8,7 +8,7 @@ public class ProjectDTO {
  private   String  clientName;
  private   int  clientId;
  private   String name;
- private   int hourlyRate;
+ private   double  hourlyRate;
  private   LocalDate start;
  private   LocalDate  end;
  private    String description;
@@ -48,11 +48,11 @@ public class ProjectDTO {
         this.name = name;
     }
 
-    public int getHourlyRate() {
+    public double getHourlyRate() {
         return hourlyRate;
     }
 
-    public void setHourlyRate(int hourlyRate) {
+    public void setHourlyRate(double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
 

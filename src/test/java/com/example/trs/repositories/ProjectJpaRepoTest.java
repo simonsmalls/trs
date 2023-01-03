@@ -20,7 +20,7 @@ class ProjectJpaRepoTest {
     ProjectJpaRepo projectJpaRepo;
 
     @Test
-    void findDataOfProject() {
+    void findProjectByIdTest() {
         Project project = projectJpaRepo.findById(2).orElseThrow(NullPointerException::new);
         assertEquals(1, project.getClient().getId());
         assertEquals("abisproject", project.getName().trim());
@@ -29,5 +29,12 @@ class ProjectJpaRepoTest {
         assertEquals(LocalDate.of(2022, Month.SEPTEMBER, 14), project.getStartDate());
         assertEquals(LocalDate.of(2023, 1, 22), project.getEndDate());
     }
+
+    @Test
+    void findProjectsByName() {
+        assertEquals(1, projectJpaRepo.findByName("projectnaam").stream().findFirst()
+                .orElseThrow(NullPointerException::new).getId());
+    }
+
 
 }

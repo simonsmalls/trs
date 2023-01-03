@@ -50,63 +50,39 @@ public class AbisActivityService implements ActivityService {
 
 
     @Override
-    public void addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException {
-        if (activityJpaRepo.findActivityByEmployeeIdAndActivityId(activityDTO.getEmployeeId(), activityDTO.getActivityId())!=null) {
-            throw new ActivityAlreadyExistsException("Activity already exists");
+    //todo check if there is already an activity at this time
+    public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException {
+        Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
+        if(act!=null) {
+            throw new ActivityAlreadyExistsException("activiteit bestaat al");
+        }
+
+
+        Project project = projectService.getProjectById(activityDTO.getProjectId());
+        Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
+        Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
+        return activityJpaRepo.save(activity);
+    }
+
+    @Override
+    //todo check if there is already an activity at this time
+    public Activity editActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityDoesNotExistsException {
+
+        Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
+        if(act==null) {
+            throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
         Project project = projectService.getProjectById(activityDTO.getProjectId());
         Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
         Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
-        activityJpaRepo.save(activity);
+        if (activityJpaRepo.findActivityByEmployeeProjectCategory(
+                activity.getEmployee_id(), activity.getProject().getId(), activity.getCategory().getId(),
+                activity.getStartDate(), activity.getStartTime(), activity.getEndDate(), activity.getEndTime())!=null) {
+            return activityJpaRepo.save(activity);
+        }
+        return null;
     }
 
-    @Override
-    public void editActivity(ActivityDTO activityDTO) throws ActivityNotFoundException, ProjectNotFoundException {
-
-        int activityId = activityDTO.getActivityId();
-        int personId = activityDTO.getEmployeeId();
-
-        if (activityJpaRepo.findActivityByEmployeeIdAndActivityId(personId,activityId)!=null) {
-            Project project = projectService.getProjectById(activityDTO.getProjectId());
-            Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
-            Activity mappedActivity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
-            Activity storedActivity = activityJpaRepo.findActivityByEmployeeIdAndActivityId(personId,activityId);
-
-            storedActivity.setStartTime(mappedActivity.getStartTime());
-            storedActivity.setStartDate(mappedActivity.getStartDate());
-            storedActivity.setEndTime(mappedActivity.getEndTime());
-            storedActivity.setEndDate(mappedActivity.getEndDate());
-            storedActivity.setDescription(mappedActivity.getDescription());
-            storedActivity.setProject(mappedActivity.getProject());
-            storedActivity.setTimeSpent(mappedActivity.getTimeSpent());
-            storedActivity.setCategory(mappedActivity.getCategory());
-
-            activityJpaRepo.save(storedActivity);
-        } else {
-             throw new ActivityNotFoundException("Activity not found");
-        }
-    }
-
-
-   @Override
-    public List<ActivityDTO> findActivitiesByPersonId(int personId) throws ActivityNotFoundException{
-        List<Activity> foundActivities = activityJpaRepo.findActivitiesForPerson(personId);
-        ResponseEntity<EmployeeDTO> responseEntity = rt.getForEntity(baseUrl + personId, EmployeeDTO.class);
-        String personName = Objects.requireNonNull(responseEntity.getBody()).getFirstName();
-        try {
-            foundActivities.get(0);
-        } catch (RuntimeException e) {
-            throw new ActivityNotFoundException("No activities found");
-        }
-
-        List<ActivityDTO> foundActivityDTOList = new ArrayList<>();
-        for (Activity activity : foundActivities) {
-            ActivityDTO activityDTO = ActivityMapper.toDTO(activity, personName);
-            foundActivityDTOList.add(activityDTO);
-
-        }
-        return foundActivityDTOList;
-    }
 
     @Override
     public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
@@ -117,6 +93,12 @@ public class AbisActivityService implements ActivityService {
     public List<Activity> getAll() {
         return activityJpaRepo.findAll();
     }
+
+    @Override
+    public List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date) {
+        return activityJpaRepo.findActivitiesByEmployee_idAndDate(personId,date);
+    }
+
 
 }
 

@@ -1,6 +1,7 @@
 package com.example.trs.repositories;
 
 import com.example.trs.model.Activity;
+import com.example.trs.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +23,11 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
 
     @Query(value = "select * from activities where employee_id= :eid and activities_id= :aid ", nativeQuery = true)
     Activity findActivityByEmployeeIdAndActivityId(@Param("eid") int employeeId, @Param("aid") int activityId);
+
+    Activity findActivityById(int id);
+
+    @Query(value = "select * from activities where employee_id= :employee_id and startdate = :date ", nativeQuery = true)
+    List<Activity> findActivitiesByEmployee_idAndDate(@Param("employee_id")int employee_id,@Param("date") LocalDate date);
 
 
     @Query(value = " select * from activities where project_id = :pid and startdate between :sDate and :eDate", nativeQuery = true)

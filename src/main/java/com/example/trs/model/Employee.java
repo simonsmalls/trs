@@ -52,12 +52,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public String getAbbriviation() {
+    public String getAbbreviation() {
         return abbreviation;
     }
 
-    public void setAbbriviation(String abbriviation) {
-        this.abbreviation = abbriviation;
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
     public String getPassword() {
