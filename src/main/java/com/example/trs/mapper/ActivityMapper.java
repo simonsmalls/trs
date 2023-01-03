@@ -12,6 +12,7 @@ public class ActivityMapper {
     public static Activity activityDTOtoActivity(ActivityDTO activityDTO, Project project, Category category) {
 
         Activity activity = new Activity();
+        activity.setId(activityDTO.getId());
 
         if (activityDTO.getDescription()!=null) {
             activity.setDescription(activityDTO.getDescription());
@@ -22,7 +23,6 @@ public class ActivityMapper {
 
         activity.setStartDate(activityDTO.getStartDate());
         activity.setStartTime(activityDTO.getStartTime());
-        activity.setEndDate(activityDTO.getEndDate());
         activity.setEndTime(activityDTO.getEndTime());
 
         return activity;

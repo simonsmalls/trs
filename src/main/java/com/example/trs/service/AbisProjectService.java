@@ -1,6 +1,14 @@
 package com.example.trs.service;
 
+import com.example.trs.dto.InvoiceDTO;
+import com.example.trs.dto.ProjectDTO;
+import com.example.trs.exceptions.CompanyAlreadyExists;
+import com.example.trs.exceptions.CompanyNotFoundException;
+import com.example.trs.exceptions.ProjectNotFoundException;
+import com.example.trs.mapper.InvoiceMapper;
+import com.example.trs.mapper.ProjectMapper;
 import com.example.trs.model.Company;
+import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
 import com.example.trs.repositories.CompanyJpaRepo;
 import com.example.trs.repositories.ProjectJpaRepo;

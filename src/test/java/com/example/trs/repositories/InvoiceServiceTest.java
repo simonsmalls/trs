@@ -14,14 +14,16 @@ public class InvoiceServiceTest {
     InvoiceService invoiceService;
 
     @Test
-    public void createInvoiceTest() {
-        assertEquals(11000.00, invoiceService.createInvoiceForLastMonthOfProjectId(1).getTotalPrice());
+    public void createInvoiceForZeroRemainderTimeTest() {
+        assertEquals(5500.00, invoiceService.createInvoiceForLastMonthOfProjectId(1).getTotalPrice());
     }
 
     @Test
-    public void getByProjectIdTest() {
-        assertEquals(20000.00, invoiceService.getByProjectId(1).getTotalPrice());
+    public void createInvoiceTest() {
+        assertEquals(5500.00, invoiceService.createInvoiceForLastMonthOfProjectId(2).getTotalPrice());
     }
+
+
 
 
 }

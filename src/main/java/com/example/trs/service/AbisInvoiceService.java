@@ -43,7 +43,15 @@ public class AbisInvoiceService implements InvoiceService {
         List<Activity> activityList = activityService.findActivitiesForProjectOfMonth(projectId,startDate, endDate );
         System.out.println("--------size of activitylist------" +activityList.size());
 
-        //map found activities. key: employee id, value:sum of total time of activities
+
+        int totalActivityTime = 0;
+
+        for (Activity activity : activityList) {
+            totalActivityTime = totalActivityTime + activity.getTimeSpent();
+            System.out.println(activity.getTimeSpent());
+        }
+
+/*        //map found activities. key: employee id, value:sum of total time of activities
         Map<Integer, Integer> activityMap = activityList.stream()
                 .collect(Collectors.groupingBy(Activity::getEmployee_id, Collectors.summingInt(Activity::getTimeSpent)));
 
@@ -59,17 +67,29 @@ public class AbisInvoiceService implements InvoiceService {
                 activityMap.put(key, value);
             }
             System.out.println("Value after rounding" + value);
-        });
-
+        });*/
+/*
         //Convert total rounded time to hours and create invoice
         double sumOfAllActivityTimeInHours = (activityMap.values().stream().mapToDouble(Integer::doubleValue).sum()/60);
-        System.out.println("Activitytime in hours" + sumOfAllActivityTimeInHours);
-        Project project = activityList.get(0).getProject();
+        System.out.println("Activitytime in hours" + sumOfAllActivityTimeInHours);*/
 
+        ;
+        int remainder = totalActivityTime % 15;
+        if (remainder == 0) {
+           remainder = 15;
+        }
+        int testTijd = totalActivityTime + (15 - remainder);
+        double totalActivityTimeInHours = (double)(totalActivityTime + (15 - remainder))/60;
+
+        System.out.println(totalActivityTime);
+        System.out.println(remainder);
+        System.out.println(testTijd);
+        System.out.println(totalActivityTimeInHours);
+        Project project = activityList.get(0).getProject();
         Invoice invoice = new Invoice();
         invoice.setDate(LocalDate.now());
         invoice.setProject(project);
-        invoice.setTotalPrice(project.getHourlyRate() * sumOfAllActivityTimeInHours);
+        invoice.setTotalPrice(project.getHourlyRate() * totalActivityTimeInHours);
 
         return invoice;
     }

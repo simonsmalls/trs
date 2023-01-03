@@ -20,8 +20,6 @@ public class ActivityDTO {
     private LocalDate startDate;
     private LocalTime startTime;
 
-    private LocalDate endDate;
-
     private LocalTime endTime;
     private int timeSpent;
 
@@ -108,13 +106,6 @@ public class ActivityDTO {
         this.startTime = startTime;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
 
     public int getTimeSpent() {
         return timeSpent;
