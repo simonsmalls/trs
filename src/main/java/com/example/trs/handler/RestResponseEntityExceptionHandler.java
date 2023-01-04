@@ -3,11 +3,7 @@ package com.example.trs.handler;
 
 
 import com.example.trs.error.ApiError;
-import com.example.trs.exceptions.ActivityInThePastException;
-import com.example.trs.exceptions.EmployeeNotFoundException;
-import com.example.trs.exceptions.WorkingTimeCannotEndException;
-import com.example.trs.exceptions.WorkingTimeCannotStartException;
-import com.example.trs.exceptions.WrongTypeException;
+import com.example.trs.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +32,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             ( ActivityInThePastException ance, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("activiteit in het verleden", status.value(), ance.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = ActivityTimeOverlapsException.class)
+    protected ResponseEntity<? extends Object> activityInThePastException
+            (ActivityTimeOverlapsException ance, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("Tijd overlapt met bestaande activiteit", status.value(), ance.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
