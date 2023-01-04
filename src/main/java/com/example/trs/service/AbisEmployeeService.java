@@ -1,5 +1,6 @@
 package com.example.trs.service;
 
+import com.example.trs.dto.EmployeeDTO;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
@@ -25,11 +26,11 @@ public class AbisEmployeeService implements EmployeeService {
 
     String baseUrl="http://localhost:8080/employees";
     @Override
-    public List<Employee> getAll() {
+    public List<EmployeeDTO> getAll() {
         UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl);
 
-        ResponseEntity g =rt.getForEntity(uriBuilder.toUriString(), Employee[].class);
-        Employee[] list = (Employee[]) g.getBody();
+        ResponseEntity g =rt.getForEntity(uriBuilder.toUriString(), EmployeeDTO[].class);
+        EmployeeDTO[] list = (EmployeeDTO[]) g.getBody();
 
         return Arrays.asList(list);
     }
@@ -65,7 +66,7 @@ public class AbisEmployeeService implements EmployeeService {
     }
 
     @Override
-    public Employee checkLogin(String abbr, String pass) throws EmployeeNotFoundException, JsonProcessingException {
+    public EmployeeDTO checkLogin(String abbr, String pass) throws EmployeeNotFoundException, JsonProcessingException {
         try {
             UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromHttpUrl(baseUrl+"/login");
 
@@ -74,9 +75,9 @@ public class AbisEmployeeService implements EmployeeService {
             login.setPassword(pass);
             login.setAbbreviation(abbr);
             HttpEntity<LoginDTO> requestEntity = new HttpEntity<>(login,headers);
-            ResponseEntity g =rt.exchange(uriBuilder.toUriString(), HttpMethod.POST,requestEntity, Employee.class);
+            ResponseEntity g =rt.exchange(uriBuilder.toUriString(), HttpMethod.POST,requestEntity, EmployeeDTO.class);
 
-            return (Employee) g.getBody();
+            return (EmployeeDTO) g.getBody();
 
 
         } catch (HttpStatusCodeException e) {

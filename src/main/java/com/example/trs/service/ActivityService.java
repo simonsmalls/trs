@@ -19,6 +19,7 @@ public interface ActivityService {
     Activity editActivity(ActivityDTO activity) throws ProjectNotFoundException, ActivityDoesNotExistsException;
     List<Activity> findActivitiesByPersonId(int personId);
     List<Activity> getAll();
+
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);
     void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;
     Activity findActivityByid(int id) throws ActivityDoesNotExistsException;

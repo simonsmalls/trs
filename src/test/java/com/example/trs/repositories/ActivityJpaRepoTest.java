@@ -75,6 +75,6 @@ class ActivityJpaRepoTest {
      //   System.out.println(jpaRepo.findActivityByEmployeeProjectCategory(9,9,9));
        assertEquals(1, jpaRepo.findActivityByEmployeeProjectCategory(3, 2, 4,
                LocalDate.of(2022,12,22), LocalTime.of(14,00,00),
-               LocalDate.of(2022,12,22), LocalTime.of(15,00,00)).getId());
+               LocalTime.of(15,00,00)).getId());
     }
 }

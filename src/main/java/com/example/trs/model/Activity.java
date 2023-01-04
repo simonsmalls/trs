@@ -30,9 +30,7 @@ public class Activity {
     private LocalDate startDate ;
     @Column(name = "starttime")
     private LocalTime startTime;
-    @Column(name = "enddate")
-    //todo enddate no longer needed?
-    private LocalDate endDate;
+
     @Column(name = "endtime")
     private LocalTime endTime;
     //todo timespent in data base and how to set it
@@ -98,13 +96,7 @@ public class Activity {
         this.startTime = startTime;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
 
     public LocalTime getEndTime() {
         return endTime;

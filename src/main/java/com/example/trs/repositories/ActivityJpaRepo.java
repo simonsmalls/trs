@@ -23,10 +23,10 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
    // Activity findActivityByEmployeeAndCategoryAndProject();
 
     @Query(value = "select * from activities where employee_id= :eid and project_id= :pid and category_id= :cid" +
-            " and starttime = :tstart and endtime = :tend and startdate = :dstart and enddate = :dend ", nativeQuery = true)
+            " and starttime = :tstart and endtime = :tend and startdate = :dstart  ", nativeQuery = true)
     Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
-                                                   @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
-                                                   @Param("dend") LocalDate endDate, @Param("tend") LocalTime endTime);
+                                                   @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime
+                                                   , @Param("tend") LocalTime endTime);
 
     Activity findActivityById(int id);
 

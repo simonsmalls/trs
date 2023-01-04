@@ -59,7 +59,7 @@ public class AbisActivityService implements ActivityService {
         Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
         if (activityJpaRepo.findActivityByEmployeeProjectCategory(
                 activity.getEmployee_id(), activity.getProject().getId(), activity.getCategory().getId(),
-                activity.getStartDate(), activity.getStartTime(), activity.getEndDate(), activity.getEndTime())!=null) {
+                activity.getStartDate(), activity.getStartTime(),  activity.getEndTime())!=null) {
             return activityJpaRepo.save(activity);
         }
         return null;
@@ -75,6 +75,7 @@ public class AbisActivityService implements ActivityService {
     public List<Activity> getAll() {
         return activityJpaRepo.findAll();
     }
+
 
     @Override
     public List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date) {

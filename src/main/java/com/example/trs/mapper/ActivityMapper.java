@@ -28,7 +28,7 @@ public class ActivityMapper {
         int c=Integer.parseInt(activityDTO.getEndTime().substring(0,2));
         int d= Integer.parseInt(activityDTO.getEndTime().substring(3));
 
-        activity.setEndDate(activityDTO.getEndDate());
+
         activity.setEndTime(LocalTime.of(c,d));
 
         return activity;
