@@ -12,8 +12,8 @@ public interface ActivityService {
 
 
 
-    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException;
-    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException;
+    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException;
+    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException;
     List<Activity> findActivitiesByPersonId(int personId);
     List<Activity> getAll();
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);

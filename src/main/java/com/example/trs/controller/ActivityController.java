@@ -33,13 +33,14 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
+    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException, ActivityInThePastException {
+
 
         activityService.addActivity(activityService.check(dto));
     }
 
     @PostMapping("edit")
-    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException, ActivityInThePastException {
 
         activityService.editActivity(activityService.check(dto));
     }

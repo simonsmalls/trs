@@ -84,5 +84,104 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
+    @ExceptionHandler(value = ActivityAlreadyExistsException.class)
+    protected ResponseEntity<? extends Object> ActivityAlreadyExistsException
+            ( ActivityAlreadyExistsException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("activiteit bestaat al", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = ActivityDoesNotExistsException.class)
+    protected ResponseEntity<? extends Object> ActivityDoesNotExistsException
+            ( ActivityDoesNotExistsException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("activiteit bestaat niet", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = ActivityNotFoundException.class)
+    protected ResponseEntity<? extends Object> ActivityNotFoundException
+            ( ActivityNotFoundException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("activiteit bestaat niet", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = CategoryNeededException.class)
+    protected ResponseEntity<? extends Object> CategoryNeededException
+            ( CategoryNeededException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("categorie nodig", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = CompanyNotFoundException.class)
+    protected ResponseEntity<? extends Object> CompanyNotFoundException
+            ( CompanyNotFoundException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("bedrijf niet gevonden", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = EndTimeBeforeStartTimeException.class)
+    protected ResponseEntity<? extends Object> EndTimeBeforeStartTimeException
+            ( EndTimeBeforeStartTimeException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("start tijd na eind tijd", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+    @ExceptionHandler(value = ENdtimeNeededException.class)
+    protected ResponseEntity<? extends Object> ENdtimeNeededException
+            ( ENdtimeNeededException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("eind tijd nodig", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = ProjectNotFoundException.class)
+    protected ResponseEntity<? extends Object> ProjectNotFoundException
+            ( ProjectNotFoundException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("project niet gevonden", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+    @ExceptionHandler(value = StarttimeNeededException.class)
+    protected ResponseEntity<? extends Object> StarttimeNeededException
+            ( StarttimeNeededException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("start tijd nodig", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+
+
 
 }

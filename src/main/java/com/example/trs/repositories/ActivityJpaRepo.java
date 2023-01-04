@@ -36,6 +36,6 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
     Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
                                                    @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
                                                    @Param("tend") LocalTime endTime);
-
-
+    @Query(value = " select * from activities where project_id = :id", nativeQuery = true)
+    List<Activity> findActivitiesByProjectId(int id);
 }
