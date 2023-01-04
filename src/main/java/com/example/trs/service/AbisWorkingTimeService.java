@@ -1,5 +1,6 @@
 package com.example.trs.service;
 
+import com.example.trs.dto.ConsultantSalaryDTO;
 import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.WorkingTimeCannotEndException;
@@ -17,7 +18,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AbisWorkingTimeService implements WorkingTimeService {
@@ -131,6 +134,38 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             if (HttpStatus.NOT_FOUND == e.getStatusCode()){
                 throw new EmployeeNotFoundException(ae.getDescription());
             } else if (HttpStatus.CONFLICT == e.getStatusCode()){
+                throw new WrongTypeException(ae.getDescription());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<ConsultantSalaryDTO> getSalariesOfAllConsultantsFor(int year, int month) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
+        try {
+            /*UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl+"/salaries/{year}/{month}");
+            Map<String, Integer> pathVariables = new HashMap<>();
+            pathVariables.put("year", year);
+            pathVariables.put("month", month);
+            HttpHeaders headers = new HttpHeaders();
+            System.out.println("before response");
+            ResponseEntity<ConsultantSalaryDTO[]> responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, null,
+                    ConsultantSalaryDTO[].class, pathVariables);
+            */
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/salaries/" + year + "/" + month);
+            HttpHeaders headers = new HttpHeaders();
+            ResponseEntity responseEntity = rt.getForEntity(uriBuilder.toUriString(), ConsultantSalaryDTO[].class);
+            ConsultantSalaryDTO[] list = (ConsultantSalaryDTO[]) responseEntity.getBody();
+            System.out.println("after response");
+
+            return Arrays.asList(list);
+        } catch (HttpStatusCodeException e){
+            String serr = e.getResponseBodyAsString();
+            System.out.println("catch: " + e.getResponseBodyAsString());
+            ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND){
+                throw new EmployeeNotFoundException(ae.getDescription());
+            } else if (e.getStatusCode() == HttpStatus.CONFLICT){
                 throw new WrongTypeException(ae.getDescription());
             }
         }
