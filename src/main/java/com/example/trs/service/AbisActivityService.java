@@ -89,10 +89,10 @@ public class AbisActivityService implements ActivityService {
     @Override
     public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException {
         if(dto.getProjectId()==0 ) throw new ProjectNotFoundException("activiteit heeft een project nodig");
-        if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een category nodig");
-        if(dto.getEndTime()==null) throw new EndtimeNeededException("activiteit heeft eind tijd nodig");
-        if(dto.getStartTime()==null ) throw new StarttimeNeededException("activiteir heeft start tijd nodig");
-        if(dto.getEmployeeId()==0) throw new EmployeeNotFoundException("activiteit heeft werknemer nodig");
+        if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
+        if(dto.getEndTime()==null) throw new EndtimeNeededException("activiteit heeft een eindtijd nodig");
+        if(dto.getStartTime()==null ) throw new StarttimeNeededException("activiteit heeft een starttijd nodig");
+        if(dto.getEmployeeId()==0) throw new EmployeeNotFoundException("activiteit heeft een werknemer nodig");
 
        Activity activity=  activityDTOMapping(dto);
        if(activity.getEndTime().isBefore(activity.getStartTime()))throw new EndTimeBeforeStartTimeException("eindtijd kan niet voor start tijd zijn");
