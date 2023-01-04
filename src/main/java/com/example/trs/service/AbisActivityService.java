@@ -87,15 +87,16 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException {
-        if(dto.getProjectId()==0 ) throw new ProjectNotFoundException("activiteit heeft een project nodig");
+    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, EndTimeBeforeStartTimeException, DateRequiredException {
+        if(dto.getProjectId() <= 0) throw new ProjectNotFoundException("activiteit heeft een project nodig");
         if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
-        if(dto.getEndTime()==null) throw new EndtimeNeededException("activiteit heeft een eindtijd nodig");
-        if(dto.getStartTime()==null ) throw new StarttimeNeededException("activiteit heeft een starttijd nodig");
-        if(dto.getEmployeeId()==0) throw new EmployeeNotFoundException("activiteit heeft een werknemer nodig");
+        if(dto.getStartDate() == null) throw new DateRequiredException("activiteit heeft een datum nodig");
+        if(dto.getEndTime()==null) throw new EndTimeNeededException("activiteit heeft een eindtijd nodig");
+        if(dto.getStartTime()==null ) throw new StartTimeNeededException("activiteit heeft een starttijd nodig");
+        if(dto.getEmployeeId() <= 0) throw new EmployeeNotFoundException("activiteit heeft een werknemer nodig");
 
        Activity activity=  activityDTOMapping(dto);
-       if(activity.getEndTime().isBefore(activity.getStartTime()))throw new EndTimeBeforeStartTimeException("eindtijd kan niet voor start tijd zijn");
+       if(activity.getEndTime().isBefore(activity.getStartTime())) throw new EndTimeBeforeStartTimeException("eindtijd kan niet voor start tijd zijn");
        return activity;
     }
 

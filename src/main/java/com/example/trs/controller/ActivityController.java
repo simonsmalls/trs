@@ -27,13 +27,13 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, EndtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
+    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
 
         activityService.addActivity(activityService.check(dto));
     }
 
     @PostMapping("edit")
-    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, EndtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
 
         activityService.editActivity(activityService.check(dto));
     }
@@ -42,14 +42,14 @@ public class ActivityController {
     List<ActivityDTO>   dayActivities(@RequestBody DateDTO dto, @PathVariable("id") int id)  {
 
         List<Activity> list=  activityService.findActivitiesByEmployeeIdAndDate(id, LocalDate.of(dto.getYear(),dto.getMonth(), dto.getDay()));
-        return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
+        return list.stream().map(ActivityMapper::toDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/person/{id}")
     List<ActivityDTO>   activitiesById( @PathVariable("id") int id)  {
 
         List<Activity> list=  activityService.findActivitiesByPersonId(id);
-        return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
+        return list.stream().map(ActivityMapper::toDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -68,7 +68,7 @@ public class ActivityController {
     List<ActivityDTO>  getAll()  {
 
         List<Activity> list=  activityService.getAll();
-        return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
+        return list.stream().map(ActivityMapper::toDTO).collect(Collectors.toList());
     }
 
 
