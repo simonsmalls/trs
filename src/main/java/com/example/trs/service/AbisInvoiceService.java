@@ -12,7 +12,6 @@ import java.time.Month;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -95,8 +94,9 @@ public class AbisInvoiceService implements InvoiceService {
     }
 
     @Override
-    public Invoice getByProjectId(int id) {
-        return invoiceJpaRepo.findInvoiceByProjectId(id);
+    public List<Invoice> getByProjectId(int id) {
+
+        return invoiceJpaRepo.findAllByProjectId(id);
     }
 
     @Override
@@ -117,6 +117,14 @@ public class AbisInvoiceService implements InvoiceService {
     @Override
     public void addInvoice(Invoice invoice, boolean sent) {
 
+    }
+
+    @Override
+    public Invoice finaliseInvoiceById(int id) {
+        Invoice invoice = invoiceJpaRepo.findInvoiceById(id);
+        invoice.setClosed(true);
+        invoice.setDate(LocalDate.now());
+        return invoiceJpaRepo.save(invoice);
     }
 
 }

@@ -23,6 +23,14 @@ public class InvoiceServiceTest {
         assertEquals(5500.00, invoiceService.createInvoiceForLastMonthOfProjectId(2).getTotalPrice());
     }
 
+    @Test
+    public void findInvoiceByIdTest(){
+        invoiceService.finaliseInvoiceById(2);
+
+    }
+
+
+
 
 
 

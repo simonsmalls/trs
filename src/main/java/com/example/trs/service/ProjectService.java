@@ -29,4 +29,6 @@ public interface ProjectService {
 
 
     void addCompany(Company company) throws CompanyAlreadyExists;
+
+    List<Project> getOngoingProjects();
 }

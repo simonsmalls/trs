@@ -16,4 +16,7 @@ public interface ProjectJpaRepo extends JpaRepository<Project, Integer> {
     List<Project> findByClient(@Param("id") int companyId);
     Project findProjectById(int id);
 
+    @Query(value = "select * from projects where enddate > CURRENT_DATE and startdate < CURRENT_DATE", nativeQuery = true)
+    List<Project> findAllOngoingProjects();
+
 }

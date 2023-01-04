@@ -27,4 +27,9 @@ class ProjectServiceTest {
 
     }
 
+    @Test
+    void getAllTest() {
+        System.out.println(projectService.getAllProjects().size());
+    }
+
 }
