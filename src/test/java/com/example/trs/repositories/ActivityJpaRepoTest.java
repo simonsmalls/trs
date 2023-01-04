@@ -38,7 +38,7 @@ class ActivityJpaRepoTest {
     }
 
 
-    @Test
+   @Test
     @Transactional
     void saveActivityToDatabaseTest() {
         Activity activity = new Activity();
@@ -69,12 +69,6 @@ class ActivityJpaRepoTest {
 
     @Test
     void findActivityUsingEmployeeProjectCategoryTest() {
-       // System.out.println(jpaRepo.findActivitiesForPerson(3).get(0).getStartActivity());
-       // System.out.println(jpaRepo.findActivitiesForPerson(3).get(0).getEndActivity());
-     //   System.out.println(LocalTime.now());
-     //   System.out.println(jpaRepo.findActivityByEmployeeProjectCategory(9,9,9));
-       assertEquals(1, jpaRepo.findActivityByEmployeeProjectCategory(3, 2, 4,
-               LocalDate.of(2022,12,22), LocalTime.of(14,00,00),
-               LocalDate.of(2022,12,22), LocalTime.of(15,00,00)).getId());
+       assertEquals(1, jpaRepo.findActivityByEmployeeIdAndActivityId(3,1).getId());
     }
 }

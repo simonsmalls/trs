@@ -3,6 +3,7 @@ package com.example.trs.handler;
 
 
 import com.example.trs.error.ApiError;
+import com.example.trs.exceptions.ActivityInThePastException;
 import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.WorkingTimeCannotEndException;
 import com.example.trs.exceptions.WorkingTimeCannotStartException;
@@ -24,6 +25,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             ( EmployeeNotFoundException ance, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiError err = new ApiError("not found", status.value(), ance.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = ActivityInThePastException.class)
+    protected ResponseEntity<? extends Object> activityInThePastException
+            ( ActivityInThePastException ance, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("activiteit in het verleden", status.value(), ance.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);

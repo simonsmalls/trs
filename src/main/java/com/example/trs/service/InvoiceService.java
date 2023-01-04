@@ -8,6 +8,8 @@ import java.time.Year;
 
 public interface InvoiceService {
 
+    Invoice createInvoiceForLastMonthOfProjectId(int projectId);
+
     Invoice getByProjectId(int id);
     Invoice getByCompanyId(int id);
     Invoice getByMonthAndYear(Month month, Year year);
