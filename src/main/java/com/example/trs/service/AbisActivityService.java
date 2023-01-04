@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -87,6 +89,11 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
+    public int calculateTimeSpent(LocalTime startTime, LocalTime endTime) {
+        return (int) startTime.until(endTime, ChronoUnit.MINUTES);
+    }
+
+    @Override
     public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException {
         if(dto.getProjectId() <= 0) throw new ProjectNotFoundException("activiteit heeft een project nodig");
         if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
@@ -100,6 +107,7 @@ public class AbisActivityService implements ActivityService {
 
        Activity activity=  activityDTOMapping(dto);
        if(activity.getEndTime().isBefore(activity.getStartTime())) throw new WrongTimeException("eindtijd kan niet voor start tijd zijn");
+       activity.setTimeSpent(calculateTimeSpent(activity.getStartTime(), activity.getEndTime()));
        return activity;
     }
 

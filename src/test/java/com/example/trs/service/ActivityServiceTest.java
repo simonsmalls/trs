@@ -189,6 +189,23 @@ public class ActivityServiceTest {
         assertThrows(WrongTimeException.class, ()-> activityService.check(dto));
     }
 
+    @Test
+    @Transactional
+    void calculateTimeSpent() {
+        assertEquals(60, activityService.calculateTimeSpent(
+                LocalTime.of(14, 0), LocalTime.of(15, 0)));
+        assertEquals(40, activityService.calculateTimeSpent(
+                LocalTime.of(14, 0), LocalTime.of(14, 40)));
+        assertEquals(186, activityService.calculateTimeSpent(
+                LocalTime.of(13, 59), LocalTime.of(17, 5)));
+        assertEquals(1, activityService.calculateTimeSpent(
+                LocalTime.of(14, 56), LocalTime.of(14, 57)));
+        assertEquals(0, activityService.calculateTimeSpent(
+                LocalTime.of(14, 0), LocalTime.of(14, 0)));
+        assertEquals(-8, activityService.calculateTimeSpent(
+                LocalTime.of(14, 0), LocalTime.of(13, 52)));
+    }
+
 
 
 
