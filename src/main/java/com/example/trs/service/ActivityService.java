@@ -19,7 +19,7 @@ public interface ActivityService {
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);
     void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;
     Activity findActivityById(int id) throws ActivityDoesNotExistsException;
-    Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, EndTimeBeforeStartTimeException, DateRequiredException;
+    Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException;
 
 
 

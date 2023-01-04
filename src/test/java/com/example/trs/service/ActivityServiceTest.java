@@ -118,7 +118,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    void checkActivityDTOTest() throws ProjectNotFoundException, EndTimeBeforeStartTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
+    void checkActivityDTOTest() throws ProjectNotFoundException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
         assertDoesNotThrow( ()-> activityService.check(dto));
         assertEquals("decrypt", activityService.check(dto).getDescription());
         assertEquals(1, activityService.check(dto).getCategory().getId());
@@ -175,10 +175,18 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    void checkActivityDTOThrowsEndTimeBeforeStartTimeExceptionTest() {
+    void checkActivityDTOThrowsEndTimeBeforeStartTimeWrongTimeExceptionTest() {
         dto.setStartTime("15:01");
         dto.setEndTime("15:00");
-        assertThrows(EndTimeBeforeStartTimeException.class, ()-> activityService.check(dto));
+        assertThrows(WrongTimeException.class, ()-> activityService.check(dto));
+    }
+
+    @Test
+    @Transactional
+    void checkActivityDTOThrowsSameEndTimeAndStartTimeWrongTimeExceptionTest() {
+        dto.setStartTime("15:26");
+        dto.setEndTime("15:26");
+        assertThrows(WrongTimeException.class, ()-> activityService.check(dto));
     }
 
 

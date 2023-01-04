@@ -36,7 +36,7 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
         this.checkTimeOverlap(activity);
-        return activityJpaRepo.save(activity);
+        return activityJpaRepo.save(activity);      // TODO calculate minute duration
     }
 
     @Override
@@ -87,16 +87,19 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, EndTimeBeforeStartTimeException, DateRequiredException {
+    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException {
         if(dto.getProjectId() <= 0) throw new ProjectNotFoundException("activiteit heeft een project nodig");
         if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
         if(dto.getStartDate() == null) throw new DateRequiredException("activiteit heeft een datum nodig");
         if(dto.getEndTime()==null) throw new EndTimeNeededException("activiteit heeft een eindtijd nodig");
         if(dto.getStartTime()==null ) throw new StartTimeNeededException("activiteit heeft een starttijd nodig");
+        if(dto.getStartTime().equals(dto.getEndTime())) throw new WrongTimeException("eindtijd moet verschillen van starttijd");
         if(dto.getEmployeeId() <= 0) throw new EmployeeNotFoundException("activiteit heeft een werknemer nodig");
+        // TODO check for existing employee in DB
+        // Project Name not required, it will be overwritten by Mapping anyway, which maps on Project ID
 
        Activity activity=  activityDTOMapping(dto);
-       if(activity.getEndTime().isBefore(activity.getStartTime())) throw new EndTimeBeforeStartTimeException("eindtijd kan niet voor start tijd zijn");
+       if(activity.getEndTime().isBefore(activity.getStartTime())) throw new WrongTimeException("eindtijd kan niet voor start tijd zijn");
        return activity;
     }
 
