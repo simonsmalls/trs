@@ -40,28 +40,20 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-
     public Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
 
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act==null) {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
-
-
-
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
-
-
-
 
     @Override
     public List<Activity> findActivitiesByPersonId(int personId) {
         return activityJpaRepo.findActivitiesForPerson(personId);
     }
-
 
     @Override
     public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
@@ -80,13 +72,13 @@ public class AbisActivityService implements ActivityService {
 
     @Override
     public void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException {
-        Activity activity=findActivityByid(id);
+        Activity activity= findActivityById(id);
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteiten in het verleden verwijderen");
         activityJpaRepo.delete(activity);
     }
 
     @Override
-    public Activity findActivityByid(int id) throws ActivityDoesNotExistsException {
+    public Activity findActivityById(int id) throws ActivityDoesNotExistsException {
         Activity activity= activityJpaRepo.findActivityById(id);
         if(activity==null) {
             throw new ActivityDoesNotExistsException("deze activiteit bestaat niet");
@@ -95,10 +87,10 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, ENdtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException {
+    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException {
         if(dto.getProjectId()==0 ) throw new ProjectNotFoundException("activiteit heeft een project nodig");
         if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een category nodig");
-        if(dto.getEndTime()==null) throw new ENdtimeNeededException("activiteit heeft eind tijd nodig");
+        if(dto.getEndTime()==null) throw new EndtimeNeededException("activiteit heeft eind tijd nodig");
         if(dto.getStartTime()==null ) throw new StarttimeNeededException("activiteir heeft start tijd nodig");
         if(dto.getEmployeeId()==0) throw new EmployeeNotFoundException("activiteit heeft werknemer nodig");
 

@@ -2,18 +2,12 @@ package com.example.trs.controller;
 
 import com.example.trs.dto.ActivityDTO;
 import com.example.trs.dto.DateDTO;
-import com.example.trs.dto.EmployeeDTO;
-import com.example.trs.dto.LoginDTO;
 import com.example.trs.exceptions.*;
 import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
-import com.example.trs.model.Employee;
 import com.example.trs.service.ActivityService;
-import com.example.trs.service.EmployeeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,13 +27,13 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
+    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, EndtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
 
         activityService.addActivity(activityService.check(dto));
     }
 
     @PostMapping("edit")
-    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, EndtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException {
 
         activityService.editActivity(activityService.check(dto));
     }
@@ -61,7 +55,7 @@ public class ActivityController {
     @GetMapping("/{id}")
     ActivityDTO   activityById( @PathVariable("id") int id) throws ActivityDoesNotExistsException {
 
-        Activity  activity=  activityService.findActivityByid(id);
+        Activity  activity=  activityService.findActivityById(id);
         return ActivityMapper.toDTO(activity);
     }
 
