@@ -34,8 +34,9 @@ public class ActivityServiceTest {
         activityDTO.setEmployeeId(9);
         activityDTO.setCategoryName("Sales");
         activityDTO.setStartDate(LocalDate.of(2022,12,22));
-        activityDTO.setStartTime(LocalTime.of(14,00,00));
-        activityDTO.setEndTime(LocalTime.of(15,00,00));
+
+        activityDTO.setStartTime("14:00");
+        activityDTO.setEndTime("15:00");
         activityService.addActivity(activityDTO);
         assertEquals(tableSize + 1, activityService.getAll().size());
     }
@@ -50,8 +51,9 @@ public class ActivityServiceTest {
         activityDTO.setEmployeeId(3);
         activityDTO.setCategoryName("Sales");
         activityDTO.setStartDate(LocalDate.of(2022,12,22));
-        activityDTO.setStartTime(LocalTime.of(14,00,00));
-        activityDTO.setEndTime(LocalTime.of(15,00,00));
+
+        activityDTO.setStartTime("14:00");
+        activityDTO.setEndTime("15:00");
         assertThrows(ActivityAlreadyExistsException.class, ()-> activityService.addActivity(activityDTO));
     }
 
@@ -67,8 +69,9 @@ public class ActivityServiceTest {
         activityDTO.setEmployeeId(3);
         activityDTO.setCategoryName("Sales");
         activityDTO.setStartDate(LocalDate.of(2022,12,22));
-        activityDTO.setStartTime(LocalTime.of(14,00,00));
-        activityDTO.setEndTime(LocalTime.of(15,00,00));
+
+        activityDTO.setStartTime("14:00");
+        activityDTO.setEndTime("15:00");
         activityService.editActivity(activityDTO);
         assertEquals("huh", activityService.findActivitiesByPersonId(3).get(0).getDescription());
     }
@@ -91,8 +94,9 @@ public class ActivityServiceTest {
         activityDTO.setEmployeeId(11);
         activityDTO.setCategoryName("Sales");
         activityDTO.setStartDate(LocalDate.of(2023,12,26));
-        activityDTO.setStartTime(LocalTime.of(12,30,00));
-        activityDTO.setEndTime(LocalTime.of(15,00,00));
+
+        activityDTO.setStartTime("12:30");
+        activityDTO.setEndTime("15:00");
         assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.editActivity(activityDTO));
     }
 

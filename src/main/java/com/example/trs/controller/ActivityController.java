@@ -37,7 +37,7 @@ public class ActivityController {
     }
 
     @PostMapping("edit")
-    void   editActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException {
+    void   editActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
 
         activityService.editActivity(dto);
     }

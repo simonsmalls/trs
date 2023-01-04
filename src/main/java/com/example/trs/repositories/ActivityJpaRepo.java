@@ -15,11 +15,8 @@ import java.util.List;
 
 public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
 
-
-
     @Query(value = "select * from activities where employee_id= :id", nativeQuery = true)
     List<Activity> findActivitiesForPerson(@Param("id") int id);
-
 
     @Query(value = "select * from activities where employee_id= :eid and activities_id= :aid ", nativeQuery = true)
     Activity findActivityByEmployeeIdAndActivityId(@Param("eid") int employeeId, @Param("aid") int activityId);
@@ -38,7 +35,7 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
             " and starttime = :tstart and endtime = :tend and startdate = :dstart  ", nativeQuery = true)
     Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
                                                    @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
-                                                   @Param("dend") LocalDate endDate, @Param("tend") LocalTime endTime);
+                                                   @Param("tend") LocalTime endTime);
 
 
 }

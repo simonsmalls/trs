@@ -30,7 +30,6 @@ import java.util.Objects;
 @Service
 public class AbisActivityService implements ActivityService {
 
-
     @Autowired
     ActivityJpaRepo activityJpaRepo;
 
@@ -43,16 +42,15 @@ public class AbisActivityService implements ActivityService {
     @Autowired
     EmployeeService employeeService;
 
-
-
     @Override
     public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
         Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
-        this.checkTimeOverlap(activityDTO);
-        return activityJpaRepo.save(this.activityDTOMapping(activityDTO));
+        Activity activity = this.activityDTOMapping(activityDTO);
+        this.checkTimeOverlap(activity);
+        return activityJpaRepo.save(activity);
     }
 
     @Override
@@ -63,8 +61,9 @@ public class AbisActivityService implements ActivityService {
         if(act==null) {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
-        this.checkTimeOverlap(activityDTO);
-        return activityJpaRepo.save(this.activityDTOMapping(activityDTO));
+        Activity activity = this.activityDTOMapping(activityDTO);
+        this.checkTimeOverlap(activity);
+        return activityJpaRepo.save(activity);
     }
 
 
@@ -105,11 +104,11 @@ public class AbisActivityService implements ActivityService {
         return  activity;
     }
 
-    private void checkTimeOverlap(ActivityDTO activityDTO) throws ActivityTimeOverlapsException {
-        List<Activity> foundActivityList = activityJpaRepo.findActivitiesByEmployee_idAndDate(activityDTO.getEmployeeId(), activityDTO.getStartDate());
-        for (Activity activity : foundActivityList) {
-            if (!(activityDTO.getStartTime().isAfter(activity.getEndTime()) || activityDTO.getEndTime().isBefore(activity.getStartTime()))) {
-                if (activityDTO.getId() != activity.getId()) {
+    private void checkTimeOverlap(Activity activity) throws ActivityTimeOverlapsException {
+        List<Activity> foundActivityList = activityJpaRepo.findActivitiesByEmployee_idAndDate(activity.getEmployee_id(), activity.getStartDate());
+        for (Activity act : foundActivityList) {
+            if (!(activity.getStartTime().isAfter(act.getEndTime()) || activity.getEndTime().isBefore(act.getStartTime()))) {
+                if (activity.getId() != act.getId()) {
                     throw new ActivityTimeOverlapsException("Tijd overlapt met bestaande activiteit");
                 }
             }
