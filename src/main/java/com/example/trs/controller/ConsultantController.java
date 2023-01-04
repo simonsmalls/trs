@@ -40,5 +40,11 @@ public class ConsultantController {
         return workingTimeService.getByConsultantIdToday(consultantId);
     }
 
+    @GetMapping("open/{id}")
+    WorkingTime getOpenWorkingTimeTodayForConsultant(@PathVariable("id") int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
+
+        return workingTimeService.getOpenWorkingTimeTodayByConsultantId(consultantId);
+    }
+
 
 }

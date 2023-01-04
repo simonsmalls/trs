@@ -57,21 +57,21 @@ create sequence personroles_seq start with 1 increment 1;
 
 CREATE TABLE employees
 
-	(employees_id int PRIMARY KEY DEFAULT nextval('employees_seq'),
+(employees_id int PRIMARY KEY DEFAULT nextval('employees_seq'),
 
-	abbreviation varchar(45) NOT NULL,
+ abbreviation varchar(45) NOT NULL,
 
-	firstName varchar(45) NOT NULL,
+ firstName varchar(45) NOT NULL,
 
-	lastName varchar (45) NOT NULL,
+ lastName varchar (45) NOT NULL,
 
-	pass varchar(100) NOT NULL,
+ pass varchar(100) NOT NULL,
 
-    hourlyRate  numeric(9, 2),
+ hourlyRate  numeric(9, 2),
 
-    e_kind varchar (1)
+ e_kind varchar (1)
 
-	);
+);
 
 create table companies
 
@@ -174,6 +174,11 @@ insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 3);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 4);
 
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-16', '09:00:00', '10:30:00', 90, 11);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '11:00:00', '13:00:00', 120, 11);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '14:00:00', '17:00:00', 180, 11);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '18:00:00', '18:18:00', 18, 11);
+
 insert into categories (categoryName) values ('Teaching');
 insert into categories (categoryName) values ('Administration');
 insert into categories (categoryName) values ('Accounting');
@@ -203,5 +208,3 @@ insert into personRoles values (9, 'Accountant');
 
 
 
-
-	
