@@ -5,7 +5,6 @@ import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.WorkingTimeCannotEndException;
 import com.example.trs.exceptions.WorkingTimeCannotStartException;
 import com.example.trs.exceptions.WrongTypeException;
-import com.example.trs.model.Employee;
 import com.example.trs.model.WorkingTime;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -116,7 +115,26 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             }
         }
         return null;
+    }
 
+    @Override
+    public WorkingTime getOpenWorkingTimeTodayByConsultantId(int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
+        try {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl+ "/open/"+consultantId);
+            HttpHeaders headers = new HttpHeaders();
+            ResponseEntity responseEntity = rt.getForEntity(uriBuilder.toUriString(), WorkingTime.class);
+            return (WorkingTime) responseEntity.getBody();
+        } catch (HttpStatusCodeException e){
+            String serr = e.getResponseBodyAsString();
+            ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+
+            if (HttpStatus.NOT_FOUND == e.getStatusCode()){
+                throw new EmployeeNotFoundException(ae.getDescription());
+            } else if (HttpStatus.CONFLICT == e.getStatusCode()){
+                throw new WrongTypeException(ae.getDescription());
+            }
+        }
+        return null;
     }
 
     @Override

@@ -20,19 +20,25 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
     @Query(value = "select * from activities where employee_id= :id", nativeQuery = true)
     List<Activity> findActivitiesForPerson(@Param("id") int id);
 
-   // Activity findActivityByEmployeeAndCategoryAndProject();
 
-    @Query(value = "select * from activities where employee_id= :eid and project_id= :pid and category_id= :cid" +
-            " and starttime = :tstart and endtime = :tend and startdate = :dstart  ", nativeQuery = true)
-    Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
-                                                   @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime
-                                                   , @Param("tend") LocalTime endTime);
+    @Query(value = "select * from activities where employee_id= :eid and activities_id= :aid ", nativeQuery = true)
+    Activity findActivityByEmployeeIdAndActivityId(@Param("eid") int employeeId, @Param("aid") int activityId);
 
     Activity findActivityById(int id);
 
     @Query(value = "select * from activities where employee_id= :employee_id and startdate = :date ", nativeQuery = true)
     List<Activity> findActivitiesByEmployee_idAndDate(@Param("employee_id")int employee_id,@Param("date") LocalDate date);
 
+
+    @Query(value = " select * from activities where project_id = :pid and startdate between :sDate and :eDate", nativeQuery = true)
+    List<Activity> findActivitiesForProjectOfMonth(@Param("pid") int projectId, @Param("sDate") LocalDate startDate, @Param("eDate") LocalDate endDate);
+
+
+    @Query(value = "select * from activities where employee_id= :eid and project_id= :pid and category_id= :cid" +
+            " and starttime = :tstart and endtime = :tend and startdate = :dstart  ", nativeQuery = true)
+    Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
+                                                   @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
+                                                   @Param("dend") LocalDate endDate, @Param("tend") LocalTime endTime);
 
 
 }

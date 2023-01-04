@@ -1,6 +1,8 @@
 package com.example.trs.service;
 
 import com.example.trs.dto.ActivityDTO;
+import com.example.trs.dto.EmployeeDTO;
+import com.example.trs.exceptions.*;
 import com.example.trs.exceptions.ActivityAlreadyExistsException;
 import com.example.trs.exceptions.ActivityDoesNotExistsException;
 import com.example.trs.exceptions.ActivityInThePastException;
@@ -8,17 +10,26 @@ import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Category;
+import com.example.trs.model.Employee;
 import com.example.trs.model.Project;
 import com.example.trs.repositories.ActivityJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
 public class AbisActivityService implements ActivityService {
+
 
     @Autowired
     ActivityJpaRepo activityJpaRepo;
@@ -29,53 +40,49 @@ public class AbisActivityService implements ActivityService {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    EmployeeService employeeService;
+
 
 
     @Override
-    //todo check if there is already an activity at this time
-    public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException {
+    public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
         Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
-
-
-        Project project = projectService.getProjectById(activityDTO.getProjectId());
-        Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
-        Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
-        return activityJpaRepo.save(activity);
+        this.checkTimeOverlap(activityDTO);
+        return activityJpaRepo.save(this.activityDTOMapping(activityDTO));
     }
 
     @Override
-    //todo check if there is already an activity at this time
-    public Activity editActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityDoesNotExistsException {
+
+    public Activity editActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
 
         Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
         if(act==null) {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
-        Project project = projectService.getProjectById(activityDTO.getProjectId());
-        Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
-        Activity activity = ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
-        if (activityJpaRepo.findActivityByEmployeeProjectCategory(
-                activity.getEmployee_id(), activity.getProject().getId(), activity.getCategory().getId(),
-                activity.getStartDate(), activity.getStartTime(),  activity.getEndTime())!=null) {
-            return activityJpaRepo.save(activity);
-        }
-        return null;
+        this.checkTimeOverlap(activityDTO);
+        return activityJpaRepo.save(this.activityDTOMapping(activityDTO));
     }
 
 
-   @Override
+    @Override
     public List<Activity> findActivitiesByPersonId(int personId) {
         return activityJpaRepo.findActivitiesForPerson(personId);
+    }
+
+
+    @Override
+    public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
+        return activityJpaRepo.findActivitiesForProjectOfMonth(projectId, startDate ,endDate);
     }
 
     @Override
     public List<Activity> getAll() {
         return activityJpaRepo.findAll();
     }
-
 
     @Override
     public List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date) {
@@ -96,6 +103,25 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityDoesNotExistsException("deze activiteit bestaat niet");
         }
         return  activity;
+    }
+
+    private void checkTimeOverlap(ActivityDTO activityDTO) throws ActivityTimeOverlapsException {
+        List<Activity> foundActivityList = activityJpaRepo.findActivitiesByEmployee_idAndDate(activityDTO.getEmployeeId(), activityDTO.getStartDate());
+        for (Activity activity : foundActivityList) {
+            if (!(activityDTO.getStartTime().isAfter(activity.getEndTime()) || activityDTO.getEndTime().isBefore(activity.getStartTime()))) {
+                if (activityDTO.getId() != activity.getId()) {
+                    throw new ActivityTimeOverlapsException("Tijd overlapt met bestaande activiteit");
+                }
+            }
+        }
+    }
+
+    private Activity activityDTOMapping(ActivityDTO activityDTO) throws ProjectNotFoundException {
+
+        Project project = projectService.getProjectById(activityDTO.getProjectId());
+        Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
+
+        return ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
     }
 
 

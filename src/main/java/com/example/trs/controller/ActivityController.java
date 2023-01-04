@@ -31,8 +31,8 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException {
-        System.out.println("get here");
+    void   addActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
+
         activityService.addActivity(dto);
     }
 

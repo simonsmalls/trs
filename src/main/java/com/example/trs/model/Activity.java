@@ -96,7 +96,13 @@ public class Activity {
         this.startTime = startTime;
     }
 
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     public LocalTime getEndTime() {
         return endTime;

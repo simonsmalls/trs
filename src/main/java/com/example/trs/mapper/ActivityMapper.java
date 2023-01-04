@@ -13,6 +13,7 @@ public class ActivityMapper {
     public static Activity activityDTOtoActivity(ActivityDTO activityDTO, Project project, Category category) {
 
         Activity activity = new Activity();
+        activity.setId(activityDTO.getId());
 
         if (activityDTO.getDescription()!=null) {
             activity.setDescription(activityDTO.getDescription());
