@@ -18,7 +18,7 @@ public class AbisCategoryService implements CategoryService{
         return categoryJpaRepo.getById(id);
     }
 
-    @Override
+    @Override                   // TODO Throw NoCategoryFoundException
     public Category findCategoryByName(String name) {
         return categoryJpaRepo.findCategoryByName(name);
     }
