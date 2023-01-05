@@ -29,7 +29,7 @@ public class ActivityController {
     }
 
     @PostMapping("edit")
-    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException {
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException {
         activityService.editActivity(activityService.check(dto));
     }
 
@@ -48,14 +48,14 @@ public class ActivityController {
     }
 
     @GetMapping("/{id}")
-    ActivityDTO   activityById( @PathVariable("id") int id) throws ActivityDoesNotExistsException {
+    ActivityDTO   activityById( @PathVariable("id") int id) throws ActivityDoesNotExistException {
 
         Activity  activity=  activityService.findActivityById(id);
         return ActivityMapper.toDTO(activity);
     }
 
     @DeleteMapping("/{id}")
-    void deleteActivityById(@PathVariable("id") int id) throws ActivityDoesNotExistsException, ActivityInThePastException {
+    void deleteActivityById(@PathVariable("id") int id) throws ActivityDoesNotExistException, ActivityInThePastException {
         activityService.deleteById(id);
     }
 

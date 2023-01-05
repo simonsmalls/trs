@@ -14,12 +14,12 @@ public interface ActivityService {
 
 
     Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException;
-    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException;
+    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, ActivityInThePastException;
     List<Activity> findActivitiesByPersonId(int personId);
     List<Activity> getAll();
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);
-    void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;
-    Activity findActivityById(int id) throws ActivityDoesNotExistsException;
+    void deleteById(int id) throws ActivityDoesNotExistException, ActivityInThePastException;
+    Activity findActivityById(int id) throws ActivityDoesNotExistException;
 
     int calculateTimeSpent(LocalTime startTime, LocalTime endTime);
 

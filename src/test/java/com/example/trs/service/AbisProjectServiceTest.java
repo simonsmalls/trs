@@ -1,6 +1,6 @@
 package com.example.trs.service;
 
-import com.example.trs.exceptions.CompanyAlreadyExists;
+import com.example.trs.exceptions.CompanyAlreadyExistsException;
 import com.example.trs.exceptions.CompanyNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Company;
@@ -51,7 +51,7 @@ class AbisProjectServiceTest {
 
     @Test
     @Transactional
-    void addCompanyTest() throws CompanyAlreadyExists {
+    void addCompanyTest() throws CompanyAlreadyExistsException {
         int count = projectService.getAllCompanies().size();
         String companyName = "someWeirdIndustry";
         projectService.addCompany(new Company(companyName));
@@ -62,7 +62,7 @@ class AbisProjectServiceTest {
     @Test
     @Transactional
     void addCompanyThrowsAlreadyExistsExceptionTest() {
-        assertThrows(CompanyAlreadyExists.class, ()-> projectService.addCompany(new Company("smals")));
+        assertThrows(CompanyAlreadyExistsException.class, ()-> projectService.addCompany(new Company("smals")));
     }
 
     @Test
@@ -95,7 +95,7 @@ class AbisProjectServiceTest {
 
     @Test
     @Transactional
-    void findProjectByCompanyThrowsNoProjectsFoundException() throws CompanyAlreadyExists {
+    void findProjectByCompanyThrowsNoProjectsFoundException() throws CompanyAlreadyExistsException {
         Company company = new Company("Newly_Created_Company");
         projectService.addCompany(company);
         assertThrows(ProjectNotFoundException.class, ()-> projectService.getProjectsByCompany(company));

@@ -14,7 +14,8 @@ public interface CompanyJpaRepo extends JpaRepository<Company, Integer> {
     Optional<Company> findCompanyByCompanyName(@Param("name") String companyName);
 
     Company findCompanyByIdAndCompanyName(int id,String name);
-    Company findCompanyById(int id);
+
+    Company findCompanyById(int id);        // TODO why is this here?
 
 
 }

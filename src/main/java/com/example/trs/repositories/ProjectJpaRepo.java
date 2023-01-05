@@ -15,7 +15,9 @@ public interface ProjectJpaRepo extends JpaRepository<Project, Integer> {
 
     @Query(value = "select * from projects where company_id =:id", nativeQuery = true)
     List<Project> findByClient(@Param("id") int companyId);
-    Project findProjectById(int id);
+
+    Project findProjectById(int id);        // TODO why is this here?
+
     @Query(value = "select * from projects where enddate >:date or enddate is null", nativeQuery = true)
     List<Project> onGoingProjects(LocalDate date);
 

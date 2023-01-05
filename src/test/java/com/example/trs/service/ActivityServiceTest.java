@@ -100,7 +100,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    void editActivityThrowsActivityInThePastExceptionTest() throws ActivityDoesNotExistsException {
+    void editActivityThrowsActivityInThePastExceptionTest() throws ActivityDoesNotExistException {
         activity = activityService.findActivityById(1);
         assertThrows(ActivityInThePastException.class, ()-> activityService.editActivity(activity));
 
@@ -108,7 +108,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void editActivityTest() throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ActivityAlreadyExistsException {
+    public void editActivityTest() throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, ActivityInThePastException, ActivityAlreadyExistsException {
         activityService.addActivity(activity);
         activity.setDescription("Edited!");
         activityService.editActivity(activity);
@@ -120,7 +120,7 @@ public class ActivityServiceTest {
     public void editActivityThrowsActivityDoesNotExistExceptionWhenNotFoundTest() {
         activity.setId(987);
         activity.setEmployee_id(987);
-        assertThrows(ActivityDoesNotExistsException.class,()-> activityService.editActivity(activity));
+        assertThrows(ActivityDoesNotExistException.class,()-> activityService.editActivity(activity));
     }
 
     @Test

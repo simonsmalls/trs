@@ -2,7 +2,7 @@ package com.example.trs.service;
 
 import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
-import com.example.trs.exceptions.CompanyAlreadyExists;
+import com.example.trs.exceptions.CompanyAlreadyExistsException;
 import com.example.trs.exceptions.CompanyNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.InvoiceMapper;
@@ -95,7 +95,7 @@ public class AbisProjectService implements ProjectService {
     }
 
     @Override
-    public void addCompany(Company company) throws CompanyAlreadyExists {
+    public void addCompany(Company company) throws CompanyAlreadyExistsException {
         boolean newCompanyAdded = false;
         try {
             getCompanyByName(company.getCompanyName()); }
@@ -104,6 +104,6 @@ public class AbisProjectService implements ProjectService {
             companyJpaRepo.save(company);
             newCompanyAdded = true;
         }
-        if (!newCompanyAdded) throw new CompanyAlreadyExists("Dit bedrijf is al geregistreerd");
+        if (!newCompanyAdded) throw new CompanyAlreadyExistsException("Dit bedrijf is al geregistreerd");
     }
 }

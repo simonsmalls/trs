@@ -20,7 +20,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<? extends Object> personNotFound
             ( EmployeeNotFoundException ance, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        ApiError err = new ApiError("not found", status.value(), ance.getMessage());
+        ApiError err = new ApiError("persoon niet gevonden", status.value(), ance.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
@@ -39,10 +39,21 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(value = ActivityTimeOverlapsException.class)
-    protected ResponseEntity<? extends Object> activityInThePastException
+    protected ResponseEntity<? extends Object> activityTimeOverlapsException
             (ActivityTimeOverlapsException ance, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("Tijd overlapt met bestaande activiteit", status.value(), ance.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = DateRequiredException.class)
+    protected ResponseEntity<? extends Object> dateRequiredException
+            (DateRequiredException dre, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("Datum vereist", status.value(), dre.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
@@ -77,7 +88,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<? extends Object> wrongTypeException
             ( WrongTypeException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
-        ApiError err = new ApiError("wrong type", status.value(), wtexc.getMessage());
+        ApiError err = new ApiError("verkeerd type", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
@@ -95,9 +106,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
-    @ExceptionHandler(value = ActivityDoesNotExistsException.class)
-    protected ResponseEntity<? extends Object> ActivityDoesNotExistsException
-            ( ActivityDoesNotExistsException wtexc, WebRequest request) {
+    @ExceptionHandler(value = ActivityDoesNotExistException.class)
+    protected ResponseEntity<? extends Object> ActivityDoesNotExistException
+            (ActivityDoesNotExistException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiError err = new ApiError("activiteit bestaat niet", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -139,11 +150,22 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
+    @ExceptionHandler(value = CompanyAlreadyExistsException.class)
+    protected ResponseEntity<? extends Object> CompanyAlreadyExistsException
+            ( CompanyAlreadyExistsException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("bedrijf bestata al", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
     @ExceptionHandler(value = WrongTimeException.class)
     protected ResponseEntity<? extends Object> WrongTimeException
             ( WrongTimeException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
-        ApiError err = new ApiError("start tijd na eind tijd", status.value(), wtexc.getMessage());
+        ApiError err = new ApiError("tijd verkeerd ingegeven", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
