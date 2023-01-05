@@ -49,15 +49,27 @@ public class ActivityController {
         return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/person/{id}")
     List<ActivityDTO>   activitiesById( @PathVariable("id") int id)  {
 
         List<Activity> list=  activityService.findActivitiesByPersonId(id);
         return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}")
+    ActivityDTO   activityById( @PathVariable("id") int id) throws ActivityDoesNotExistsException {
+
+        Activity  activity=  activityService.findActivityByid(id);
+        return ActivityMapper.toDTO(activity);
+    }
+
+    @DeleteMapping("/{id}")
+    void deleteActivityById(@PathVariable("id") int id) throws ActivityDoesNotExistsException, ActivityInThePastException {
+        activityService.deleteById(id);
+    }
+
     @GetMapping("")
-    List<ActivityDTO>   getAll()  {
+    List<ActivityDTO>  getAll()  {
 
         List<Activity> list=  activityService.getAll();
         return list.stream().map(x-> ActivityMapper.toDTO(x)).collect(Collectors.toList());

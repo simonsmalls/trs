@@ -1,4 +1,4 @@
-package com.example.trs.repositories;
+package com.example.trs.service;
 
 import com.example.trs.service.InvoiceService;
 import org.junit.jupiter.api.Test;

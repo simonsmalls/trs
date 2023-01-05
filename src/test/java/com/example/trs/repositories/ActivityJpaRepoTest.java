@@ -52,7 +52,6 @@ class ActivityJpaRepoTest {
         activity.setEmployee_id(9);
         activity.setTimeSpent(timeSpent);
 
-
         System.out.println(testTime);
         System.out.println(startTime);
         System.out.println(endTime);

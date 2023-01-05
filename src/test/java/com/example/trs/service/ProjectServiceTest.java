@@ -1,4 +1,4 @@
-package com.example.trs.repositories;
+package com.example.trs.service;
 
 import com.example.trs.model.Project;
 import com.example.trs.service.ProjectService;

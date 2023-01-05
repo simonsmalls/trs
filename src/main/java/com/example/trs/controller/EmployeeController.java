@@ -1,6 +1,7 @@
 package com.example.trs.controller;
 
 ;
+import com.example.trs.dto.EmployeeDTO;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.WorkingTimeCannotEndException;
@@ -28,15 +29,15 @@ public class EmployeeController {
     WorkingTimeService workingTimeService;
 
     @PostMapping("login")
-    Employee checkLogin(@RequestBody LoginDTO login) throws EmployeeNotFoundException, JsonProcessingException {
+    EmployeeDTO checkLogin(@RequestBody LoginDTO login) throws EmployeeNotFoundException, JsonProcessingException {
+       return employeeService.checkLogin(login.getAbbreviation(), login.getPassword());
 
-        return employeeService.checkLogin(login.getAbbreviation(), login.getPassword());
     }
 
 
 
     @GetMapping("")
-    List<Employee> getAllEmployees(){
+    List<EmployeeDTO> getAllEmployees(){
 
         return employeeService.getAll();
     }

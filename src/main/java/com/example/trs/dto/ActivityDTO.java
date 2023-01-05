@@ -18,9 +18,11 @@ public class ActivityDTO {
     private String categoryName;
 
     private LocalDate startDate;
-    private LocalTime startTime;
+    private String startTime;
 
-    private LocalTime endTime;
+
+
+    private String endTime;
     private int timeSpent;
 
     public ActivityDTO() {
@@ -90,21 +92,22 @@ public class ActivityDTO {
         this.startDate = startDate;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+
 
 
     public int getTimeSpent() {
