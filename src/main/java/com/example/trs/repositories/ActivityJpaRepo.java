@@ -31,11 +31,17 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
     List<Activity> findActivitiesForProjectOfMonth(@Param("pid") int projectId, @Param("sDate") LocalDate startDate, @Param("eDate") LocalDate endDate);
 
 
-    @Query(value = "select * from activities where employee_id= :eid and project_id= :pid and category_id= :cid" +
+    @Query(value = "select * from activities where employee_id= :eid and project_id= :pid and category_id= :cid " +
             " and starttime = :tstart and endtime = :tend and startdate = :dstart  ", nativeQuery = true)
     Activity findActivityByEmployeeProjectCategory(@Param("eid") int employeeId, @Param("pid") int projectId, @Param("cid") int categoryId,
                                                    @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
                                                    @Param("tend") LocalTime endTime);
-    @Query(value = " select * from activities where project_id = :id", nativeQuery = true)
-    List<Activity> findActivitiesByProjectId(int id);
+    @Query(value = " select category_id,sum(timespent) from activities where project_id = :pid and startdate between :sDate and :eDate group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByProjectId(@Param("pid") int id, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+
+    @Query(value = " select category_id,sum(timespent) from activities where project_id = :pid and employee_id = :eid  and startdate between :sDate and :eDate group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByProjectIdAndEmployeeId(@Param("pid") int pid,@Param("eid") int eid, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+
+    @Query(value = " select category_id,sum(timespent) from activities where employee_id = :eid and startdate between :sDate and :eDate group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByEmployee_id(@Param("eid") int eid, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
 }
