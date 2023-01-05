@@ -67,7 +67,7 @@ public class ActivityServiceTest {
 
         activityDTO.setStartTime("13:00");
         activityDTO.setEndTime("16:00");
-        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activityDTO));
+        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activityService.check(activityDTO)));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ActivityServiceTest {
 
         activityDTO.setStartTime("15:00");
         activityDTO.setEndTime("15:15");
-        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activityDTO));
+        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activityService.check(activityDTO)));
     }
 
 
