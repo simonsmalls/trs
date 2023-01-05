@@ -71,4 +71,10 @@ class ActivityJpaRepoTest {
     void findActivityUsingEmployeeProjectCategoryTest() {
        assertEquals(1, jpaRepo.findActivityByEmployeeIdAndActivityId(3,1).getId());
     }
+
+    @Test
+    void findActivityOfProjectAfterDate(){
+        assertEquals(0,jpaRepo.findActivitiesByProjectIdAfterDate(1, LocalDate.of(2023,12,27)).size());
+    }
+
 }

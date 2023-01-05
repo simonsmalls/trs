@@ -7,6 +7,7 @@ import com.example.trs.exceptions.CompanyNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.InvoiceMapper;
 import com.example.trs.mapper.ProjectMapper;
+import com.example.trs.model.Activity;
 import com.example.trs.model.Company;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
@@ -26,6 +27,7 @@ public class AbisProjectService implements ProjectService {
 
     @Autowired
     CompanyJpaRepo companyJpaRepo;
+    @Autowired ActivityService activityService;
 
 
     @Override
@@ -84,9 +86,21 @@ public class AbisProjectService implements ProjectService {
         return projects;
     }
 
+    //TODO check if project already exists
     @Override
     public void addProject(Project project) {
         projectJpaRepo.save(project);
+    }
+
+    // update project with a new endDate
+    @Override
+    public Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException {
+        Project p = getProjectById(projectId);
+
+        // check if there are activities for this project after the end Date
+        List<Activity> activities = activityService.findActivitiesByProjectAfterDate(projectId, endDate);
+        p.setEndDate(endDate);
+        return projectJpaRepo.save(p);
     }
 
     @Override
@@ -94,6 +108,7 @@ public class AbisProjectService implements ProjectService {
         return projectJpaRepo.onGoingProjects(LocalDate.now());
     }
 
+    //TODO not needed
     @Override
     public void addCompany(Company company) throws CompanyAlreadyExists {
         boolean newCompanyAdded = false;

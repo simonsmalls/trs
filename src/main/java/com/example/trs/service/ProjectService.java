@@ -28,7 +28,7 @@ public interface ProjectService {
 
     void addProject(Project project);
     List<Project>ongoingProjects();
-
+    Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException;
 
     void addCompany(Company company) throws CompanyAlreadyExists;
 }

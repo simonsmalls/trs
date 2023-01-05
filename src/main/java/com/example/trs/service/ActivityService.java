@@ -4,6 +4,7 @@ package com.example.trs.service;
 import com.example.trs.dto.ActivityDTO;
 import com.example.trs.exceptions.*;
 import com.example.trs.model.Activity;
+import jdk.vm.ci.meta.Local;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,11 +12,10 @@ import java.util.List;
 
 public interface ActivityService {
 
-
-
-    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException;
-    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException;
+    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException;
+    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException;
     List<Activity> findActivitiesByPersonId(int personId);
+    List<Activity> findActivitiesByProjectAfterDate(int projectId, LocalDate date);
     List<Activity> getAll();
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);
     void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;

@@ -112,6 +112,22 @@ class AbisProjectServiceTest {
         assertEquals(count +1, projectService.getAllProjects().size());
     }
 
+    /*
+    @Test
+    @Transactional
+    void addProjectTest() throws CompanyNotFoundException {
+        int count = projectService.getAllProjects().size();
+        Project p = new Project();
+        p.setDescription("java");
+        p.setStartDate(LocalDate.of(2022, 12,20));
+        p.setClient(projectService.getCompanyById(2));
+        p.setHourlyRate(100.0);
+        projectService.addProject(p);
+        assertEquals(, projectService.getAllProjects().size());
+    }
+
+     */
+
 
 
 

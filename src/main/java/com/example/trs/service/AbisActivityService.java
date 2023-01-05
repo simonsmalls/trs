@@ -32,25 +32,30 @@ public class AbisActivityService implements ActivityService {
     EmployeeService employeeService;
 
     @Override
-    public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
+    public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
+        if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
+            throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
+
 
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
 
     @Override
-    public Activity editActivity(Activity activity) throws ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
+    public Activity editActivity(Activity activity) throws ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException {
 
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act==null) {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
+        if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
+            throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
@@ -134,6 +139,9 @@ public class AbisActivityService implements ActivityService {
         return ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
     }
 
-
+    @Override
+    public List<Activity> findActivitiesByProjectAfterDate(int projectId, LocalDate date) {
+        return activityJpaRepo.findActivitiesByProjectIdAfterDate(projectId, date);
+    }
 }
 

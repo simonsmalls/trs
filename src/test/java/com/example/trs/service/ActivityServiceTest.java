@@ -55,10 +55,17 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void addActivityTest() throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
+    public void addActivityTest() throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException {
         int tableSize = activityService.getAll().size();
         activityService.addActivity(activity);
         assertEquals(tableSize + 1, activityService.getAll().size());
+    }
+
+    @Test
+    @Transactional
+    public void addActivityOnDayWhereProjectEndsThrowsException() throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException {
+        activity.setStartDate(LocalDate.of(2023,1,30));
+        assertThrows(ProjectAlreadyEndedException.class, ()-> activityService.addActivity(activity));
     }
 
     @Test
@@ -71,9 +78,10 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional              // Simon's case
-    public void addActivityThrowsTimeOverlapsExceptionWhenStartTimeBeforeAndEndTimeAfterExistingActivityTest() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException {
+    public void addActivityThatEncapsulatesExistingActivityThrowsException() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
+        //System.out.println(activity.getId());
         activity.setDescription("Huge_Activity");
         activity.setStartTime(LocalTime.of(13, 0));
         activity.setEndTime(LocalTime.of(16, 0));
@@ -82,12 +90,33 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional              // inverse of Simon's case
-    public void addActivityThrowsTimeOverlapsExceptionWhenStartTimeAfterAndEndTimeBeforeExistingActivityTest() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException {
+    public void addActivityThatIsBetweenExistingActivityThrowsException() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
         activity.setDescription("Small_Activity");
-        activity.setStartTime(LocalTime.of(15, 0));
-        activity.setEndTime(LocalTime.of(15, 15));
+        activity.setStartTime(LocalTime.of(14, 30));
+        activity.setEndTime(LocalTime.of(14, 45));
+        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activity));
+    }
+
+    @Test
+    @Transactional              // activity half overlap
+    public void addActivityStartsBeforeExistingActivityEndsThrowsException() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
+        activityService.addActivity(activity);
+        activity = activityService.check(dto);   // creates new Activity() object
+        activity.setDescription("Small_Activity");
+        activity.setStartTime(LocalTime.of(14, 30));
+        activity.setEndTime(LocalTime.of(15, 45));
+        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activity));
+    }
+    @Test
+    @Transactional              // activity half overlap 2
+    public void addActivityEndsInsideExistingActivityThrowsException() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
+        activityService.addActivity(activity);
+        activity = activityService.check(dto);   // creates new Activity() object
+        activity.setDescription("Small_Activity");
+        activity.setStartTime(LocalTime.of(13, 30));
+        activity.setEndTime(LocalTime.of(14, 5));
         assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activity));
     }
 
@@ -108,11 +137,18 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void editActivityTest() throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ActivityAlreadyExistsException {
+    public void editActivityTest() throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ActivityAlreadyExistsException, ProjectAlreadyEndedException {
         activityService.addActivity(activity);
         activity.setDescription("Edited!");
         activityService.editActivity(activity);
         assertEquals("Edited!", activityService.findActivityById(activity.getId()).getDescription());
+    }
+    @Test
+    @Transactional
+    public void editActivitySoThatItIsAfterProjectEndDateThrowsException() throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ActivityAlreadyExistsException, ProjectAlreadyEndedException {
+        activityService.addActivity(activity);
+        activity.setStartDate(LocalDate.of(2023,2,2));
+        assertThrows(ProjectAlreadyEndedException.class, () -> activityService.editActivity(activity));
     }
 
     @Test
@@ -125,7 +161,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void editActivityThrowsExceptionWhenTimeOverlapTest() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException {
+    public void editActivityThrowsExceptionWhenTimeOverlapTest() throws ProjectNotFoundException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
         activityService.addActivity(activity);
         dto.setStartTime("15:30");
         dto.setEndTime("16:00");
