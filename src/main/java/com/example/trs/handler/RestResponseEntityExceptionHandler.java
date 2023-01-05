@@ -139,9 +139,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
-    @ExceptionHandler(value = EndTimeBeforeStartTimeException.class)
-    protected ResponseEntity<? extends Object> EndTimeBeforeStartTimeException
-            ( EndTimeBeforeStartTimeException wtexc, WebRequest request) {
+    @ExceptionHandler(value = WrongTimeException.class)
+    protected ResponseEntity<? extends Object> WrongTimeException
+            ( WrongTimeException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("start tijd na eind tijd", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -149,9 +149,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
-    @ExceptionHandler(value = ENdtimeNeededException.class)
-    protected ResponseEntity<? extends Object> ENdtimeNeededException
-            ( ENdtimeNeededException wtexc, WebRequest request) {
+    @ExceptionHandler(value = EndTimeNeededException.class)
+    protected ResponseEntity<? extends Object> EndTimeNeededException
+            ( EndTimeNeededException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("eind tijd nodig", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -170,9 +170,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
-    @ExceptionHandler(value = StarttimeNeededException.class)
-    protected ResponseEntity<? extends Object> StarttimeNeededException
-            ( StarttimeNeededException wtexc, WebRequest request) {
+    @ExceptionHandler(value = StartTimeNeededException.class)
+    protected ResponseEntity<? extends Object> StartTimeNeededException
+            ( StartTimeNeededException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("start tijd nodig", status.value(), wtexc.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();

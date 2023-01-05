@@ -6,6 +6,7 @@ import com.example.trs.exceptions.*;
 import com.example.trs.model.Activity;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface ActivityService {
@@ -18,8 +19,11 @@ public interface ActivityService {
     List<Activity> getAll();
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);
     void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;
-    Activity findActivityByid(int id) throws ActivityDoesNotExistsException;
-    Activity check(ActivityDTO dto) throws ProjectNotFoundException, ENdtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException;
+    Activity findActivityById(int id) throws ActivityDoesNotExistsException;
+
+    int calculateTimeSpent(LocalTime startTime, LocalTime endTime);
+
+    Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException;
 
 
 

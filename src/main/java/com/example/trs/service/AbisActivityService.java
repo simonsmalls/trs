@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -50,20 +52,14 @@ public class AbisActivityService implements ActivityService {
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
 
-
-
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
-
-
-
 
     @Override
     public List<Activity> findActivitiesByPersonId(int personId) {
         return activityJpaRepo.findActivitiesForPerson(personId);
     }
-
 
     @Override
     public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
@@ -82,13 +78,13 @@ public class AbisActivityService implements ActivityService {
 
     @Override
     public void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException {
-        Activity activity=findActivityByid(id);
+        Activity activity= findActivityById(id);
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteiten in het verleden verwijderen");
         activityJpaRepo.delete(activity);
     }
 
     @Override
-    public Activity findActivityByid(int id) throws ActivityDoesNotExistsException {
+    public Activity findActivityById(int id) throws ActivityDoesNotExistsException {
         Activity activity= activityJpaRepo.findActivityById(id);
         if(activity==null) {
             throw new ActivityDoesNotExistsException("deze activiteit bestaat niet");
@@ -97,15 +93,25 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, ENdtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException {
-        if(dto.getProjectId()==0 ) throw new ProjectNotFoundException("activiteit heeft een project nodig");
-        if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een category nodig");
-        if(dto.getEndTime()==null) throw new ENdtimeNeededException("activiteit heeft eind tijd nodig");
-        if(dto.getStartTime()==null ) throw new StarttimeNeededException("activiteir heeft start tijd nodig");
-        if(dto.getEmployeeId()==0) throw new EmployeeNotFoundException("activiteit heeft werknemer nodig");
+    public int calculateTimeSpent(LocalTime startTime, LocalTime endTime) {
+        return (int) startTime.until(endTime, ChronoUnit.MINUTES);
+    }
+
+    @Override
+    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException {
+        if(dto.getProjectId() <= 0) throw new ProjectNotFoundException("activiteit heeft een project nodig");
+        if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
+        if(dto.getStartDate() == null) throw new DateRequiredException("activiteit heeft een datum nodig");
+        if(dto.getEndTime()==null) throw new EndTimeNeededException("activiteit heeft een eindtijd nodig");
+        if(dto.getStartTime()==null ) throw new StartTimeNeededException("activiteit heeft een starttijd nodig");
+        if(dto.getStartTime().equals(dto.getEndTime())) throw new WrongTimeException("eindtijd moet verschillen van starttijd");
+        if(dto.getEmployeeId() <= 0) throw new EmployeeNotFoundException("activiteit heeft een werknemer nodig");
+        // TODO check for existing employee in DB
+        // Project Name not required, it will be overwritten by Mapping anyway, which maps on Project ID
 
        Activity activity=  activityDTOMapping(dto);
-       if(activity.getEndTime().isBefore(activity.getStartTime()))throw new EndTimeBeforeStartTimeException("eindtijd kan niet voor start tijd zijn");
+       if(activity.getEndTime().isBefore(activity.getStartTime())) throw new WrongTimeException("eindtijd kan niet voor start tijd zijn");
+       activity.setTimeSpent(calculateTimeSpent(activity.getStartTime(), activity.getEndTime()));
        return activity;
     }
 
