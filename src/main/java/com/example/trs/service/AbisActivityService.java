@@ -5,21 +5,13 @@ import com.example.trs.exceptions.*;
 import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Category;
-import com.example.trs.model.Employee;
 import com.example.trs.model.Project;
 import com.example.trs.repositories.ActivityJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -38,28 +30,34 @@ public class AbisActivityService implements ActivityService {
     EmployeeService employeeService;
 
     @Override
-    public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
-        Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
+    public Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
+        Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
-        Activity activity = this.activityDTOMapping(activityDTO);
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
+
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
 
     @Override
 
-    public Activity editActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
+    public Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
 
-        Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
+        Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act==null) {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
-        Activity activity = this.activityDTOMapping(activityDTO);
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
+
+
+
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
+
+
 
 
     @Override
@@ -97,6 +95,19 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityDoesNotExistsException("deze activiteit bestaat niet");
         }
         return  activity;
+    }
+
+    @Override
+    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, ENdtimeNeededException, CategoryNeededException, EmployeeNotFoundException, StarttimeNeededException, EndTimeBeforeStartTimeException {
+        if(dto.getProjectId()==0 ) throw new ProjectNotFoundException("activiteit heeft een project nodig");
+        if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een category nodig");
+        if(dto.getEndTime()==null) throw new ENdtimeNeededException("activiteit heeft eind tijd nodig");
+        if(dto.getStartTime()==null ) throw new StarttimeNeededException("activiteir heeft start tijd nodig");
+        if(dto.getEmployeeId()==0) throw new EmployeeNotFoundException("activiteit heeft werknemer nodig");
+
+       Activity activity=  activityDTOMapping(dto);
+       if(activity.getEndTime().isBefore(activity.getStartTime()))throw new EndTimeBeforeStartTimeException("eindtijd kan niet voor start tijd zijn");
+       return activity;
     }
 
     private void checkTimeOverlap(Activity activity) throws ActivityTimeOverlapsException {

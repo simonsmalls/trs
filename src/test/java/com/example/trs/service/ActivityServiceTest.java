@@ -24,7 +24,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void addActivityTest() throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
+    public void addActivityTest() throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityNotFoundException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException, ActivityInThePastException {
         int tableSize = activityService.getAll().size();
         ActivityDTO activityDTO = new ActivityDTO();
         activityDTO.setDescription("huh");
@@ -35,13 +35,13 @@ public class ActivityServiceTest {
 
         activityDTO.setStartTime("14:00");
         activityDTO.setEndTime("15:00");
-        activityService.addActivity(activityDTO);
+        activityService.addActivity(activityService.check(activityDTO));
         assertEquals(tableSize + 1, activityService.getAll().size());
     }
 
     @Test
     @Transactional
-    public void addActivityShouldThrowAlreadyExistsExceptionIfAlreadyExistTest() {
+    public void addActivityShouldThrowExceptionIfAlreadyExistTest() throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityNotFoundException {
         ActivityDTO activityDTO = new ActivityDTO();
         activityDTO.setId(1);
         activityDTO.setDescription("huh");
@@ -52,7 +52,7 @@ public class ActivityServiceTest {
 
         activityDTO.setStartTime("14:00");
         activityDTO.setEndTime("15:00");
-        assertThrows(ActivityAlreadyExistsException.class, ()-> activityService.addActivity(activityDTO));
+        assertThrows(ActivityAlreadyExistsException.class, ()-> activityService.addActivity(activityService.check(activityDTO)));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void editActivityTest() throws ActivityNotFoundException, ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
+    public void editActivityTest() throws ActivityNotFoundException, ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException, ActivityInThePastException {
         ActivityDTO activityDTO = new ActivityDTO();
         activityDTO.setId(1);
         activityDTO.setDescription("huh");
@@ -100,16 +100,16 @@ public class ActivityServiceTest {
 
         activityDTO.setStartTime("14:00");
         activityDTO.setEndTime("15:00");
-        activityService.editActivity(activityDTO);
+        activityService.editActivity(activityService.check(activityDTO));
         assertEquals("huh", activityService.findActivitiesByPersonId(3).get(0).getDescription());
     }
 
     @Test
-    public void editActivityThrowsActivityDoesNotExistExceptionWhenNotFoundTest() throws ProjectNotFoundException, ActivityNotFoundException {
+    public void editActivityThrowsExceptionWhenNotFoundTest() throws ProjectNotFoundException, ActivityNotFoundException {
         ActivityDTO activityDTO = new ActivityDTO();
         activityDTO.setId(987);
         activityDTO.setEmployeeId(987);
-        assertThrows(ActivityDoesNotExistsException.class,()-> activityService.editActivity(activityDTO));
+        assertThrows(ActivityDoesNotExistsException.class,()-> activityService.editActivity(activityService.check(activityDTO)));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class ActivityServiceTest {
 
         activityDTO.setStartTime("12:30");
         activityDTO.setEndTime("15:00");
-        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.editActivity(activityDTO));
+        assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.editActivity(activityService.check(activityDTO)));
     }
 
 

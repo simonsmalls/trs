@@ -81,14 +81,14 @@ public class AbisEmployeeService implements EmployeeService {
 
 
         } catch (HttpStatusCodeException e) {
-            System.out.println("in catch");
+
 
             if (HttpStatus.NOT_FOUND == e.getStatusCode()) {
                 String serr = e.getResponseBodyAsString();
                 //System.out.println(serr);
                 ApiError ae=new ObjectMapper().readValue(serr,ApiError.class);
                 System.out.println(ae.getDescription());
-                throw new EmployeeNotFoundException("gebruikersnaam en paswoord matchen niet");
+                throw new EmployeeNotFoundException("gebruikersnaam: "+abbr+" en paswoord matchen niet");
 
             } else {
                 String serr = e.getResponseBodyAsString();

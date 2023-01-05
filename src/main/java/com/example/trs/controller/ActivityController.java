@@ -11,15 +11,17 @@ import com.example.trs.model.Employee;
 import com.example.trs.service.ActivityService;
 import com.example.trs.service.EmployeeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-;
+
 
 @RestController
 @RequestMapping(value = "activity")
@@ -31,15 +33,16 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
+    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException, ActivityInThePastException {
 
-        activityService.addActivity(dto);
+
+        activityService.addActivity(activityService.check(dto));
     }
 
     @PostMapping("edit")
-    void   editActivity(@RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, EndTimeBeforeStartTimeException, ENdtimeNeededException, StarttimeNeededException, CategoryNeededException, EmployeeNotFoundException, ActivityInThePastException {
 
-        activityService.editActivity(dto);
+        activityService.editActivity(activityService.check(dto));
     }
 
     @PostMapping("dayactivities/{id}")
