@@ -93,8 +93,22 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
+    void addActivityThrowsActivityInThePastExceptionTest() {
+        activity.setStartDate(LocalDate.of(1000, 1, 1));
+        assertThrows(ActivityInThePastException.class, ()-> activityService.addActivity(activity));
+    }
+
+    @Test
+    @Transactional
+    void editActivityThrowsActivityInThePastExceptionTest() throws ActivityDoesNotExistsException {
+        activity = activityService.findActivityById(1);
+        assertThrows(ActivityInThePastException.class, ()-> activityService.editActivity(activity));
+
+    }
+
+    @Test
+    @Transactional
     public void editActivityTest() throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ActivityAlreadyExistsException {
-        int tableSize = activityService.getAll().size();
         activityService.addActivity(activity);
         activity.setDescription("Edited!");
         activityService.editActivity(activity);
