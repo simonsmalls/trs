@@ -179,6 +179,7 @@ insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-25', '08:00:00', '17:00:00', 540, 10);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-25', '18:00:00', '19:00:00', 60, 10);
 
+insert into workingtimes (workingDate, startTime, timeWorked, employee_id) values ('2022-12-23', '08:00:00', 0, 4);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '14:00:00', 360, 4);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-10', '08:00:00', '14:00:00', 360, 4);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-10', '15:00:00', '16:26:00', 86, 4);
