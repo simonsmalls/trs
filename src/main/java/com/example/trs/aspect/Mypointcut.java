@@ -6,7 +6,11 @@ public class Mypointcut {
 
 
 
-   // @Pointcut("execution( * be.abis.ordersandwich.*.*.*(..))")
+    @Pointcut("execution( * com.example.trs.service.AbisEmployeeService.checkLogin(..))")
+    public static void login(){
+
+
+    }
 
 
 
