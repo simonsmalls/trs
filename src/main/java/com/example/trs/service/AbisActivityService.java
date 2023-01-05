@@ -32,24 +32,24 @@ public class AbisActivityService implements ActivityService {
     EmployeeService employeeService;
 
     @Override
-    public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
+    public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, InThePastException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
-        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("kan geen activiteit in het verleden toevoegen");
 
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
 
     @Override
-    public Activity editActivity(Activity activity) throws ActivityDoesNotExistException, ActivityTimeOverlapsException, ActivityInThePastException {
+    public Activity editActivity(Activity activity) throws ActivityDoesNotExistException, ActivityTimeOverlapsException, InThePastException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act==null) {
             throw new ActivityDoesNotExistException("activiteit bestaat niet");
         }
-        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("kan geen activiteit in het verleden aanpassen");
 
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
@@ -76,9 +76,9 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public void deleteById(int id) throws ActivityDoesNotExistException, ActivityInThePastException {
+    public void deleteById(int id) throws ActivityDoesNotExistException, InThePastException {
         Activity activity= findActivityById(id);
-        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteiten in het verleden verwijderen");
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("kan geen activiteiten in het verleden verwijderen");
         activityJpaRepo.delete(activity);
     }
 

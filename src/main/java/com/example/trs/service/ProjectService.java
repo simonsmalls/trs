@@ -2,9 +2,7 @@ package com.example.trs.service;
 
 import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
-import com.example.trs.exceptions.CompanyAlreadyExistsException;
-import com.example.trs.exceptions.CompanyNotFoundException;
-import com.example.trs.exceptions.ProjectNotFoundException;
+import com.example.trs.exceptions.*;
 import com.example.trs.model.Company;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
@@ -25,7 +23,7 @@ public interface ProjectService {
     List<Project> getProjectsByName(String name) throws ProjectNotFoundException;
     List<Project> getProjectsByCompany(Company company) throws ProjectNotFoundException, CompanyNotFoundException;
 
-    void addProject(Project project);
+    void addProject(Project project) throws WrongTimeException, InThePastException, ProjectAlreadyExistsException;
     List<Project>ongoingProjects();
 
 

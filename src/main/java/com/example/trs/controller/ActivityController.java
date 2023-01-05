@@ -24,12 +24,12 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException {
+    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, InThePastException {
         activityService.addActivity(activityService.check(dto));
     }
 
     @PostMapping("edit")
-    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException {
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, InThePastException {
         activityService.editActivity(activityService.check(dto));
     }
 
@@ -55,7 +55,7 @@ public class ActivityController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteActivityById(@PathVariable("id") int id) throws ActivityDoesNotExistException, ActivityInThePastException {
+    void deleteActivityById(@PathVariable("id") int id) throws ActivityDoesNotExistException, InThePastException {
         activityService.deleteById(id);
     }
 

@@ -27,9 +27,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
-    @ExceptionHandler(value = ActivityInThePastException.class)
+    @ExceptionHandler(value = InThePastException.class)
     protected ResponseEntity<? extends Object> activityInThePastException
-            ( ActivityInThePastException ance, WebRequest request) {
+            (InThePastException ance, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("activiteit in het verleden", status.value(), ance.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -183,7 +183,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(value = ProjectNotFoundException.class)
-    protected ResponseEntity<? extends Object> ProjectNotFoundException
+    protected ResponseEntity<? extends Object> projectNotFoundException
             ( ProjectNotFoundException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiError err = new ApiError("project niet gevonden", status.value(), wtexc.getMessage());
@@ -192,6 +192,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
+
+    @ExceptionHandler(value = ProjectAlreadyExistsException.class)
+    protected ResponseEntity<? extends Object> projectAlreadyExistsException
+            ( ProjectAlreadyExistsException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("project bestaat al", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
     @ExceptionHandler(value = StartTimeNeededException.class)
     protected ResponseEntity<? extends Object> StartTimeNeededException
             ( StartTimeNeededException wtexc, WebRequest request) {

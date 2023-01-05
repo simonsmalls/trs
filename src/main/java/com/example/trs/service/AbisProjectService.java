@@ -2,9 +2,7 @@ package com.example.trs.service;
 
 import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
-import com.example.trs.exceptions.CompanyAlreadyExistsException;
-import com.example.trs.exceptions.CompanyNotFoundException;
-import com.example.trs.exceptions.ProjectNotFoundException;
+import com.example.trs.exceptions.*;
 import com.example.trs.mapper.InvoiceMapper;
 import com.example.trs.mapper.ProjectMapper;
 import com.example.trs.model.Company;
@@ -85,8 +83,17 @@ public class AbisProjectService implements ProjectService {
     }
 
     @Override
-    public void addProject(Project project) {
-        projectJpaRepo.save(project);
+    public void addProject(Project project) throws WrongTimeException, InThePastException, ProjectAlreadyExistsException {
+        if (project.getEndDate().isBefore(project.getStartDate())) throw new WrongTimeException("Einddatum moet na startdatum komen");
+        if (project.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("Nieuw project kan niet in het verleden beginnen");
+
+        boolean newProjectAdded = false;
+        try {getProjectById(project.getId()); }
+        catch (ProjectNotFoundException e) {
+            projectJpaRepo.save(project);
+            newProjectAdded = true;
+        }
+        if (!newProjectAdded) throw new ProjectAlreadyExistsException("Project bestaat al");
     }
 
     @Override
@@ -97,9 +104,12 @@ public class AbisProjectService implements ProjectService {
     @Override
     public void addCompany(Company company) throws CompanyAlreadyExistsException {
         boolean newCompanyAdded = false;
-        try {
-            getCompanyByName(company.getCompanyName()); }
-        catch (CompanyNotFoundException e) {
+        boolean idDoesNotExist = false;
+        boolean nameDoesNotExist = false;
+        try { getCompanyById(company.getId()); } catch (CompanyNotFoundException e) { idDoesNotExist = true; }
+        try { getCompanyByName(company.getCompanyName()); } catch (CompanyNotFoundException e) { nameDoesNotExist = true; }
+
+        if (idDoesNotExist && nameDoesNotExist) {
             company.setCompanyName(company.getCompanyName().toUpperCase());  // moves to Upper Case
             companyJpaRepo.save(company);
             newCompanyAdded = true;
