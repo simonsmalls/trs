@@ -22,7 +22,6 @@ public interface WorkingTimeService {
     List<WorkingTime> getByConsultantIdToday(int consultantId) throws JsonProcessingException, EmployeeNotFoundException;
     WorkingTime getOpenWorkingTimeTodayByConsultantId(int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException;
     List<WorkingTime> getByDate(LocalDate date);
-    List<WorkingTime> getByConsultantIdAndDate(int consultantId, LocalDate date);
     List<ConsultantSalaryDTO> getSalariesOfAllConsultantsFor(int year, int month) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException;
 
 }

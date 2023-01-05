@@ -177,8 +177,4 @@ public class AbisWorkingTimeService implements WorkingTimeService {
         return null;
     }
 
-    @Override
-    public List<WorkingTime> getByConsultantIdAndDate(int consultantId, LocalDate date) {
-        return null;
-    }
 }
