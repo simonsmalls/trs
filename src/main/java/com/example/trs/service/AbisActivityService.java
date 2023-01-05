@@ -32,22 +32,25 @@ public class AbisActivityService implements ActivityService {
     EmployeeService employeeService;
 
     @Override
-    public Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
+    public Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
+
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);      // TODO calculate minute duration
     }
 
     @Override
-    public Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException {
-
+    public Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act==null) {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
+
         this.checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }

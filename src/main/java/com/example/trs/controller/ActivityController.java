@@ -6,15 +6,12 @@ import com.example.trs.exceptions.*;
 import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
 import com.example.trs.service.ActivityService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 
 @RestController
@@ -27,14 +24,12 @@ public class ActivityController {
 
 
     @PostMapping("add")
-    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
-
+    void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException {
         activityService.addActivity(activityService.check(dto));
     }
 
     @PostMapping("edit")
-    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
-
+    void   editActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException {
         activityService.editActivity(activityService.check(dto));
     }
 
