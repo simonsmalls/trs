@@ -172,14 +172,17 @@ insert into projects (company_id, projectName, description, hourlyRate, startDat
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-21', '09:00:00', '14:30:00', 280, 9);
 
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-21', '08:00:00', '9:00:00', 60, 10);
-insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 10);
-insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-23', '08:00:00', '17:00:00', 480, 10);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 540, 10);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-23', '08:00:00', '17:00:00', 540, 10);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-24', '08:00:00', '10:00:00', 120, 10);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-24', '10:00:00', '15:00:00', 300, 10);
-insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-25', '08:00:00', '17:00:00', 480, 10);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-25', '08:00:00', '17:00:00', 540, 10);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-25', '18:00:00', '19:00:00', 60, 10);
 
-insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 4);
+insert into workingtimes (workingDate, startTime, timeWorked, employee_id) values ('2022-12-23', '08:00:00', 0, 4);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '14:00:00', 360, 4);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-10', '08:00:00', '14:00:00', 360, 4);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-10', '15:00:00', '16:26:00', 86, 4);
 
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-16', '09:00:00', '10:30:00', 90, 11);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '11:00:00', '13:00:00', 120, 11);
@@ -190,7 +193,7 @@ insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '11:00:00', '13:00:00', 120, 3);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '14:00:00', '17:00:00', 180, 3);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-16', '18:00:00', '18:34:00', 34, 3);
-insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 480, 3);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '08:00:00', '17:00:00', 540, 3);
 
 
 insert into categories (categoryName) values ('Teaching');
