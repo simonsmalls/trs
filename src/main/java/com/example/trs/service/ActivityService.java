@@ -24,11 +24,10 @@ public interface ActivityService {
     void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;
     Activity findActivityByid(int id) throws ActivityDoesNotExistsException;
 
-
-
     List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate);
 
 
+    int getSumOfActivitiesInHoursForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate);
 
 
 }

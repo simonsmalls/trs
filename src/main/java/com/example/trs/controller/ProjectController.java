@@ -30,27 +30,14 @@ public class ProjectController {
     @GetMapping("")
     List<ProjectDTO> getAll() {
         List<Project> projectList = projectService.getAllProjects();
-        System.out.println(projectList.stream().map(ProjectMapper::toDTO).collect(Collectors.toList()));
         return projectList.stream().map(ProjectMapper::toDTO).collect(Collectors.toList());
     }
 
-
-    @Autowired
-    ProjectService projectService;
-
-
-    @GetMapping("")
+    @GetMapping("ongoing")
     List<ProjectDTO> getAllOnGoing()  {
 
         List<Project> list= projectService.ongoingProjects();
-
         return list.stream().map(x-> ProjectMapper.toDTO(x)).collect(Collectors.toList());
-    }
-    @GetMapping("all")
-    List<ProjectDTO> getAll()  {
-            List<Project> list= projectService.getAllProjects();
-
-            return list.stream().map(x-> ProjectMapper.toDTO(x)).collect(Collectors.toList());
     }
 
 

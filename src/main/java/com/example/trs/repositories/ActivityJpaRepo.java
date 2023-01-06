@@ -37,5 +37,7 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
                                                    @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
                                                    @Param("tend") LocalTime endTime);
 
+    @Query(value = "select sum(timespent) from activities where project_id =:pid and startDate between :sDate and :eDate", nativeQuery = true)
+    Integer findSumOfTimeOfActivitiesForProject(@Param("pid") int projectId, @Param("sDate") LocalDate startDate, @Param("eDate") LocalDate endDate);
 
 }

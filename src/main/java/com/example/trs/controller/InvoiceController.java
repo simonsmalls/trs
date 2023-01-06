@@ -1,6 +1,8 @@
 package com.example.trs.controller;
 
 import com.example.trs.dto.InvoiceDTO;
+import com.example.trs.exceptions.InvoiceNotFoundException;
+import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.InvoiceMapper;
 import com.example.trs.model.Invoice;
 import com.example.trs.service.InvoiceService;
@@ -20,7 +22,7 @@ public class InvoiceController {
 
 
     @GetMapping("/calculate/{id}")
-    void calculateProjectInvoice(@PathVariable("id") int projectId){
+    void calculateProjectInvoice(@PathVariable("id") int projectId) throws ProjectNotFoundException, InvoiceNotFoundException {
           invoiceService.createInvoiceForLastMonthOfProjectId(projectId);
     }
 

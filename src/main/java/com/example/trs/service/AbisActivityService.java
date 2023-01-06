@@ -3,10 +3,7 @@ package com.example.trs.service;
 import com.example.trs.dto.ActivityDTO;
 import com.example.trs.exceptions.*;
 import com.example.trs.mapper.ActivityMapper;
-import com.example.trs.model.Activity;
-import com.example.trs.model.Category;
-import com.example.trs.model.Employee;
-import com.example.trs.model.Project;
+import com.example.trs.model.*;
 import com.example.trs.repositories.ActivityJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +34,9 @@ public class AbisActivityService implements ActivityService {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    InvoiceService invoiceService;
+
     @Override
     public Activity addActivity(ActivityDTO activityDTO) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException {
         Activity act=activityJpaRepo.findActivityById(activityDTO.getId());
@@ -45,6 +45,7 @@ public class AbisActivityService implements ActivityService {
         }
         Activity activity = this.activityDTOMapping(activityDTO);
         this.checkTimeOverlap(activity);
+        this.createInvoiceCheck(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -58,6 +59,7 @@ public class AbisActivityService implements ActivityService {
         }
         Activity activity = this.activityDTOMapping(activityDTO);
         this.checkTimeOverlap(activity);
+        this.createInvoiceCheck(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -71,6 +73,12 @@ public class AbisActivityService implements ActivityService {
     @Override
     public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
         return activityJpaRepo.findActivitiesForProjectOfMonth(projectId, startDate ,endDate);
+    }
+
+    @Override
+    public int getSumOfActivitiesInHoursForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
+        return activityJpaRepo.findSumOfTimeOfActivitiesForProject(projectId, startDate, endDate);
+
     }
 
     @Override
@@ -116,6 +124,19 @@ public class AbisActivityService implements ActivityService {
         Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());
 
         return ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
+    }
+
+    private void createInvoiceCheck(Activity activity) {
+        if (invoiceService.findInvoiceByProjectIdAndDate(activity.getProject().getId(), activity.getStartDate()) == null) {
+            Invoice invoice = new Invoice();
+            invoice.setClosed(false);
+            invoice.setTotalPrice(0);
+            invoice.setProject(activity.getProject());
+            invoice.setDate(activity.getStartDate());
+            invoiceService.createInvoice(invoice);
+
+
+        }
     }
 
 

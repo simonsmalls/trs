@@ -3,11 +3,7 @@ package com.example.trs.handler;
 
 
 import com.example.trs.error.ApiError;
-import com.example.trs.exceptions.ActivityInThePastException;
-import com.example.trs.exceptions.EmployeeNotFoundException;
-import com.example.trs.exceptions.WorkingTimeCannotEndException;
-import com.example.trs.exceptions.WorkingTimeCannotStartException;
-import com.example.trs.exceptions.WrongTypeException;
+import com.example.trs.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,6 +67,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             ( WrongTypeException wtexc, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError err = new ApiError("wrong type", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = InvoiceNotFoundException.class)
+    protected ResponseEntity<? extends Object> invoiceNotFoundException
+            ( InvoiceNotFoundException ivnf, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("invoice not found", status.value(), ivnf.getMessage());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type",
                 MediaType.APPLICATION_PROBLEM_JSON_VALUE);
