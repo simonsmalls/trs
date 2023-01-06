@@ -2,6 +2,7 @@ package com.example.trs.service;
 
 import com.example.trs.exceptions.CompanyAlreadyExists;
 import com.example.trs.exceptions.CompanyNotFoundException;
+import com.example.trs.exceptions.ProjectEndDateNotValid;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Company;
 import com.example.trs.model.Project;
@@ -112,25 +113,17 @@ class AbisProjectServiceTest {
         assertEquals(count +1, projectService.getAllProjects().size());
     }
 
-    /*
+
     @Test
     @Transactional
-    void addProjectTest() throws CompanyNotFoundException {
-        int count = projectService.getAllProjects().size();
-        Project p = new Project();
-        p.setDescription("java");
-        p.setStartDate(LocalDate.of(2022, 12,20));
-        p.setClient(projectService.getCompanyById(2));
-        p.setHourlyRate(100.0);
-        projectService.addProject(p);
-        assertEquals(, projectService.getAllProjects().size());
+    void setEndDateOnProjectTest() throws ProjectNotFoundException, ProjectEndDateNotValid {
+        assertEquals(LocalDate.of(2023,12,27), projectService.setEndDate(1, LocalDate.of(2023,12,27)).getEndDate());
     }
 
-     */
-
-
-
-
-
+    @Test
+    @Transactional
+    void setEndDateOnProjectTestThrowsException() throws ProjectNotFoundException, ProjectEndDateNotValid {
+        assertThrows(ProjectEndDateNotValid.class, ()-> projectService.setEndDate(1, LocalDate.of(2023,11,27)));
+    }
 
 }

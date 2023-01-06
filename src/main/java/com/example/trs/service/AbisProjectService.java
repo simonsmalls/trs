@@ -4,6 +4,7 @@ import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
 import com.example.trs.exceptions.CompanyAlreadyExists;
 import com.example.trs.exceptions.CompanyNotFoundException;
+import com.example.trs.exceptions.ProjectEndDateNotValid;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.InvoiceMapper;
 import com.example.trs.mapper.ProjectMapper;
@@ -94,11 +95,12 @@ public class AbisProjectService implements ProjectService {
 
     // update project with a new endDate
     @Override
-    public Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException {
+    public Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException, ProjectEndDateNotValid {
         Project p = getProjectById(projectId);
 
         // check if there are activities for this project after the end Date
         List<Activity> activities = activityService.findActivitiesByProjectAfterDate(projectId, endDate);
+        if (activities.size() != 0) throw new ProjectEndDateNotValid("dit project heeft na deze einddatum nog activiteiten");
         p.setEndDate(endDate);
         return projectJpaRepo.save(p);
     }

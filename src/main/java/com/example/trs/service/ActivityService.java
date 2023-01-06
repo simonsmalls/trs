@@ -4,7 +4,6 @@ package com.example.trs.service;
 import com.example.trs.dto.ActivityDTO;
 import com.example.trs.exceptions.*;
 import com.example.trs.model.Activity;
-import jdk.vm.ci.meta.Local;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

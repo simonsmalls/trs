@@ -26,7 +26,7 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
     @Query(value = "select * from activities where employee_id= :employee_id and startdate = :date ", nativeQuery = true)
     List<Activity> findActivitiesByEmployee_idAndDate(@Param("employee_id")int employee_id,@Param("date") LocalDate date);
 
-    @Query(value = "select * from activities where employee_id= :projectId and startdate > :date ", nativeQuery = true)
+    @Query(value = "select * from activities where project_id= :projectId and startdate > :date ", nativeQuery = true)
     List<Activity> findActivitiesByProjectIdAfterDate(int projectId, LocalDate date);
 
 
