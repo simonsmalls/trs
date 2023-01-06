@@ -1,16 +1,12 @@
 package com.example.trs.repositories;
 
 import com.example.trs.model.Activity;
-import com.example.trs.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
@@ -37,11 +33,24 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
                                                    @Param("dstart") LocalDate startDate, @Param("tstart") LocalTime startTime,
                                                    @Param("tend") LocalTime endTime);
     @Query(value = " select category_id,sum(timespent) from activities where project_id = :pid and startdate between :sDate and :eDate group by category_id", nativeQuery = true)
-    List<Object[]> findActivitiesByProjectId(@Param("pid") int id, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+    List<Object[]> findActivitiesByProjectIdAndDates(@Param("pid") int id, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+
+    @Query(value = " select category_id,sum(timespent) from activities where startdate between :sDate and :eDate group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByDates( @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+
+    @Query(value = " select category_id,sum(timespent) from activities where project_id = :pid group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByProjectId(@Param("pid") int id);
 
     @Query(value = " select category_id,sum(timespent) from activities where project_id = :pid and employee_id = :eid  and startdate between :sDate and :eDate group by category_id", nativeQuery = true)
-    List<Object[]> findActivitiesByProjectIdAndEmployeeId(@Param("pid") int pid,@Param("eid") int eid, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+    List<Object[]> findActivitiesByProjectIdAndEmployeeIdAndDates(@Param("pid") int pid,@Param("eid") int eid, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
 
     @Query(value = " select category_id,sum(timespent) from activities where employee_id = :eid and startdate between :sDate and :eDate group by category_id", nativeQuery = true)
-    List<Object[]> findActivitiesByEmployee_id(@Param("eid") int eid, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+    List<Object[]> findActivitiesByEmployee_idAndDates(@Param("eid") int eid, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+
+    @Query(value = " select category_id,sum(timespent) from activities where employee_id = :eid group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByEmployee_id(@Param("eid") int eid);
+
+    @Query(value = " select category_id,sum(timespent) from activities where project_id = :pid and employee_id = :eid  group by category_id", nativeQuery = true)
+    List<Object[]> findActivitiesByProjectIdAndEmployeeId(@Param("pid") int pid,@Param("eid") int eid);
+
 }
