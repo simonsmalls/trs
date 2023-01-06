@@ -2,7 +2,7 @@
 
 
 ## Documentation of API 
-This project consists of one big API (Time Registration System) that uses another smaller API ([AbisEmployeeSystem](https://github.com/janaheit/AbisEmployeeSystem)). The URLs for both APIs will be documented here. 
+This project consists of one big API (Time Registration System) that uses another smaller API ([AbisEmployeeSystem](https://github.com/janaheit/AbisEmployeeSystem)). Since the front end only accesses the TRS API, which then internally accesses the AES API, only the urls for this one will be documented here.
 
 ### Time Registration System (http://localhost:8888/api
 
@@ -41,9 +41,4 @@ This project consists of one big API (Time Registration System) that uses anothe
 #### Company controller
 - GET /company -> returns all companies  
 
-
-### Abis Employee System (http://localhost:8080/)
-- POST employees/login -> Takes a request body (login model with abbreviation and password) and returns the Employee if they exist
-- GET employees -> Returns a list of all employees 
-- GET 
 
