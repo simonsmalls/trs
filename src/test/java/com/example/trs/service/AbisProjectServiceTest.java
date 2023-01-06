@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -111,6 +112,14 @@ class AbisProjectServiceTest {
         projectService.addProject(new Project(projectService.getCompanyById(2), "Java", "4 month training", 100.00,
                 LocalDate.of(2022, 12, 12), LocalDate.of(2023, 4, 25)));
         assertEquals(count +1, projectService.getAllProjects().size());
+    }
+
+    @Test
+    void timetest(){
+        int a=120;
+        int b=a%60;
+        int c=a/60;
+        System.out.println(        LocalTime.of(c,b));
     }
 
 

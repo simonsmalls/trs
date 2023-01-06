@@ -1,8 +1,11 @@
 package com.example.trs.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class AnalyzeDTO {
     private String category;
-    private int timeWorked;
+    private String timeWorked;
     private double percent;
     private String employeeName;
 
@@ -17,11 +20,11 @@ public class AnalyzeDTO {
         this.category = category;
     }
 
-    public int getTimeWorked() {
+    public String getTimeWorked() {
         return timeWorked;
     }
 
-    public void setTimeWorked(int timeWorked) {
+    public void setTimeWorked(String timeWorked) {
         this.timeWorked = timeWorked;
     }
 

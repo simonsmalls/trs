@@ -219,6 +219,7 @@ insert into activities (description, employee_id, project_id, category_id, start
 
 insert into personRoles values (1, 'Teacher');
 insert into personRoles values (8, 'Manager');
+insert into personRoles values (11, 'Manager');
 insert into personRoles values (9, 'Accountant');
 
 
