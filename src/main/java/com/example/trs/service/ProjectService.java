@@ -4,6 +4,7 @@ import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
 import com.example.trs.exceptions.CompanyAlreadyExists;
 import com.example.trs.exceptions.CompanyNotFoundException;
+import com.example.trs.exceptions.ProjectEndDateNotValid;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Company;
 import com.example.trs.model.Invoice;
@@ -28,7 +29,7 @@ public interface ProjectService {
 
     void addProject(Project project);
     List<Project>ongoingProjects();
-
+    Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException, ProjectEndDateNotValid;
 
     void addCompany(Company company) throws CompanyAlreadyExists;
 }
