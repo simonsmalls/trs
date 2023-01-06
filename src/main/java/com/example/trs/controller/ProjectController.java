@@ -26,13 +26,13 @@ public class ProjectController {
 
         List<Project> list= projectService.ongoingProjects();
 
-        return list.stream().map(x-> ProjectMapper.toDTO(x)).collect(Collectors.toList());
+        return list.stream().map(ProjectMapper::toDTO).collect(Collectors.toList());
     }
     @GetMapping("all")
     List<ProjectDTO> getAll()  {
             List<Project> list= projectService.getAllProjects();
 
-            return list.stream().map(x-> ProjectMapper.toDTO(x)).collect(Collectors.toList());
+            return list.stream().map(ProjectMapper::toDTO).collect(Collectors.toList());
     }
 
 
