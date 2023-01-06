@@ -99,7 +99,7 @@ public class AbisActivityService implements ActivityService {
 
     @Override
     public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException {
-        if(dto.getProjectId() <= 0) throw new ProjectNotFoundException("activiteit heeft een project nodig");
+        if(dto.getProjectId() < 0) throw new ProjectNotFoundException("project bestaat niet");
         if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
         if(dto.getStartDate() == null) throw new DateRequiredException("activiteit heeft een datum nodig");
         if(dto.getEndTime()==null) throw new EndTimeNeededException("activiteit heeft een eindtijd nodig");

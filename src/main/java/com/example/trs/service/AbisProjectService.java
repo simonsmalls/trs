@@ -66,6 +66,7 @@ public class AbisProjectService implements ProjectService {
 
     @Override
     public Project getProjectById(int id) throws ProjectNotFoundException {
+        if(id==0) return null;
         return projectJpaRepo.findById(id).orElseThrow(()-> new ProjectNotFoundException("Dit project werd niet gevonden."));
     }
 

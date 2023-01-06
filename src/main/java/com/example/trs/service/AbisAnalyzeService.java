@@ -104,9 +104,9 @@ public class AbisAnalyzeService implements AnalyzeService {
         for (int i=0;i< dtoList.size();i++){
 
             dtoList.get(i).setPercent(Math.floor(((double)integerList.get(i)/tot)*10000)/100);
-            System.out.println(  dtoList.get(i).getPercent());
+
         }
-        System.out.println(tot);
+
 
         return dtoList;
     }
