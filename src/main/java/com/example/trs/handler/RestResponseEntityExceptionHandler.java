@@ -181,6 +181,28 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
+    @ExceptionHandler(value = ProjectEndDateNotValid.class)
+    protected ResponseEntity<? extends Object> ProjectEndDateNotValidException
+            ( ProjectEndDateNotValid wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("eind datum ongeldig", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
+    @ExceptionHandler(value = ProjectAlreadyEndedException.class)
+    protected ResponseEntity<? extends Object> ProjectAlreadyEndedException
+            ( ProjectAlreadyEndedException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError err = new ApiError("project voorbij", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
 
 
 

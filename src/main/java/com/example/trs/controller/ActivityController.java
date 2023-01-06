@@ -21,8 +21,6 @@ public class ActivityController {
     @Autowired
     ActivityService activityService;
 
-
-
     @PostMapping("add")
     void   addActivity( @RequestBody ActivityDTO dto) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, ActivityInThePastException, ProjectAlreadyEndedException {
         activityService.addActivity(activityService.check(dto));

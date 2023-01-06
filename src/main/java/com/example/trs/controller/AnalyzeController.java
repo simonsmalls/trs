@@ -20,7 +20,7 @@ public class AnalyzeController {
 
     @PostMapping("")
 
-   public  List<AnalyzeDTO> findActivitiesByProjectId(@RequestBody AnalyzeForm dto)  {
+   public  List<AnalyzeDTO> analyzeBy(@RequestBody AnalyzeForm dto)  {
         if(dto.getProject_Id()!=0 && dto.getStart()!=null && dto.getEnd()!=null && dto.getEmployee_Id()!=0 ){
             return analyzeService.findActivitiesByProjectIdAndEmployeeIdAndDates(dto.getProject_Id(),dto.getEmployee_Id(),dto.getStart(),dto.getEnd());
 
