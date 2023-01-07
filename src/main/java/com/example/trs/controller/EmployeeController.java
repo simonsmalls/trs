@@ -34,46 +34,10 @@ public class EmployeeController {
 
     }
 
-
-
     @GetMapping("")
     List<EmployeeDTO> getAllEmployees(){
 
         return employeeService.getAll();
     }
-
-    @GetMapping("none-consultants")
-    ResponseEntity<? extends Object> getAllNoneConsultants(){
-        return null;
-    }
-
-    @GetMapping("consultants")
-    ResponseEntity<? extends Object> getAllConsultants(){
-        return null;
-    }
-
-    @GetMapping("/{id}")
-    ResponseEntity<? extends Object> getById(@PathVariable("id") int id) throws EmployeeNotFoundException {
-        return null;
-    }
-
-    @GetMapping("managers")
-    ResponseEntity<? extends Object> getManagers(){
-        return null;
-    }
-
-    @GetMapping("teachers")
-    ResponseEntity<? extends Object> getAllTeachers(){
-        return null;
-    }
-
-    @GetMapping("accountants")
-    ResponseEntity<? extends Object> getAllAccountants(){
-        return null;
-    }
-
-
-
-
 
 }

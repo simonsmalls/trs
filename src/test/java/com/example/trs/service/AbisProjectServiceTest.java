@@ -119,7 +119,7 @@ class AbisProjectServiceTest {
         int a=120;
         int b=a%60;
         int c=a/60;
-        System.out.println(        LocalTime.of(c,b));
+        System.out.println(LocalTime.of(c,b));
     }
 
 
