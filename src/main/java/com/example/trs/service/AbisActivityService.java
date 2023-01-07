@@ -38,7 +38,7 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
-        if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
+        if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
 
@@ -54,7 +54,7 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
-        if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
+        if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
         this.checkTimeOverlap(activity);

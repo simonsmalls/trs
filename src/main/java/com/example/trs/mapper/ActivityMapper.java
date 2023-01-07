@@ -41,8 +41,14 @@ public class ActivityMapper {
         dto.setId(activity.getId());
         dto.setDescription(activity.getDescription());
         dto.setEmployeeId(activity.getEmployee_id());
-        dto.setProjectId(activity.getProject().getId());
-        dto.setProjectName(activity.getProject().getName());
+        if (activity.getProject()!=null) {
+            dto.setProjectId(activity.getProject().getId());
+            dto.setProjectName(activity.getProject().getName());
+        }else{
+            dto.setProjectId(0);
+            dto.setProjectName("intern");
+        }
+
         //todo employeename
 
         dto.setCategoryName(activity.getCategory().getName());
