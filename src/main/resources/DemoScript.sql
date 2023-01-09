@@ -208,6 +208,12 @@ insert into activities (description, employee_id, project_id, category_id, start
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 1, 1, 5, '2023-12-26', '14:00:00',  '15:45:00', '165');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 1, 2, 5, '2022-12-27', '14:00:00',  '15:45:00', '167');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 5, 1, 2, '2022-12-27', '14:00:00',  '15:45:00', '165');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 1, 1, 1, '2023-01-11', '14:00:00',  '15:00:00', '60');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 2, 1, 1, '2023-01-11', '14:00:00',  '15:00:00', '60');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 3, 1, 1, '2023-01-11', '14:00:00',  '15:00:00', '60');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 4, 1, 1, '2023-01-11', '14:00:00',  '15:00:00', '60');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 5, 1, 1, '2023-01-11', '14:00:00',  '15:00:00', '60');
+insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null, 6, 1, 1, '2023-01-11', '14:00:00',  '15:00:00', '60');
 
 insert into personRoles values (1, 'Teacher');
 insert into personRoles values (2, 'Manager');
