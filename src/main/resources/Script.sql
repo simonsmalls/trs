@@ -206,6 +206,7 @@ insert into categories (categoryName) values ('Voorbereiding eten');
 
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2021-01-28', 20000.00, 1, true);
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2023-06-28', 0, 2, false);
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2022-06-28', 0, 2, false);
 
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2022-01-28', 20000.00, 1, true);
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2022-06-28', 30000.00, 2, true);

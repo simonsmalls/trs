@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -46,6 +48,7 @@ public class AbisActivityService implements ActivityService {
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
         checkTimeOverlap(activity);
+        createInvoiceCheck(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -149,17 +152,34 @@ public class AbisActivityService implements ActivityService {
     }
 
     private void createInvoiceCheck(Activity activity) {
-        if (invoiceService.findInvoiceByProjectIdAndDate(activity.getProject().getId(), activity.getStartDate()) == null) {
-            Invoice invoice = new Invoice();
-            invoice.setClosed(false);
-            invoice.setTotalPrice(0);
-            invoice.setProject(activity.getProject());
-            invoice.setDate(activity.getStartDate());
-            System.out.println("New invoice created");
-            invoiceService.createInvoice(invoice);
 
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, activity.getStartDate().getYear());
+        calendar.set(Calendar.MONTH, activity.getStartDate().getMonthValue()-1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        LocalDate startDateSelectedMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        LocalDate endDateSelectedMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //internal project is null
+
+        try{
+           if( invoiceService.findInvoiceByProjectIdAndStartAndEndDate(activity.getProject().getId(), startDateSelectedMonth, endDateSelectedMonth) == null) {
+
+                Invoice invoice = new Invoice();
+                invoice.setClosed(false);
+                invoice.setTotalPrice(0);
+                invoice.setProject(activity.getProject());
+                invoice.setDate(endDateSelectedMonth);
+                System.out.println("New invoice created");
+                invoiceService.createInvoice(invoice);
+
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Internal project");
         }
+
     }
 
 

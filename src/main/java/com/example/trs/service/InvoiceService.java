@@ -13,16 +13,11 @@ import java.util.List;
 
 public interface InvoiceService {
 
-    void createInvoiceForLastMonthOfProjectId(int projectId) throws ProjectNotFoundException, InvoiceNotFoundException;
+    void CalculateInvoices(int projectId) throws ProjectNotFoundException, InvoiceNotFoundException;
     void createInvoice(Invoice invoice);
-
     List<Invoice> getByProjectId(int id);
-    Invoice getByCompanyId(int id);
-    Invoice getByMonthAndYear(Month month, Year year);
-    void addToPrice(double price);
-    void addInvoice(Invoice invoice, boolean sent);
-    Invoice finaliseInvoiceById(int id);
-    //Invoice findInvoiceByProjectIdAndDate(int projectId, LocalDate startDate, LocalDate endDate);
-    Invoice findInvoiceByProjectIdAndDate(int projectId, LocalDate startDate);
 
+    Invoice finaliseInvoiceById(int id);
+
+    Invoice findInvoiceByProjectIdAndStartAndEndDate(int projectId, LocalDate startDate, LocalDate endDate);
 }

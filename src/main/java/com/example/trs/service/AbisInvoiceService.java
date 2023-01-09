@@ -5,7 +5,6 @@ import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
-import com.example.trs.repositories.ActivityJpaRepo;
 import com.example.trs.repositories.InvoiceJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class AbisInvoiceService implements InvoiceService {
 
 
     @Override
-    public void createInvoiceForLastMonthOfProjectId(int projectId) throws ProjectNotFoundException, InvoiceNotFoundException {
+    public void CalculateInvoices(int projectId) throws ProjectNotFoundException{
 
         //This month
         Calendar calendar = Calendar.getInstance();
@@ -40,64 +39,62 @@ public class AbisInvoiceService implements InvoiceService {
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         LocalDate endDateThisMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        System.out.println("Start date this month:" + startDateThisMonth);
-        System.out.println("End date this month:" + endDateThisMonth);
-
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-
         //Last month
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         calendar.add(Calendar.MONTH, -1);
         LocalDate startDateLastMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         LocalDate endDateLastMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        System.out.println("Start date last month:" + startDateLastMonth);
-        System.out.println("End date last month:" + endDateLastMonth);
+        //next month
+        calendar.add(Calendar.MONTH, 2);
+        LocalDate endDateNextMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        LocalDate startDateNextMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //month after that
+        calendar.add(Calendar.MONTH, 1);
+        LocalDate startDateFinalMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        LocalDate endDateFinalMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+
         //This month
-        try {
-            List<Activity> activityListThisMonth = activityService.findActivitiesForProjectOfMonth(projectId, startDateThisMonth, endDateThisMonth);
-            double totalActivityTimeInHours = this.calculateHoursFromActivityList(activityListThisMonth);
 
-            Invoice invoiceThisMonth = invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateThisMonth, endDateThisMonth);
-            Project projectThisMonth = invoiceThisMonth.getProject();
-            invoiceThisMonth.setDate(LocalDate.now());
-            invoiceThisMonth.setTotalPrice(projectThisMonth.getHourlyRate() * totalActivityTimeInHours);
-            System.out.println("Id invoice this month: " + invoiceThisMonth.getId());
-            System.out.println("Price invoice this month" + invoiceThisMonth.getTotalPrice());
-            System.out.println("Invoice eddited");
-            invoiceJpaRepo.save(invoiceThisMonth);
-
-
-        } catch (IndexOutOfBoundsException | NullPointerException e) {
+        if (invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateThisMonth, endDateThisMonth) != null) {
+            InvoiceForMonth(projectId, startDateThisMonth, endDateThisMonth);
+        } else if (invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateThisMonth, endDateThisMonth) == null) {
             Invoice invoiceThisMonth = new Invoice();
             invoiceThisMonth.setProject(projectService.getProjectById(projectId));
-            invoiceThisMonth.setDate(LocalDate.now());
+            invoiceThisMonth.setDate(endDateThisMonth);
             Project projectThisMonth = invoiceThisMonth.getProject();
             List<Activity> activityListThisMonth = activityService.findActivitiesForProjectOfMonth(projectId, startDateThisMonth, endDateThisMonth);
             double totalActivityTimeInHours = this.calculateHoursFromActivityList(activityListThisMonth);
             invoiceThisMonth.setTotalPrice(projectThisMonth.getHourlyRate() * totalActivityTimeInHours);
-            System.out.println("New  invoice this month id: " + invoiceThisMonth.getId());
-            System.out.println("New invoice this month price " + invoiceThisMonth.getTotalPrice());
             invoiceJpaRepo.save(invoiceThisMonth);
-            System.out.println("New invoice created");
+
         }
 
         //Last month
+        InvoiceForMonth(projectId, startDateLastMonth, endDateLastMonth);
 
-        try {
-            List<Activity> activityListLastMonth = activityService.findActivitiesForProjectOfMonth(projectId, startDateLastMonth, endDateLastMonth);
-            double totalActivityTimeInHoursLastMonth = this.calculateHoursFromActivityList(activityListLastMonth);
+        //Next month
+        InvoiceForMonth(projectId, startDateNextMonth, endDateNextMonth);
 
-            Invoice invoiceLastMonth = invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateLastMonth, endDateLastMonth);
-            Project projectLast = invoiceLastMonth.getProject();
-            invoiceLastMonth.setTotalPrice(projectLast.getHourlyRate() * totalActivityTimeInHoursLastMonth);
+        //Month after that
+        InvoiceForMonth(projectId, startDateFinalMonth, endDateFinalMonth);
 
-            invoiceJpaRepo.save(invoiceLastMonth);
-            System.out.println("Invoice last month saved");
 
-        } catch (NullPointerException e) {
-           // throw new InvoiceNotFoundException("Geen facturen gevonden voor vorige maand");
-            System.out.println("huh");
+    }
+
+    private void InvoiceForMonth(int projectId, LocalDate startDateFinalMonth, LocalDate endDateFinalMonth) {
+        if (invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateFinalMonth, endDateFinalMonth) != null) {
+            Invoice invoiceFinalMonth = invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateFinalMonth, endDateFinalMonth);
+            List<Activity> activityListFinalMonth = activityService.findActivitiesForProjectOfMonth(projectId, startDateFinalMonth, endDateFinalMonth);
+            double totalActivityTimeInHoursFinalMonth = this.calculateHoursFromActivityList(activityListFinalMonth);
+            Project projectFinal = invoiceFinalMonth.getProject();
+            invoiceFinalMonth.setTotalPrice(projectFinal.getHourlyRate() * totalActivityTimeInHoursFinalMonth);
+            invoiceJpaRepo.save(invoiceFinalMonth);
         }
     }
 
@@ -113,42 +110,15 @@ public class AbisInvoiceService implements InvoiceService {
     }
 
     @Override
-    public Invoice getByCompanyId(int id) {
-        return invoiceJpaRepo.findInvoiceByCompanyId(id);
-    }
-
-    @Override
-    public Invoice getByMonthAndYear(Month month, Year year) {
-        return null;
-    }
-
-    @Override
-    public void addToPrice(double price) {
-
-    }
-
-    @Override
-    public void addInvoice(Invoice invoice, boolean sent) {
-
-    }
-
-    @Override
     public Invoice finaliseInvoiceById(int id) {
         Invoice invoice = invoiceJpaRepo.findInvoiceById(id);
         invoice.setClosed(true);
-        invoice.setDate(LocalDate.now());
         return invoiceJpaRepo.save(invoice);
     }
 
-/*    @Override
-    public Invoice findInvoiceByProjectIdAndDate(int projectId, LocalDate startDate, LocalDate endDate) {
-        return invoiceJpaRepo.findInvoiceByProjectIdAndDate(projectId, startDate, endDate);
-    }*/
-
     @Override
-    public Invoice findInvoiceByProjectIdAndDate(int projectId, LocalDate startDate) {
-        return invoiceJpaRepo.findInvoiceByProjectIdAndDate(projectId, startDate);
-
+    public Invoice findInvoiceByProjectIdAndStartAndEndDate(int projectId, LocalDate startDate, LocalDate endDate) {
+        return invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDate, endDate);
     }
 
 

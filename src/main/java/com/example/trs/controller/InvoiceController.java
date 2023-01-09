@@ -23,7 +23,7 @@ public class InvoiceController {
 
     @GetMapping("/calculate/{id}")
     void calculateProjectInvoice(@PathVariable("id") int projectId) throws ProjectNotFoundException, InvoiceNotFoundException {
-          invoiceService.createInvoiceForLastMonthOfProjectId(projectId);
+          invoiceService.CalculateInvoices(projectId);
     }
 
     @GetMapping("/{id}")
