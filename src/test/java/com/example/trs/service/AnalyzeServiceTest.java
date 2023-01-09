@@ -1,8 +1,7 @@
 package com.example.trs.service;
 
 import com.example.trs.dto.AnalyzeDTO;
-import com.example.trs.exceptions.EmployeeNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.trs.exceptions.ProjectNotFoundException;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -22,10 +21,15 @@ class AnalyzeServiceTest {
     AnalyzeService analyzeService;
 
     @Test
-    void findAll() {
+    void findAll() throws ProjectNotFoundException {
 
-        List<AnalyzeDTO> list= analyzeService.findActivitiesByProjectId(2, LocalDate.of(2015,8,20),LocalDate.of(2024,8,20));
+        List<AnalyzeDTO> list= analyzeService.findActivitiesByProjectIdAndDates(2, LocalDate.of(2015,8,20),LocalDate.of(2024,8,20));
         System.out.println(list.size());
+    }
+
+    @Test
+    void findprojectNUll() throws ProjectNotFoundException {
+        analyzeService.findActivitiesByProjectId(0);
     }
 
 

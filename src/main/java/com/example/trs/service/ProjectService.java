@@ -25,7 +25,7 @@ public interface ProjectService {
 
     void addProject(Project project) throws WrongTimeException, InThePastException, ProjectAlreadyExistsException;
     List<Project>ongoingProjects();
-
+    Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException, ProjectEndDateNotValid;
 
     void addCompany(Company company) throws CompanyAlreadyExistsException;
 }

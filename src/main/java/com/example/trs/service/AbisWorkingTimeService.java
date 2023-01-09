@@ -2,10 +2,7 @@ package com.example.trs.service;
 
 import com.example.trs.dto.ConsultantSalaryDTO;
 import com.example.trs.error.ApiError;
-import com.example.trs.exceptions.EmployeeNotFoundException;
-import com.example.trs.exceptions.WorkingTimeCannotEndException;
-import com.example.trs.exceptions.WorkingTimeCannotStartException;
-import com.example.trs.exceptions.WrongTypeException;
+import com.example.trs.exceptions.*;
 import com.example.trs.model.WorkingTime;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,9 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AbisWorkingTimeService implements WorkingTimeService {
@@ -143,15 +138,6 @@ public class AbisWorkingTimeService implements WorkingTimeService {
     @Override
     public List<ConsultantSalaryDTO> getSalariesOfAllConsultantsFor(int year, int month) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
         try {
-            /*UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl+"/salaries/{year}/{month}");
-            Map<String, Integer> pathVariables = new HashMap<>();
-            pathVariables.put("year", year);
-            pathVariables.put("month", month);
-            HttpHeaders headers = new HttpHeaders();
-            System.out.println("before response");
-            ResponseEntity<ConsultantSalaryDTO[]> responseEntity = rt.exchange(uriBuilder.toUriString(), HttpMethod.GET, null,
-                    ConsultantSalaryDTO[].class, pathVariables);
-            */
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/salaries/" + year + "/" + month);
             HttpHeaders headers = new HttpHeaders();
             ResponseEntity responseEntity = rt.getForEntity(uriBuilder.toUriString(), ConsultantSalaryDTO[].class);
@@ -170,6 +156,24 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void deleteWorkingTime(int id) throws JsonProcessingException, WorkingTimeCannotBeDeletedException {
+        try {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/" + id);
+            System.out.println(uriBuilder.toUriString());
+            rt.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
+        } catch (HttpStatusCodeException e){
+            System.out.println(e.getStatusCode() + " - " + e.getMessage());
+            String serr = e.getResponseBodyAsString();
+            System.out.println(serr);
+            /*ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND)
+                throw new WorkingTimeCannotBeDeletedException(ae.getDescription());
+
+             */
+        }
     }
 
     @Override

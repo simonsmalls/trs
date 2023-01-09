@@ -41,16 +41,22 @@ public class ActivityMapper {
         dto.setId(activity.getId());
         dto.setDescription(activity.getDescription());
         dto.setEmployeeId(activity.getEmployee_id());
-        dto.setProjectId(activity.getProject().getId());
-        dto.setProjectName(activity.getProject().getName());
+        if (activity.getProject()!=null) {
+            dto.setProjectId(activity.getProject().getId());
+            dto.setProjectName(activity.getProject().getName());
+        }else{
+            dto.setProjectId(0);
+            dto.setProjectName("intern");
+        }
+
         //todo employeename
 
         dto.setCategoryName(activity.getCategory().getName());
         dto.setStartDate(activity.getStartDate());
-        String hourStart=activity.getStartTime().getHour() >10? ""+activity.getStartTime().getHour():"0"+activity.getStartTime().getHour();
-        String hourEnd=activity.getEndTime().getHour() >10? ""+activity.getEndTime().getHour():"0"+activity.getEndTime().getHour();
-        String minuteStart=activity.getStartTime().getMinute() >10? ""+activity.getStartTime().getMinute():"0"+activity.getStartTime().getMinute();
-        String minuteEnd=activity.getEndTime().getMinute() >10? ""+activity.getEndTime().getMinute():"0"+activity.getEndTime().getMinute();
+        String hourStart=activity.getStartTime().getHour() >=10? ""+activity.getStartTime().getHour():"0"+activity.getStartTime().getHour();
+        String hourEnd=activity.getEndTime().getHour() >=10? ""+activity.getEndTime().getHour():"0"+activity.getEndTime().getHour();
+        String minuteStart=activity.getStartTime().getMinute() >=10? ""+activity.getStartTime().getMinute():"0"+activity.getStartTime().getMinute();
+        String minuteEnd=activity.getEndTime().getMinute() >=10? ""+activity.getEndTime().getMinute():"0"+activity.getEndTime().getMinute();
         dto.setStartTime(hourStart+ ":"+ minuteStart);
         dto.setEndTime(hourEnd + ":"+minuteEnd);
         dto.setTimeSpent(activity.getTimeSpent());
