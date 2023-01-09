@@ -2,27 +2,27 @@ package com.example.trs.service;
 
 
 import com.example.trs.dto.ActivityDTO;
-import com.example.trs.exceptions.ActivityAlreadyExistsException;
-import com.example.trs.exceptions.ActivityDoesNotExistsException;
-import com.example.trs.exceptions.ActivityInThePastException;
-import com.example.trs.exceptions.ActivityTimeOverlapsException;
-import com.example.trs.exceptions.ProjectNotFoundException;
+import com.example.trs.exceptions.*;
 import com.example.trs.model.Activity;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface ActivityService {
 
-
-
-    Activity addActivity(ActivityDTO activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException;
-    Activity editActivity(ActivityDTO activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException;
+    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException;
+    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException;
     List<Activity> findActivitiesByPersonId(int personId);
+    List<Activity> findActivitiesByProjectAfterDate(int projectId, LocalDate date);
     List<Activity> getAll();
     List<Activity> findActivitiesByEmployeeIdAndDate(int personId, LocalDate date);
     void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException;
-    Activity findActivityByid(int id) throws ActivityDoesNotExistsException;
+    Activity findActivityById(int id) throws ActivityDoesNotExistsException;
+
+    int calculateTimeSpent(LocalTime startTime, LocalTime endTime);
+
+    Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException;
 
     List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate);
 

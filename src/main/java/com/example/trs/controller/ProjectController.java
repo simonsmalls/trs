@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "project")
 @CrossOrigin(origins="http://localhost:4200")
 public class ProjectController {
-
     @Autowired
     ProjectService projectService;
 
@@ -38,6 +37,12 @@ public class ProjectController {
 
         List<Project> list= projectService.ongoingProjects();
         return list.stream().map(x-> ProjectMapper.toDTO(x)).collect(Collectors.toList());
+    }
+    @GetMapping("")
+    List<ProjectDTO> getAll()  {
+            List<Project> list= projectService.getAllProjects();
+
+            return list.stream().map(x-> ProjectMapper.toDTO(x)).collect(Collectors.toList());
     }
 
 

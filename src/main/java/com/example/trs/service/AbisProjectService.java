@@ -4,9 +4,11 @@ import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
 import com.example.trs.exceptions.CompanyAlreadyExists;
 import com.example.trs.exceptions.CompanyNotFoundException;
+import com.example.trs.exceptions.ProjectEndDateNotValid;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.mapper.InvoiceMapper;
 import com.example.trs.mapper.ProjectMapper;
+import com.example.trs.model.Activity;
 import com.example.trs.model.Company;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
@@ -26,6 +28,7 @@ public class AbisProjectService implements ProjectService {
 
     @Autowired
     CompanyJpaRepo companyJpaRepo;
+    @Autowired ActivityService activityService;
 
 
     @Override
@@ -66,6 +69,7 @@ public class AbisProjectService implements ProjectService {
 
     @Override
     public Project getProjectById(int id) throws ProjectNotFoundException {
+        if(id==0) return null;
         return projectJpaRepo.findById(id).orElseThrow(()-> new ProjectNotFoundException("Dit project werd niet gevonden."));
     }
 
@@ -84,9 +88,22 @@ public class AbisProjectService implements ProjectService {
         return projects;
     }
 
+    //TODO check if project already exists
     @Override
     public void addProject(Project project) {
         projectJpaRepo.save(project);
+    }
+
+    // update project with a new endDate
+    @Override
+    public Project setEndDate(int projectId, LocalDate endDate) throws ProjectNotFoundException, ProjectEndDateNotValid {
+        Project p = getProjectById(projectId);
+
+        // check if there are activities for this project after the end Date
+        List<Activity> activities = activityService.findActivitiesByProjectAfterDate(projectId, endDate);
+        if (activities.size() != 0) throw new ProjectEndDateNotValid("dit project heeft na deze einddatum nog activiteiten");
+        p.setEndDate(endDate);
+        return projectJpaRepo.save(p);
     }
 
     @Override
@@ -94,6 +111,7 @@ public class AbisProjectService implements ProjectService {
         return projectJpaRepo.onGoingProjects(LocalDate.now());
     }
 
+    //TODO not needed
     @Override
     public void addCompany(Company company) throws CompanyAlreadyExists {
         boolean newCompanyAdded = false;
