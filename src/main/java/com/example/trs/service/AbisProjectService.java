@@ -2,7 +2,6 @@ package com.example.trs.service;
 
 import com.example.trs.dto.InvoiceDTO;
 import com.example.trs.dto.ProjectDTO;
-import com.example.trs.exceptions.CompanyAlreadyExists;
 import com.example.trs.exceptions.CompanyNotFoundException;
 import com.example.trs.exceptions.ProjectEndDateNotValid;
 import com.example.trs.exceptions.ProjectNotFoundException;
@@ -95,12 +94,12 @@ public class AbisProjectService implements ProjectService {
         if (project.getEndDate().isBefore(project.getStartDate())) throw new WrongTimeException("Einddatum moet na startdatum komen");
         if (project.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("Nieuw project kan niet in het verleden beginnen");
 
-        try {
-            getProjectById(project.getId());
-            throw new ProjectAlreadyExistsException("Project bestaat al");}
-        catch (ProjectNotFoundException e) {
-            projectJpaRepo.save(project);
-        }
+
+        Project existing = projectJpaRepo.findProjectByNameDatesAndHourlyRate(project.getName(), project.getStartDate(), project.getEndDate(),
+                    project.getHourlyRate(), project.getClient().getId());
+        if (existing != null) throw new ProjectAlreadyExistsException("Project bestaat al");
+
+        projectJpaRepo.save(project);
     }
 
     // update project with a new endDate

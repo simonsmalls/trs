@@ -18,6 +18,10 @@ public interface ProjectJpaRepo extends JpaRepository<Project, Integer> {
 
     Project findProjectById(int id);        // TODO why is this here?
 
+    @Query(value = "select * from projects where projectName=:name and startdate=:startDate and enddate=:endDate " +
+            "and company_id=:companyId and hourlyrate=:hourlyRate", nativeQuery = true)
+    Project findProjectByNameDatesAndHourlyRate(String name, LocalDate startDate, LocalDate endDate, double hourlyRate, int companyId);        // TODO why is this here?
+
     @Query(value = "select * from projects where enddate >:date or enddate is null", nativeQuery = true)
     List<Project> onGoingProjects(LocalDate date);
 

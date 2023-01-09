@@ -11,12 +11,8 @@ import java.util.List;
 
 public interface ActivityService {
 
-    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException;
-    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException;
-
-
-    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, InThePastException;
-    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, InThePastException;
+    Activity addActivity(Activity activity) throws ProjectNotFoundException, ActivityAlreadyExistsException, ActivityTimeOverlapsException, InThePastException, ProjectAlreadyEndedException;
+    Activity editActivity(Activity activity) throws ProjectNotFoundException, ActivityDoesNotExistException, ActivityTimeOverlapsException, InThePastException, ProjectAlreadyEndedException;
     List<Activity> findActivitiesByPersonId(int personId);
     List<Activity> findActivitiesByProjectAfterDate(int projectId, LocalDate date);
     List<Activity> getAll();
@@ -27,8 +23,6 @@ public interface ActivityService {
     int calculateTimeSpent(LocalTime startTime, LocalTime endTime);
 
     Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException;
-
-
 
     List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate);
 

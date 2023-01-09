@@ -1,9 +1,6 @@
 package com.example.trs.service;
 
-import com.example.trs.exceptions.CompanyAlreadyExistsException;
-import com.example.trs.exceptions.CompanyNotFoundException;
-import com.example.trs.exceptions.ProjectEndDateNotValid;
-import com.example.trs.exceptions.ProjectNotFoundException;
+import com.example.trs.exceptions.*;
 import com.example.trs.model.Company;
 import com.example.trs.model.Project;
 import org.junit.jupiter.api.MethodOrderer;
@@ -107,7 +104,7 @@ class AbisProjectServiceTest {
 
     @Test
     @Transactional
-    void addProjectTest() throws CompanyNotFoundException {
+    void addProjectTest() throws CompanyNotFoundException, ProjectAlreadyExistsException, WrongTimeException, InThePastException {
         int count = projectService.getAllProjects().size();
         projectService.addProject(new Project(projectService.getCompanyById(2), "Java", "4 month training", 100.00,
                 LocalDate.of(2022, 12, 12), LocalDate.of(2023, 4, 25)));

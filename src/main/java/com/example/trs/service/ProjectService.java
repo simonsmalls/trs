@@ -7,6 +7,7 @@ import com.example.trs.model.Company;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ProjectService {

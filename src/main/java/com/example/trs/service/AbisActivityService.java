@@ -32,12 +32,12 @@ public class AbisActivityService implements ActivityService {
     EmployeeService employeeService;
 
     @Override
-    public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException {
+    public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, ProjectAlreadyEndedException, InThePastException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act!=null) {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
-        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("kan geen activiteit in het verleden toevoegen");
         if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
@@ -47,13 +47,13 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity editActivity(Activity activity) throws ActivityDoesNotExistsException, ActivityTimeOverlapsException, ActivityInThePastException, ProjectAlreadyEndedException {
+    public Activity editActivity(Activity activity) throws ActivityDoesNotExistException, ActivityTimeOverlapsException, InThePastException, ProjectAlreadyEndedException {
 
         Activity act=activityJpaRepo.findActivityById(activity.getId());
         if(act==null) {
-            throw new ActivityDoesNotExistsException("activiteit bestaat niet");
+            throw new ActivityDoesNotExistException("activiteit bestaat niet");
         }
-        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("kan geen activiteit in het verleden aanpassen");
         if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
@@ -82,17 +82,17 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public void deleteById(int id) throws ActivityDoesNotExistsException, ActivityInThePastException {
+    public void deleteById(int id) throws InThePastException, ActivityDoesNotExistException {
         Activity activity= findActivityById(id);
-        if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteiten in het verleden verwijderen");
+        if (activity.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("kan geen activiteiten in het verleden verwijderen");
         activityJpaRepo.delete(activity);
     }
 
     @Override
-    public Activity findActivityById(int id) throws ActivityDoesNotExistsException {
+    public Activity findActivityById(int id) throws ActivityDoesNotExistException {
         Activity activity= activityJpaRepo.findActivityById(id);
         if(activity==null) {
-            throw new ActivityDoesNotExistsException("deze activiteit bestaat niet");
+            throw new ActivityDoesNotExistException("deze activiteit bestaat niet");
         }
         return  activity;
     }
