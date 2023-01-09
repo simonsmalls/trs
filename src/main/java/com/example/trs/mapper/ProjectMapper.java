@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProjectMapper {
 
-
-
-
-    public static Project toProject(ProjectDTO dto,Company company
-    ){
+    public static Project toProject(ProjectDTO dto, Company company) {
         Project project=new Project();
 
         project.setClient(company);
@@ -21,8 +17,6 @@ public class ProjectMapper {
             project.setDescription(dto.getDescription());
         }
         project.setName(dto.getName());
-
-
 
         if( dto.getHourlyRate()!=0) {
             project.setHourlyRate(dto.getHourlyRate());
@@ -55,8 +49,6 @@ public class ProjectMapper {
         if(project.getDescription()!=null) {
             dto.setDescription(project.getDescription());
         }
-
-
 
         return dto;
 

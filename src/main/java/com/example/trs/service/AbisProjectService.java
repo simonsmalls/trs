@@ -87,13 +87,12 @@ public class AbisProjectService implements ProjectService {
         if (project.getEndDate().isBefore(project.getStartDate())) throw new WrongTimeException("Einddatum moet na startdatum komen");
         if (project.getStartDate().isBefore(LocalDate.now())) throw new InThePastException("Nieuw project kan niet in het verleden beginnen");
 
-        boolean newProjectAdded = false;
-        try {getProjectById(project.getId()); }
+        try {
+            getProjectById(project.getId());
+            throw new ProjectAlreadyExistsException("Project bestaat al");}
         catch (ProjectNotFoundException e) {
             projectJpaRepo.save(project);
-            newProjectAdded = true;
         }
-        if (!newProjectAdded) throw new ProjectAlreadyExistsException("Project bestaat al");
     }
 
     @Override
