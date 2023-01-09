@@ -2,10 +2,9 @@ package com.example.trs.controller;
 
 import com.example.trs.dto.ConsultantSalaryDTO;
 import com.example.trs.dto.EmployeeDTO;
-import com.example.trs.exceptions.EmployeeNotFoundException;
-import com.example.trs.exceptions.WorkingTimeCannotEndException;
-import com.example.trs.exceptions.WorkingTimeCannotStartException;
-import com.example.trs.exceptions.WrongTypeException;
+import com.example.trs.dto.WorkingTimeDTO;
+import com.example.trs.exceptions.*;
+import com.example.trs.mapper.WorkingTimeMapper;
 import com.example.trs.model.Employee;
 import com.example.trs.model.WorkingTime;
 import com.example.trs.service.WorkingTimeService;
@@ -29,34 +28,38 @@ public class WorkingTimeController {
 
 
     @GetMapping("start/{id}")
-    WorkingTime startClock(@PathVariable("id") int consultantId) throws WrongTypeException, WorkingTimeCannotStartException, JsonProcessingException, EmployeeNotFoundException {
+    WorkingTimeDTO startClock(@PathVariable("id") int consultantId) throws WrongTypeException, WorkingTimeCannotStartException, JsonProcessingException, EmployeeNotFoundException {
 
-        return workingTimeService.startWorkingTime(consultantId);
+        return WorkingTimeMapper.toDTO(workingTimeService.startWorkingTime(consultantId));
     }
 
     @GetMapping("end/{id}")
-    WorkingTime endClock(@PathVariable("id") int consultantId) throws WrongTypeException, JsonProcessingException, EmployeeNotFoundException, WorkingTimeCannotEndException {
+    WorkingTimeDTO endClock(@PathVariable("id") int consultantId) throws WrongTypeException, JsonProcessingException, EmployeeNotFoundException, WorkingTimeCannotEndException {
 
-        return workingTimeService.endWorkingTime(consultantId);
+        return WorkingTimeMapper.toDTO(workingTimeService.endWorkingTime(consultantId));
     }
 
     @GetMapping("{id}")
-    List<WorkingTime> getWorkingTimesTodayForConsultant(@PathVariable("id") int consultantId) throws JsonProcessingException, EmployeeNotFoundException{
+    List<WorkingTimeDTO> getWorkingTimesTodayForConsultant(@PathVariable("id") int consultantId) throws JsonProcessingException, EmployeeNotFoundException{
 
-        return workingTimeService.getByConsultantIdToday(consultantId);
+        return workingTimeService.getByConsultantIdToday(consultantId).stream().map(WorkingTimeMapper::toDTO).collect(Collectors.toList());
     }
 
     @GetMapping("open/{id}")
-    WorkingTime getOpenWorkingTimeTodayForConsultant(@PathVariable("id") int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
+    WorkingTimeDTO getOpenWorkingTimeTodayForConsultant(@PathVariable("id") int consultantId) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
 
-        return workingTimeService.getOpenWorkingTimeTodayByConsultantId(consultantId);
+        return WorkingTimeMapper.toDTO(workingTimeService.getOpenWorkingTimeTodayByConsultantId(consultantId));
     }
-
 
     @GetMapping("salaries/{year}/{month}")
     List<ConsultantSalaryDTO> getSalariesOfAllConsultantsForYearAndMonth(@PathVariable("year") int year, @PathVariable("month") int month) throws JsonProcessingException, EmployeeNotFoundException, WrongTypeException {
 
         return workingTimeService.getSalariesOfAllConsultantsFor(year, month);
+    }
+
+    @DeleteMapping("{id}")
+    void deleteWorkingTime(@PathVariable("id") int id) throws WorkingTimeCannotBeDeletedException, JsonProcessingException {
+        workingTimeService.deleteWorkingTime(id);
     }
 
 }
