@@ -5,11 +5,20 @@ import java.time.LocalTime;
 
 public class AnalyzeDTO {
     private String category;
-    private String timeWorked;
+    private int timeWorked;
     private double percent;
     private String employeeName;
+    private double money;
 
     public AnalyzeDTO() {
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
     }
 
     public String getCategory() {
@@ -20,11 +29,11 @@ public class AnalyzeDTO {
         this.category = category;
     }
 
-    public String getTimeWorked() {
+    public int getTimeWorked() {
         return timeWorked;
     }
 
-    public void setTimeWorked(String timeWorked) {
+    public void setTimeWorked(int timeWorked) {
         this.timeWorked = timeWorked;
     }
 

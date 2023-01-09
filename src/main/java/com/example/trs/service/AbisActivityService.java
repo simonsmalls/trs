@@ -42,7 +42,7 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityAlreadyExistsException("activiteit bestaat al");
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden toevoegen");
-        if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
+        if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
         checkTimeOverlap(activity);
@@ -57,7 +57,7 @@ public class AbisActivityService implements ActivityService {
             throw new ActivityDoesNotExistsException("activiteit bestaat niet");
         }
         if (activity.getStartDate().isBefore(LocalDate.now())) throw new ActivityInThePastException("kan geen activiteit in het verleden aanpassen");
-        if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
+        if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
         checkTimeOverlap(activity);
@@ -132,7 +132,7 @@ public class AbisActivityService implements ActivityService {
     private void checkTimeOverlap(Activity activity) throws ActivityTimeOverlapsException {
         List<Activity> foundActivityList = activityJpaRepo.findActivitiesByEmployee_idAndDate(activity.getEmployee_id(), activity.getStartDate());
         for (Activity act : foundActivityList) {
-            if (!(activity.getStartTime().isAfter(act.getEndTime()) || activity.getEndTime().isBefore(act.getStartTime()))) {
+            if (!((activity.getStartTime().isAfter(act.getEndTime()) || activity.getStartTime().equals(act.getEndTime())) || (activity.getEndTime().isBefore(act.getStartTime()) || activity.getEndTime().equals(act.getStartTime())))) {
                 if (activity.getId() != act.getId()) {
                     throw new ActivityTimeOverlapsException("Tijd overlapt met bestaande activiteit");
                 }

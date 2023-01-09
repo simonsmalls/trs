@@ -128,12 +128,12 @@ create table activities
 (
     activities_id int primary key default nextval('activities_seq'),
     description varchar(45),
-    employee_id int,
+    employee_id int not null ,
     project_id int,
-    category_id int,
-    startDate date,
-    startTime time,
-    endTime time,
+    category_id int not null,
+    startDate date not null,
+    startTime time not null,
+    endTime time not null,
     timeSpent int,
     constraint FK_PERSONS foreign key (employee_id) references employees,
     constraint FK_PROJECTS foreign key (project_id) references projects,
@@ -197,12 +197,12 @@ insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '09:00:00', '17:00:00', 480, 3);
 
 
-insert into categories (categoryName) values ('Teaching');
-insert into categories (categoryName) values ('Administration');
+insert into categories (categoryName) values ('Les geven');
+insert into categories (categoryName) values ('Administratie');
 insert into categories (categoryName) values ('Accounting');
 insert into categories (categoryName) values ('Sales');
-insert into categories (categoryName) values ('Studying');
-insert into categories (categoryName) values ('Food prep');
+insert into categories (categoryName) values ('Studeren');
+insert into categories (categoryName) values ('Voorbereiding eten');
 
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2021-01-28', 20000.00, 1, true);
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2023-06-28', 0, 2, false);
@@ -223,6 +223,7 @@ insert into activities (description, employee_id, project_id, category_id, start
 insert into personRoles values (1, 'Teacher');
 insert into personRoles values (8, 'Manager');
 insert into personRoles values (11, 'Manager');
+insert into personRoles values (11, 'Accountant');
 insert into personRoles values (9, 'Accountant');
 
 
