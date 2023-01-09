@@ -45,8 +45,7 @@ public class AbisActivityService implements ActivityService {
         if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
-
-        this.checkTimeOverlap(activity);
+        checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -61,7 +60,7 @@ public class AbisActivityService implements ActivityService {
         if (activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
-        this.checkTimeOverlap(activity);
+        checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -156,6 +155,7 @@ public class AbisActivityService implements ActivityService {
             invoice.setTotalPrice(0);
             invoice.setProject(activity.getProject());
             invoice.setDate(activity.getStartDate());
+            System.out.println("New invoice created");
             invoiceService.createInvoice(invoice);
 
 

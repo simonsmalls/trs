@@ -31,7 +31,7 @@ public class InvoiceServiceTest {
 
     @Test
     public void findInvoiceOfProjectIdAndMonthTest() {
-        assertEquals(1, invoiceService.findInvoiceByProjectIdAndDate(1, LocalDate.of(2021,1, 1)).getId() );
+        assertEquals(1, invoiceService.findInvoiceByProjectIdAndDate(1, LocalDate.of(2021,1, 1)).getId());
     }
 
     @Test
