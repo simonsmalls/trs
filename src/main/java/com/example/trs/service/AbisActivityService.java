@@ -123,7 +123,7 @@ public class AbisActivityService implements ActivityService {
     private void checkTimeOverlap(Activity activity) throws ActivityTimeOverlapsException {
         List<Activity> foundActivityList = activityJpaRepo.findActivitiesByEmployee_idAndDate(activity.getEmployee_id(), activity.getStartDate());
         for (Activity act : foundActivityList) {
-            if (!(activity.getStartTime().isAfter(act.getEndTime()) || activity.getEndTime().isBefore(act.getStartTime()))) {
+            if (!((activity.getStartTime().isAfter(act.getEndTime()) || activity.getStartTime().equals(act.getEndTime())) || (activity.getEndTime().isBefore(act.getStartTime()) || activity.getEndTime().equals(act.getStartTime())))) {
                 if (activity.getId() != act.getId()) {
                     throw new ActivityTimeOverlapsException("Tijd overlapt met bestaande activiteit");
                 }
