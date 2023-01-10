@@ -38,8 +38,15 @@ public class AbisAnalyzeService implements AnalyzeService {
     public  List<AnalyzeDTO> findActivitiesByProjectIdAndDates(int id, LocalDate start, LocalDate end) throws ProjectNotFoundException, CategoryNotFoundException {
   //     projectService.getProjectById(id); // checks if project exists
 
-       List< Object[]> list = activityJpaRepo.findActivitiesByProjectIdAndDates(id,start,end);
-       return toDto(list);
+
+        List<Object[]> list;
+        if(id!=-1) {
+            list = activityJpaRepo.findActivitiesByProjectIdAndDates(id,start,end);
+        }else{
+            list = activityJpaRepo.findActivitiesByProjectId0AndDates(start,end);
+        }
+        return toDto(list);
+
     }
 
     @Transactional
@@ -168,7 +175,7 @@ public class AbisAnalyzeService implements AnalyzeService {
 
         }
         AnalyzeDTO total=new AnalyzeDTO();
-        total.setCategory("total");
+        total.setCategory("totaal");
         total.setPercent(100);
         total.setTimeWorked(dtoList.stream()
                         .map(AnalyzeDTO::getTimeWorked)

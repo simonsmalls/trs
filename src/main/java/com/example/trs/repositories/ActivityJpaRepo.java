@@ -38,6 +38,10 @@ public interface ActivityJpaRepo extends JpaRepository<Activity, Integer> {
     @Query(value = " select category_id,sum(timespent), project_id from activities where project_id = :pid and startdate between :sDate and :eDate group by category_id , project_id", nativeQuery = true)
     List<Object[]> findActivitiesByProjectIdAndDates(@Param("pid") int id, @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
 
+    @Query(value = " select category_id,sum(timespent), project_id from activities where project_id is null and startdate between :sDate and :eDate group by category_id , project_id", nativeQuery = true)
+    List<Object[]> findActivitiesByProjectId0AndDates( @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
+
+
     @Query(value = " select category_id,sum(timespent), project_id from activities where startdate between :sDate and :eDate group by category_id , project_id", nativeQuery = true)
     List<Object[]> findActivitiesByDates( @Param("sDate") LocalDate start, @Param("eDate") LocalDate end);
 
