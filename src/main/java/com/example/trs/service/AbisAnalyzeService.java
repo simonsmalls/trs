@@ -69,7 +69,7 @@ public class AbisAnalyzeService implements AnalyzeService {
         employeeService.checkIfEmployeeExists(eid);
         List< Object[]> list ;
 
-        if(pid!=-1) {
+        if(pid!=-1 && pid != 0) {
             projectService.getProjectById(pid); // checks if project exists
             list = activityJpaRepo.findActivitiesByProjectIdAndEmployeeIdAndDates(pid,eid,start,end);
         }else{
