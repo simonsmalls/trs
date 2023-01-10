@@ -65,12 +65,10 @@ public class AbisEmployeeService implements EmployeeService {
                 String serr = e.getResponseBodyAsString();
                 //System.out.println(serr);
                 ApiError ae=new ObjectMapper().readValue(serr,ApiError.class);
-                System.out.println(ae.getDescription());
                 throw new EmployeeNotFoundException("gebruikersnaam: "+abbr+" en paswoord matchen niet");
 
             } else {
                 String serr = e.getResponseBodyAsString();
-                System.out.println(serr);
             }
         }
         return null;

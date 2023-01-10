@@ -130,7 +130,8 @@ public class AbisAnalyzeService implements AnalyzeService {
 
                         double hourlyrate = projectService.getProjectById(projectid).getHourlyRate();
                         int b = a / 60;
-                        int c = a % 60;
+                        double c = a % 60;
+
                         dto2.setMoney(dto2.getMoney() + b * hourlyrate + (c / 60) * hourlyrate);
 
                     }
@@ -149,7 +150,7 @@ public class AbisAnalyzeService implements AnalyzeService {
                         double hourlyrate = projectService.getProjectById(projectid).getHourlyRate();
                         int b = a / 60;
                         int c = a % 60;
-                        dto.setMoney(b * hourlyrate + (c / 60) * hourlyrate);
+                        dto.setMoney(b * hourlyrate + ((double)c / 60) * hourlyrate);
 
                     } else {
                         dto.setMoney(0);
