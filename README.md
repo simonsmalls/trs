@@ -16,10 +16,14 @@ This project consists of one big API (Time Registration System) that uses anothe
 - GET /activity -> returns all activities 
 
 #### Project controller
-- TBD
+-  GET /projetc/ongoing -> returns all projects that are currently going on 
+-  GET /project -> returns all projects 
+-  POST /project/add -> add project with requast body(project dto)
 
 #### Invoice controller 
-- TBD
+- GET /invoice/calculate/{id} -> calculates the invoices based on project id 
+- GET /invoice/{id}-> get the invoice based on project id
+- GET /invoice/finalise/{id}-> Finalize an invoice based on its id, means closed is set to true 
 
 #### Working time controller
 - GET /workingtime/start/{id} -> starts the clock for a working time for consultants
