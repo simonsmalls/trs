@@ -2,6 +2,8 @@ package com.example.trs.controller;
 
 import com.example.trs.dto.AnalyzeDTO;
 import com.example.trs.dto.AnalyzeForm;
+import com.example.trs.exceptions.CategoryNotFoundException;
+import com.example.trs.exceptions.EmployeeNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.service.AnalyzeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class AnalyzeController {
 
     @PostMapping("")
 
-   public  List<AnalyzeDTO> analyzeBy(@RequestBody AnalyzeForm dto) throws ProjectNotFoundException {
+   public  List<AnalyzeDTO> analyzeBy(@RequestBody AnalyzeForm dto) throws ProjectNotFoundException, CategoryNotFoundException, EmployeeNotFoundException {
         if(dto.getProject_Id()!=0 && dto.getStart()!=null && dto.getEnd()!=null && dto.getEmployee_Id()!=0 ){
             return analyzeService.findActivitiesByProjectIdAndEmployeeIdAndDates(dto.getProject_Id(),dto.getEmployee_Id(),dto.getStart(),dto.getEnd());
 

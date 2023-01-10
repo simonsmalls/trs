@@ -115,7 +115,7 @@ public class AbisActivityService implements ActivityService {
     }
 
     @Override
-    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException {
+    public Activity check(ActivityDTO dto) throws ProjectNotFoundException, EndTimeNeededException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, WrongTimeException, DateRequiredException, CategoryNotFoundException {
         if(dto.getProjectId() < 0) throw new ProjectNotFoundException("project bestaat niet");
         if(dto.getCategoryName()==null) throw new CategoryNeededException("activiteit heeft een categorie nodig");
         if(dto.getStartDate() == null) throw new DateRequiredException("activiteit heeft een datum nodig");
@@ -143,7 +143,7 @@ public class AbisActivityService implements ActivityService {
         }
     }
 
-    private Activity activityDTOMapping(ActivityDTO activityDTO) throws ProjectNotFoundException {
+    private Activity activityDTOMapping(ActivityDTO activityDTO) throws ProjectNotFoundException, CategoryNotFoundException {
 
         Project project = projectService.getProjectById(activityDTO.getProjectId());
         Category category = categoryService.findCategoryByName(activityDTO.getCategoryName());

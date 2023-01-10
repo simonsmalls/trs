@@ -17,7 +17,7 @@ class CategoryJpaRepoTest {
 
     @Test
     void findNameOfCategory() {
-        assertEquals("Administration", categoryJpaRepo.findById(2).orElseThrow(NullPointerException::new).getName().trim());
+        assertEquals("Administratie", categoryJpaRepo.findById(4).orElseThrow(NullPointerException::new).getName().trim());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.trs.service;
 
+import com.example.trs.exceptions.CategoryNotFoundException;
 import com.example.trs.model.Category;
 import com.example.trs.repositories.CategoryJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,15 @@ public class AbisCategoryService implements CategoryService{
     CategoryJpaRepo categoryJpaRepo;
 
     @Override
-    public Category findCategoryByID(int id) {
-        return categoryJpaRepo.getById(id);
+    public Category findCategoryByID(int id) throws CategoryNotFoundException {
+        return categoryJpaRepo.findById(id)
+                .orElseThrow(()-> new CategoryNotFoundException("Er werd geen categorie gevonden met deze id."));
     }
 
-    @Override                   // TODO Throw NoCategoryFoundException
-    public Category findCategoryByName(String name) {
-        return categoryJpaRepo.findCategoryByName(name);
+    @Override
+    public Category findCategoryByName(String name) throws CategoryNotFoundException {
+        return categoryJpaRepo.findCategoryByName(name)
+                .orElseThrow(()-> new CategoryNotFoundException("Er werd geen categorie gevonden met deze naam."));
     }
 
     @Override

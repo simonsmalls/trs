@@ -34,7 +34,7 @@ public class ActivityServiceTest {
     ActivityDTO dto = new ActivityDTO();
 
     @BeforeEach
-    void setUp() throws ProjectNotFoundException {
+    void setUp() throws ProjectNotFoundException, CategoryNotFoundException {
         activity.setDescription("huh");
         activity.setProject(projectService.getProjectById(2));
         activity.setEmployee_id(1);
@@ -46,7 +46,7 @@ public class ActivityServiceTest {
         dto.setId(activityService.getAll().size() +1);
         dto.setEmployeeId(1);
         dto.setProjectId(2);
-        dto.setCategoryName("Teaching");
+        dto.setCategoryName("Les geven");
         dto.setDescription("decrypt");
         dto.setStartDate(LocalDate.now());
         dto.setStartTime("14:00");
@@ -78,7 +78,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional              // Simon's case
-    public void addActivityThatEncapsulatesExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException {
+    public void addActivityThatEncapsulatesExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException, CategoryNotFoundException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
         //System.out.println(activity.getId());
@@ -90,7 +90,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional              // inverse of Simon's case
-    public void addActivityThatIsBetweenExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException {
+    public void addActivityThatIsBetweenExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException, CategoryNotFoundException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
         activity.setDescription("Small_Activity");
@@ -101,20 +101,20 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional              // activity half overlap
-    public void addActivityStartsBeforeExistingActivityEndsThrowsException() throws ProjectNotFoundException, InThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
+    public void addActivityStartsBeforeExistingActivityEndsThrowsException() throws ProjectNotFoundException, InThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, CategoryNotFoundException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
-        activity.setDescription("Small_Activity");
+        activity.setDescription("Overlaps_Above");
         activity.setStartTime(LocalTime.of(14, 30));
         activity.setEndTime(LocalTime.of(15, 45));
         assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activity));
     }
     @Test
     @Transactional              // activity half overlap 2
-    public void addActivityEndsInsideExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException {
+    public void addActivityEndsInsideExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException, CategoryNotFoundException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
-        activity.setDescription("Small_Activity");
+        activity.setDescription("Overlaps_Underneath");
         activity.setStartTime(LocalTime.of(13, 30));
         activity.setEndTime(LocalTime.of(14, 5));
         assertThrows(ActivityTimeOverlapsException.class, ()-> activityService.addActivity(activity));
@@ -154,7 +154,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    public void editActivityThrowsExceptionWhenTimeOverlapTest() throws ProjectNotFoundException, InThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException {
+    public void editActivityThrowsExceptionWhenTimeOverlapTest() throws ProjectNotFoundException, InThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, CategoryNotFoundException {
         activityService.addActivity(activity);
         dto.setStartTime("15:30");
         dto.setEndTime("16:00");
@@ -167,7 +167,7 @@ public class ActivityServiceTest {
 
     @Test
     @Transactional
-    void checkActivityDTOTest() throws ProjectNotFoundException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException {
+    void checkActivityDTOTest() throws ProjectNotFoundException, WrongTimeException, EndTimeNeededException, StartTimeNeededException, CategoryNeededException, EmployeeNotFoundException, DateRequiredException, CategoryNotFoundException {
         assertDoesNotThrow( ()-> activityService.check(dto));
         assertEquals("decrypt", activityService.check(dto).getDescription());
         assertEquals(1, activityService.check(dto).getCategory().getId());

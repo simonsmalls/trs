@@ -17,12 +17,12 @@ class CompanyJpaRepoTest {
 
     @Test
     void findNumbersOfCompany() {
-        assertEquals(2,  companyJpaRepo.count());
+        assertEquals(8,  companyJpaRepo.count());
     }
 
     @Test
     void findNameOfCompany() {
-        assertEquals("SMALS", companyJpaRepo.findById(2).orElseThrow(NullPointerException::new).getCompanyName().trim());
+        assertEquals("KBC", companyJpaRepo.findById(2).orElseThrow(NullPointerException::new).getCompanyName().trim());
     }
 
 }

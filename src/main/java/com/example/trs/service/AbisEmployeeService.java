@@ -4,8 +4,6 @@ import com.example.trs.dto.EmployeeDTO;
 import com.example.trs.dto.LoginDTO;
 import com.example.trs.error.ApiError;
 import com.example.trs.exceptions.EmployeeNotFoundException;
-import com.example.trs.model.Consultant;
-import com.example.trs.model.Employee;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,34 +34,14 @@ public class AbisEmployeeService implements EmployeeService {
     }
 
     @Override
-    public Employee getById(int id) {
-        return null;
+    public void checkIfEmployeeExists(int id) throws EmployeeNotFoundException {
+        try {
+            getAll().get(id -1); // checks if employee exists
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new EmployeeNotFoundException("Persoon niet gevonden");
+        }
     }
 
-    @Override
-    public List<Consultant> getAllConsultants() {
-        return null;
-    }
-
-    @Override
-    public List<Employee> getAllNoneConsultants() {
-        return null;
-    }
-
-    @Override
-    public List<Employee> getManagers() {
-        return null;
-    }
-
-    @Override
-    public List<Employee> getAccountants() {
-        return null;
-    }
-
-    @Override
-    public List<Employee> getTeachers() {
-        return null;
-    }
 
     @Override
     public EmployeeDTO checkLogin(String abbr, String pass) throws EmployeeNotFoundException, JsonProcessingException {
