@@ -6,6 +6,7 @@ public class ConsultantSalaryDTO {
     private String abbreviation;
     private double salary;
     private long minutesWorked;
+    private double hourlyRate;
 
     public ConsultantSalaryDTO() {
     }
@@ -48,5 +49,13 @@ public class ConsultantSalaryDTO {
 
     public void setMinutesWorked(long minutesWorked) {
         this.minutesWorked = minutesWorked;
+    }
+
+    public double getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public void setHourlyRate(double hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 }

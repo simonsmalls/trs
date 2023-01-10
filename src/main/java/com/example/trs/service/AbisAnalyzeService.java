@@ -47,15 +47,25 @@ public class AbisAnalyzeService implements AnalyzeService {
 
     @Transactional
     public  List<AnalyzeDTO> findActivitiesByProjectId(int id) throws ProjectNotFoundException {
-
-        List< Object[]> list = activityJpaRepo.findActivitiesByProjectId(id);
+        List<Object[]> list;
+        if(id!=-1) {
+             list = activityJpaRepo.findActivitiesByProjectId(id);
+        }else{
+             list = activityJpaRepo.findActivitiesByProjectId0();
+        }
         return toDto(list);
     }
 
     @Transactional
     public  List<AnalyzeDTO> findActivitiesByProjectIdAndEmployeeIdAndDates(int pid,int eid, LocalDate start, LocalDate end) throws ProjectNotFoundException {
 
-        List< Object[]> list = activityJpaRepo.findActivitiesByProjectIdAndEmployeeIdAndDates(pid,eid,start,end);
+        List< Object[]> list ;
+
+        if(pid!=-1) {
+            list = activityJpaRepo.findActivitiesByProjectIdAndEmployeeIdAndDates(pid,eid,start,end);
+        }else{
+            list = activityJpaRepo.findActivitiesByProjectId0AndEmployeeIdAndDates(eid,start,end);
+        }
         return toDto(list);
     }
 
@@ -77,6 +87,12 @@ public class AbisAnalyzeService implements AnalyzeService {
     public  List<AnalyzeDTO> findActivitiesByProjectIdAndEmployeeId(int project_id, int eid) throws ProjectNotFoundException {
 
         List< Object[]> list = activityJpaRepo.findActivitiesByProjectIdAndEmployeeId(project_id,eid);
+
+        if(project_id!=-1) {
+            list = activityJpaRepo.findActivitiesByProjectIdAndEmployeeId(project_id,eid);
+        }else{
+            list = activityJpaRepo.findActivitiesByProjectId0AndEmployeeId(eid);
+        }
         return toDto(list);
     }
 

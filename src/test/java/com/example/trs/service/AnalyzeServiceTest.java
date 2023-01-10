@@ -27,6 +27,11 @@ class AnalyzeServiceTest {
         System.out.println(list.size());
     }
 
+    @Test
+    void findprojectNUll() throws ProjectNotFoundException {
+        analyzeService.findActivitiesByProjectId(0);
+    }
+
 
 
 }

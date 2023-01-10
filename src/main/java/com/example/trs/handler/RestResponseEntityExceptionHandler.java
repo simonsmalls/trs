@@ -203,7 +203,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
-
+    @ExceptionHandler(value = WorkingTimeCannotBeDeletedException.class)
+    protected ResponseEntity<? extends Object> WorkingTimeCannotBeDeletedException
+            ( WorkingTimeCannotBeDeletedException wtexc, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("niet gevonden", status.value(), wtexc.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
 
     @ExceptionHandler(value = InvoiceNotFoundException.class)
     protected ResponseEntity<? extends Object> invoiceNotFoundException
