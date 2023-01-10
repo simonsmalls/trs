@@ -34,8 +34,15 @@ public class AbisAnalyzeService implements AnalyzeService {
     @Transactional
     public  List<AnalyzeDTO> findActivitiesByProjectIdAndDates(int id, LocalDate start, LocalDate end) throws ProjectNotFoundException {
 
-       List< Object[]> list = activityJpaRepo.findActivitiesByProjectIdAndDates(id,start,end);
-       return toDto(list);
+
+        List<Object[]> list;
+        if(id!=-1) {
+            list = activityJpaRepo.findActivitiesByProjectIdAndDates(id,start,end);
+        }else{
+            list = activityJpaRepo.findActivitiesByProjectId0AndDates(start,end);
+        }
+        return toDto(list);
+
     }
 
     @Transactional
