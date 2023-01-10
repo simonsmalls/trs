@@ -142,12 +142,10 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             HttpHeaders headers = new HttpHeaders();
             ResponseEntity responseEntity = rt.getForEntity(uriBuilder.toUriString(), ConsultantSalaryDTO[].class);
             ConsultantSalaryDTO[] list = (ConsultantSalaryDTO[]) responseEntity.getBody();
-            System.out.println("after response");
 
             return Arrays.asList(list);
         } catch (HttpStatusCodeException e){
             String serr = e.getResponseBodyAsString();
-            System.out.println("catch: " + e.getResponseBodyAsString());
             ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
             if (e.getStatusCode() == HttpStatus.NOT_FOUND){
                 throw new EmployeeNotFoundException(ae.getDescription());
@@ -165,9 +163,7 @@ public class AbisWorkingTimeService implements WorkingTimeService {
             System.out.println(uriBuilder.toUriString());
             rt.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
         } catch (HttpStatusCodeException e){
-            System.out.println(e.getStatusCode() + " - " + e.getMessage());
             String serr = e.getResponseBodyAsString();
-            System.out.println(serr);
             /*ApiError ae = new ObjectMapper().readValue(serr, ApiError.class);
             if (e.getStatusCode() == HttpStatus.NOT_FOUND)
                 throw new WorkingTimeCannotBeDeletedException(ae.getDescription());

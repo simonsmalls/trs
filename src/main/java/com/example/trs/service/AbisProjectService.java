@@ -57,7 +57,7 @@ public class AbisProjectService implements ProjectService {
 
     @Override
     public Company getCompanyByName(String name) throws CompanyNotFoundException {
-        name = name.toUpperCase();      // ignoreCase effect
+              // ignoreCase effect
         return companyJpaRepo.findCompanyByCompanyName(name)
                 .orElseThrow(()-> new CompanyNotFoundException("Er werd geen bedrijf gevonden met deze naam."));
     }
