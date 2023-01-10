@@ -172,12 +172,12 @@ public class AbisActivityService implements ActivityService {
                 invoice.setTotalPrice(0);
                 invoice.setProject(activity.getProject());
                 invoice.setDate(endDateSelectedMonth);
-                System.out.println("New invoice created");
+
                 invoiceService.createInvoice(invoice);
 
             }
         } catch (NullPointerException e) {
-            System.out.println("Internal project");
+
         }
 
     }

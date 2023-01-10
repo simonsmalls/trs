@@ -21,7 +21,6 @@ public class MyAspect {
     @AfterThrowing(pointcut="Mypointcut.login()",throwing="exc")
     public void err(Exception exc){
         if (exc instanceof EmployeeNotFoundException) {
-            System.out.println("exception thrown");
 
 
             log.error(exc.getMessage());
