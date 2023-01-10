@@ -25,6 +25,7 @@ class AbisCategoryServiceTest {
         assertEquals("Sales", categoryService.findCategoryByID(4).getName());
         assertEquals("Studeren", categoryService.findCategoryByID(5).getName());
         assertEquals("Voorbereiding eten", categoryService.findCategoryByID(6).getName());
+        assertEquals("coderen", categoryService.findCategoryByID(7).getName());
     }
 
     @Test@Transactional
@@ -35,6 +36,7 @@ class AbisCategoryServiceTest {
         assertEquals(4, categoryService.findCategoryByName("Sales").getId());
         assertEquals(5, categoryService.findCategoryByName("Studeren").getId());
         assertEquals(6, categoryService.findCategoryByName("Voorbereiding eten").getId());
+        assertEquals(7, categoryService.findCategoryByName("coderen").getId());
     }
 
     @Test@Transactional
@@ -55,7 +57,8 @@ class AbisCategoryServiceTest {
         assertEquals("Sales", categoryService.getAll().get(3).getName());
         assertEquals("Studeren", categoryService.getAll().get(4).getName());
         assertEquals("Voorbereiding eten", categoryService.getAll().get(5).getName());
-        assertEquals(6, categoryService.getAll().size());
+        assertEquals("coderen", categoryService.getAll().get(6).getName());
+        assertEquals(7, categoryService.getAll().size());
     }
 
 }
