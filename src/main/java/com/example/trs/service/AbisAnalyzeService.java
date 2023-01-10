@@ -1,6 +1,7 @@
 package com.example.trs.service;
 
 import com.example.trs.dto.AnalyzeDTO;
+import com.example.trs.exceptions.CategoryNotFoundException;
 import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Category;
 import com.example.trs.repositories.ActivityJpaRepo;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,21 +34,21 @@ public class AbisAnalyzeService implements AnalyzeService {
 
     @Override
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByProjectIdAndDates(int id, LocalDate start, LocalDate end) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByProjectIdAndDates(int id, LocalDate start, LocalDate end) throws ProjectNotFoundException, CategoryNotFoundException {
 
        List< Object[]> list = activityJpaRepo.findActivitiesByProjectIdAndDates(id,start,end);
        return toDto(list);
     }
 
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByDates( LocalDate start, LocalDate end) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByDates( LocalDate start, LocalDate end) throws ProjectNotFoundException, CategoryNotFoundException {
 
         List< Object[]> list = activityJpaRepo.findActivitiesByDates(start,end);
         return toDto(list);
     }
 
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByProjectId(int id) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByProjectId(int id) throws ProjectNotFoundException, CategoryNotFoundException {
         List<Object[]> list;
         if(id!=-1) {
              list = activityJpaRepo.findActivitiesByProjectId(id);
@@ -57,7 +59,7 @@ public class AbisAnalyzeService implements AnalyzeService {
     }
 
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByProjectIdAndEmployeeIdAndDates(int pid,int eid, LocalDate start, LocalDate end) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByProjectIdAndEmployeeIdAndDates(int pid,int eid, LocalDate start, LocalDate end) throws ProjectNotFoundException, CategoryNotFoundException {
 
         List< Object[]> list ;
 
@@ -70,21 +72,21 @@ public class AbisAnalyzeService implements AnalyzeService {
     }
 
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByEmployee_idAndDates(int id, LocalDate start, LocalDate end) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByEmployee_idAndDates(int id, LocalDate start, LocalDate end) throws ProjectNotFoundException, CategoryNotFoundException {
 
         List< Object[]> list = activityJpaRepo.findActivitiesByEmployee_idAndDates(id,start,end);
         return toDto(list);
     }
 
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByEmployee_id(int id) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByEmployee_id(int id) throws ProjectNotFoundException, CategoryNotFoundException {
 
         List< Object[]> list = activityJpaRepo.findActivitiesByEmployee_id(id);
         return toDto(list);
     }
 
     @Transactional
-    public  List<AnalyzeDTO> findActivitiesByProjectIdAndEmployeeId(int project_id, int eid) throws ProjectNotFoundException {
+    public  List<AnalyzeDTO> findActivitiesByProjectIdAndEmployeeId(int project_id, int eid) throws ProjectNotFoundException, CategoryNotFoundException {
 
         List< Object[]> list = activityJpaRepo.findActivitiesByProjectIdAndEmployeeId(project_id,eid);
 
@@ -98,7 +100,7 @@ public class AbisAnalyzeService implements AnalyzeService {
 
 
     @Transactional
-    public List<AnalyzeDTO> toDto(List<Object[]> list) throws ProjectNotFoundException {
+    public List<AnalyzeDTO> toDto(List<Object[]> list) throws ProjectNotFoundException, CategoryNotFoundException {
         List<AnalyzeDTO> dtoList=new ArrayList<>();
         int tot=0;
 
@@ -106,8 +108,8 @@ public class AbisAnalyzeService implements AnalyzeService {
 
 
             Category cat= categoryService.findCategoryByID(Integer.parseInt( object[0].toString()));
-            if(dtoList.stream().map(x->x.getCategory()).collect(Collectors.toList()).contains(cat.getName())) {
-                AnalyzeDTO dto2= dtoList.stream().filter(x-> x.getCategory()==cat.getName()).findFirst().get();
+            if(dtoList.stream().map(AnalyzeDTO::getCategory).collect(Collectors.toList()).contains(cat.getName())) {
+                AnalyzeDTO dto2= dtoList.stream().filter(x-> Objects.equals(x.getCategory(), cat.getName())).findFirst().orElseThrow(()-> new CategoryNotFoundException("Geen categorieën gevonden"));
                 int a = Integer.parseInt(object[1].toString());
                 tot += a;
                 dto2.setTimeWorked(dto2.getTimeWorked()+a);
@@ -123,7 +125,7 @@ public class AbisAnalyzeService implements AnalyzeService {
                     }
                 }
 
-            }else {
+            } else {
                 AnalyzeDTO dto = new AnalyzeDTO();
                 dto.setCategory(cat.getName());
                 int a = Integer.parseInt(object[1].toString());
