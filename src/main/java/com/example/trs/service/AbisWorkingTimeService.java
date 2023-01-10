@@ -160,7 +160,6 @@ public class AbisWorkingTimeService implements WorkingTimeService {
     public void deleteWorkingTime(int id) throws JsonProcessingException, WorkingTimeCannotBeDeletedException {
         try {
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/" + id);
-            System.out.println(uriBuilder.toUriString());
             rt.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
         } catch (HttpStatusCodeException e){
             String serr = e.getResponseBodyAsString();

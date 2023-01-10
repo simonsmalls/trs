@@ -81,7 +81,6 @@ public class ActivityServiceTest {
     public void addActivityThatEncapsulatesExistingActivityThrowsException() throws ProjectNotFoundException, ActivityTimeOverlapsException, ActivityAlreadyExistsException, WrongTimeException, EndTimeNeededException, DateRequiredException, CategoryNeededException, EmployeeNotFoundException, StartTimeNeededException, ProjectAlreadyEndedException, InThePastException, CategoryNotFoundException {
         activityService.addActivity(activity);
         activity = activityService.check(dto);   // creates new Activity() object
-        //System.out.println(activity.getId());
         activity.setDescription("Huge_Activity");
         activity.setStartTime(LocalTime.of(13, 0));
         activity.setEndTime(LocalTime.of(16, 0));

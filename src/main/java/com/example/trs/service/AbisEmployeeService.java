@@ -63,7 +63,6 @@ public class AbisEmployeeService implements EmployeeService {
 
             if (HttpStatus.NOT_FOUND == e.getStatusCode()) {
                 String serr = e.getResponseBodyAsString();
-                //System.out.println(serr);
                 ApiError ae=new ObjectMapper().readValue(serr,ApiError.class);
                 throw new EmployeeNotFoundException("gebruikersnaam: "+abbr+" en paswoord matchen niet");
 
