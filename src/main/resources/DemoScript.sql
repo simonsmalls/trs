@@ -157,19 +157,28 @@ insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_ki
 insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('KW', 'Kim', 'Wauters', 'kw123', 200.00, 'c');
 insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('CN', 'Claudia', 'Negrila', 'cn123', null, 'e');
 insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('MVH', 'Marcel', 'Van Hasselt', 'mvh123', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('ES', 'Esben', 'Six', 'es123', null, 'e');
+insert into employees (abbreviation, firstName, lastName, pass, hourlyRate, e_kind) values ('QL', 'Quentin', 'Locht', 'ql123', null, 'e');
 
-insert into companies (companyName)values ('SMALS');
-insert into companies (companyName)values ('Google');
-insert into companies (companyName)values ('Amazon');
+insert into companies (companyName)values ('Smals');
+insert into companies (companyName)values ('KBC');
+insert into companies (companyName)values ('AB inbev');
+insert into companies (companyName)values ('Colruyt Group');
+insert into companies (companyName)values ('Belfius');
+insert into companies (companyName)values ('ING');
+insert into companies (companyName)values ('Cegeka');
+insert into companies (companyName)values ('PWC');
 
-insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'totale opleiding', 'projectomschrijving', 200.00,'2023-01-01', '2023-4-28');
-insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'Pyhton', 'abisprojectomschrijving', 100.00,'2022-09-14', '2023-01-22');
+
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'Totale opleiding', 'projectomschrijving', 200.00,'2023-01-01', '2023-4-28');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'Python', 'abisprojectomschrijving', 100.00,'2022-10-14', '2023-02-22');
 insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (3, 'UML', 'abisprojectomschrijving', 150.00,'2022-09-14', '2023-01-22');
-insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'java', 'abisprojectomschrijving', 100.00,'2022-09-14', '2023-01-22');
-insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'javascript', 'abisprojectomschrijving', 100.00,'2022-09-14', '2023-01-22');
-insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (3, 'postgress', 'abisprojectomschrijving', 120.00,'2022-09-14', '2023-01-22');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'Java', 'abisprojectomschrijving', 100.00,'2022-09-14', '2023-01-22');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'Javascript', 'abisprojectomschrijving', 100.00,'2022-09-14', '2023-01-22');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (3, 'Postgress', 'abisprojectomschrijving', 125.00,'2022-09-14', '2023-01-22');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'SQL', 'abisprojectomschrijving', 295.00,'2022-09-14', '2023-01-22');
 
-insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-21', '09:00:00', '14:30:00', 280, 9);
+insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-21', '09:00:00', '14:30:00', 280, 9);
 
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-21', '08:00:00', '9:00:00', 60, 3);
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values ('2022-12-22', '09:00:00', '17:00:00', 480, 3);
@@ -186,6 +195,8 @@ insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_
 
 
 insert into categories (categoryName) values ('Les geven');
+insert into categories (categoryName) values ('Cursus voorbereiding');
+insert into categories (categoryName) values ('Vergadering');
 insert into categories (categoryName) values ('Administratie');
 insert into categories (categoryName) values ('Accounting');
 insert into categories (categoryName) values ('Sales');
@@ -197,7 +208,6 @@ insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('202
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2022-10-28', 18000.00, 1, true);
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2022-9-28', 17000.00, 1, true);
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2022-8-28', 10000.00, 1, true);
-insert into invoices  (invoiceDate, totalPrice, project_id, closed) values (null, 0, 2, false);
 
 insert into activities (description, employee_id,  project_id, category_id, startDate, startTime, endTime, timeSpent) values ('uh', 3, 2, 4, '2022-12-22', '14:00:00', '15:00:00', '60');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null,  4, 2, 6, '2022-12-22', '11:00:00',  '12:30:00', '90');
