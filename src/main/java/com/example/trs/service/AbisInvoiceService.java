@@ -1,5 +1,7 @@
 package com.example.trs.service;
 
+import com.example.trs.exceptions.InvoiceNotFoundException;
+import com.example.trs.exceptions.ProjectNotFoundException;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Invoice;
 import com.example.trs.model.Project;
@@ -12,7 +14,6 @@ import java.time.Month;
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -24,99 +25,112 @@ public class AbisInvoiceService implements InvoiceService {
     @Autowired
     InvoiceJpaRepo invoiceJpaRepo;
 
+    @Autowired
+    ProjectService projectService;
+
 
     @Override
-    public Invoice createInvoiceForLastMonthOfProjectId(int projectId) {
+    public void CalculateInvoices(int projectId) throws ProjectNotFoundException{
 
-        //Set calendar to first day of month and subtract 1 month, covert to Localdate
+        //This month
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.add(Calendar.MONTH, -1);
-        LocalDate startDate = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        System.out.println(startDate);
-        //Same but set calendar to end of previous month
+        LocalDate startDateThisMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        LocalDate endDate = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        System.out.println(endDate);
+        LocalDate endDateThisMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        //Use calculated dates to search in database
-        List<Activity> activityList = activityService.findActivitiesForProjectOfMonth(projectId,startDate, endDate );
-        System.out.println("--------size of activitylist------" +activityList.size());
+        //Last month
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        calendar.add(Calendar.MONTH, -1);
+        LocalDate startDateLastMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        LocalDate endDateLastMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //next month
+        calendar.add(Calendar.MONTH, 2);
+        LocalDate endDateNextMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        LocalDate startDateNextMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //month after that
+        calendar.add(Calendar.MONTH, 1);
+        LocalDate startDateFinalMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        LocalDate endDateFinalMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 
+        //This month
+
+        if (invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateThisMonth, endDateThisMonth) != null) {
+            InvoiceForMonth(projectId, startDateThisMonth, endDateThisMonth);
+        } else if (invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateThisMonth, endDateThisMonth) == null) {
+            Invoice invoiceThisMonth = new Invoice();
+            invoiceThisMonth.setProject(projectService.getProjectById(projectId));
+            invoiceThisMonth.setDate(endDateThisMonth);
+            Project projectThisMonth = invoiceThisMonth.getProject();
+            List<Activity> activityListThisMonth = activityService.findActivitiesForProjectOfMonth(projectId, startDateThisMonth, endDateThisMonth);
+            double totalActivityTimeInHours = this.calculateHoursFromActivityList(activityListThisMonth);
+            invoiceThisMonth.setTotalPrice(projectThisMonth.getHourlyRate() * totalActivityTimeInHours);
+            invoiceJpaRepo.save(invoiceThisMonth);
+
+        }
+
+        //Last month
+        InvoiceForMonth(projectId, startDateLastMonth, endDateLastMonth);
+
+        //Next month
+        InvoiceForMonth(projectId, startDateNextMonth, endDateNextMonth);
+
+        //Month after that
+        InvoiceForMonth(projectId, startDateFinalMonth, endDateFinalMonth);
+
+
+    }
+
+    private void InvoiceForMonth(int projectId, LocalDate startDateFinalMonth, LocalDate endDateFinalMonth) {
+        if (invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateFinalMonth, endDateFinalMonth) != null) {
+            Invoice invoiceFinalMonth = invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDateFinalMonth, endDateFinalMonth);
+            List<Activity> activityListFinalMonth = activityService.findActivitiesForProjectOfMonth(projectId, startDateFinalMonth, endDateFinalMonth);
+            double totalActivityTimeInHoursFinalMonth = this.calculateHoursFromActivityList(activityListFinalMonth);
+            Project projectFinal = invoiceFinalMonth.getProject();
+            invoiceFinalMonth.setTotalPrice(projectFinal.getHourlyRate() * totalActivityTimeInHoursFinalMonth);
+            invoiceJpaRepo.save(invoiceFinalMonth);
+        }
+    }
+
+    @Override
+    public void createInvoice(Invoice invoice) {
+        invoiceJpaRepo.save(invoice);
+    }
+
+    @Override
+    public List<Invoice> getByProjectId(int id) {
+
+        return invoiceJpaRepo.findAllByProjectId(id);
+    }
+
+    @Override
+    public Invoice finaliseInvoiceById(int id) {
+        Invoice invoice = invoiceJpaRepo.findInvoiceById(id);
+        invoice.setClosed(true);
+        return invoiceJpaRepo.save(invoice);
+    }
+
+    @Override
+    public Invoice findInvoiceByProjectIdAndStartAndEndDate(int projectId, LocalDate startDate, LocalDate endDate) {
+        return invoiceJpaRepo.findInvoiceByProjectIdAndStartAndEndDAndDate(projectId, startDate, endDate);
+    }
+
+
+    double calculateHoursFromActivityList(List<Activity> activityList) {
         int totalActivityTime = 0;
-
         for (Activity activity : activityList) {
             totalActivityTime = totalActivityTime + activity.getTimeSpent();
-            System.out.println(activity.getTimeSpent());
         }
-
-/*        //map found activities. key: employee id, value:sum of total time of activities
-        Map<Integer, Integer> activityMap = activityList.stream()
-                .collect(Collectors.groupingBy(Activity::getEmployee_id, Collectors.summingInt(Activity::getTimeSpent)));
-
-        //round total time to nearest 15 Min
-        activityMap.forEach((key, value) -> {
-            System.out.println("Value before rounding" + value);
-            int remainder = value % 15;
-            if (remainder < 8) {
-                value = value - remainder;
-                activityMap.put(key, value);
-            } else {
-                value = value + (15 - remainder);
-                activityMap.put(key, value);
-            }
-            System.out.println("Value after rounding" + value);
-        });*/
-/*
-        //Convert total rounded time to hours and create invoice
-        double sumOfAllActivityTimeInHours = (activityMap.values().stream().mapToDouble(Integer::doubleValue).sum()/60);
-        System.out.println("Activitytime in hours" + sumOfAllActivityTimeInHours);*/
-
-        ;
         int remainder = totalActivityTime % 15;
         if (remainder == 0) {
-           remainder = 15;
+            remainder = 15;
         }
-        int testTijd = totalActivityTime + (15 - remainder);
-        double totalActivityTimeInHours = (double)(totalActivityTime + (15 - remainder))/60;
-
-        System.out.println(totalActivityTime);
-        System.out.println(remainder);
-        System.out.println(testTijd);
-        System.out.println(totalActivityTimeInHours);
-        Project project = activityList.get(0).getProject();
-        Invoice invoice = new Invoice();
-        invoice.setDate(LocalDate.now());
-        invoice.setProject(project);
-        invoice.setTotalPrice(project.getHourlyRate() * totalActivityTimeInHours);
-
-        return invoice;
+        return (double) (totalActivityTime + (15 - remainder)) / 60;
     }
-
-    @Override
-    public Invoice getByProjectId(int id) {
-        return invoiceJpaRepo.findInvoiceByProjectId(id);
-    }
-
-    @Override
-    public Invoice getByCompanyId(int id) {
-        return invoiceJpaRepo.findInvoiceByCompanyId(id);
-    }
-
-    @Override
-    public Invoice getByMonthAndYear(Month month, Year year) {
-        return null;
-    }
-
-    @Override
-    public void addToPrice(double price) {
-
-    }
-
-    @Override
-    public void addInvoice(Invoice invoice, boolean sent) {
-
-    }
-
 }

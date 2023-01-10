@@ -214,5 +214,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<ApiError>(err, responseHeaders, status);
     }
 
+    @ExceptionHandler(value = InvoiceNotFoundException.class)
+    protected ResponseEntity<? extends Object> invoiceNotFoundException
+            ( InvoiceNotFoundException ivnf, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError err = new ApiError("invoice not found", status.value(), ivnf.getMessage());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type",
+                MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+        return new ResponseEntity<ApiError>(err, responseHeaders, status);
+    }
+
 
 }

@@ -124,4 +124,9 @@ public class AbisProjectService implements ProjectService {
         }
         if (!newCompanyAdded) throw new CompanyAlreadyExists("Dit bedrijf is al geregistreerd");
     }
+
+    @Override
+    public List<Project> getOngoingProjects() {
+        return projectJpaRepo.findAllOngoingProjects();
+    }
 }
