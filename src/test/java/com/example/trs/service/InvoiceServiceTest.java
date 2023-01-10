@@ -49,7 +49,7 @@ public class InvoiceServiceTest {
 
     @Test
     @Transactional
-    public void calculateInvoiceTest() throws ProjectNotFoundException, InvoiceNotFoundException, ProjectAlreadyEndedException, ActivityInThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException {
+    public void calculateInvoiceTest() throws ProjectNotFoundException, InvoiceNotFoundException, ProjectAlreadyEndedException, InThePastException, ActivityTimeOverlapsException, ActivityAlreadyExistsException {
         double totalPrice = invoiceService.getByProjectId(2).get(1).getTotalPrice();
         activity.setStartDate(LocalDate.now());
         activityService.addActivity(activity);
