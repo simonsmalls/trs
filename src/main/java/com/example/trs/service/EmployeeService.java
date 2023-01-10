@@ -11,12 +11,9 @@ import java.util.List;
 public interface EmployeeService {
 
     List<EmployeeDTO> getAll();
-    Employee getById(int id) throws EmployeeNotFoundException;
-    List<Consultant> getAllConsultants();
-    List<Employee> getAllNoneConsultants();
-    List<Employee> getManagers();
-    List<Employee> getAccountants();
-    List<Employee> getTeachers();
+
+    void checkIfEmployeeExists(int id) throws EmployeeNotFoundException;
+
     EmployeeDTO checkLogin(String abbr, String pass) throws EmployeeNotFoundException, JsonProcessingException;
     boolean hasRole(int employeeId, String role);
 
