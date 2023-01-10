@@ -46,7 +46,7 @@ public class ActivityServiceTest {
         dto.setId(activityService.getAll().size() +1);
         dto.setEmployeeId(1);
         dto.setProjectId(2);
-        dto.setCategoryName("Teaching");
+        dto.setCategoryName("Les geven");
         dto.setDescription("decrypt");
         dto.setStartDate(LocalDate.now());
         dto.setStartTime("14:00");

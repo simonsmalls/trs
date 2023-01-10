@@ -38,7 +38,7 @@ class ActivityJpaRepoTest {
     }
 
 
-   @Test
+    @Test
     @Transactional
     void saveActivityToDatabaseTest() {
         Activity activity = new Activity();
@@ -52,19 +52,16 @@ class ActivityJpaRepoTest {
         activity.setEmployee_id(9);
         activity.setTimeSpent(timeSpent);
 
-        System.out.println(testTime);
-        System.out.println(startTime);
-        System.out.println(endTime);
-        System.out.println(timeSpent);
 
+        int totalActivities = jpaRepo.findAll().size();
         jpaRepo.save(activity);
-        assertEquals(5, jpaRepo.findAll().size());
+        assertEquals(totalActivities +1, jpaRepo.findAll().size());
 
     }
 
     @Test
-    void person3ShouldHave1ActivityTest() {
-        assertEquals(1, jpaRepo.findActivitiesForPerson(3).size());
+    void person3ShouldHave2ActivitiesTest() {
+        assertEquals(2, jpaRepo.findActivitiesForPerson(3).size());
     }
 
     @Test

@@ -35,17 +35,17 @@ class ProjectServiceTest {
 
     @Test
     void findCompanyByIdTest() throws CompanyNotFoundException {
-        assertEquals("ABIS", projectService.getCompanyById(1).getCompanyName().trim());
+        assertEquals("Belfius", projectService.getCompanyById(5).getCompanyName().trim());
     }
 
     @Test
     void findCompanyByNameTest() throws CompanyNotFoundException {
-        assertEquals(2, projectService.getCompanyByName("SMALS").getId());
+        assertEquals(1, projectService.getCompanyByName("SMALS").getId());
     }
 
     @Test
     void findCompanyBySmallLettersTest() throws CompanyNotFoundException {
-    assertEquals(2, projectService.getCompanyByName("smals").getId());
+    assertEquals(1, projectService.getCompanyByName("smals").getId());
     }
 
     @Test
@@ -137,7 +137,7 @@ class ProjectServiceTest {
 
     @Test
     void findByNameAndId() {
-        System.out.println(projectService.getCompanyByIdAndName(1,"ABIS").getCompanyName());
+        System.out.println(projectService.getCompanyByIdAndName(1,"Smals").getCompanyName());
     }
 
     @Test
