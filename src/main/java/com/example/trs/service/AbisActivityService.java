@@ -6,13 +6,16 @@ import com.example.trs.mapper.ActivityMapper;
 import com.example.trs.model.Activity;
 import com.example.trs.model.Category;
 import com.example.trs.model.Project;
+import com.example.trs.model.*;
 import com.example.trs.repositories.ActivityJpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -31,6 +34,9 @@ public class AbisActivityService implements ActivityService {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    InvoiceService invoiceService;
+
     @Override
     public Activity addActivity(Activity activity) throws ActivityAlreadyExistsException, ActivityTimeOverlapsException, ProjectAlreadyEndedException, InThePastException {
         Activity act=activityJpaRepo.findActivityById(activity.getId());
@@ -41,8 +47,8 @@ public class AbisActivityService implements ActivityService {
         if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
-
-        this.checkTimeOverlap(activity);
+        checkTimeOverlap(activity);
+        createInvoiceCheck(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -57,7 +63,7 @@ public class AbisActivityService implements ActivityService {
         if (activity.getProject()!=null && activity.getStartDate().isAfter(activity.getProject().getEndDate()))
             throw new ProjectAlreadyEndedException("dit project loopt op dit datum niet meer");
 
-        this.checkTimeOverlap(activity);
+        checkTimeOverlap(activity);
         return activityJpaRepo.save(activity);
     }
 
@@ -69,6 +75,12 @@ public class AbisActivityService implements ActivityService {
     @Override
     public List<Activity> findActivitiesForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
         return activityJpaRepo.findActivitiesForProjectOfMonth(projectId, startDate ,endDate);
+    }
+
+    @Override
+    public int getSumOfActivitiesInHoursForProjectOfMonth(int projectId, LocalDate startDate, LocalDate endDate) {
+        return activityJpaRepo.findSumOfTimeOfActivitiesForProject(projectId, startDate, endDate);
+
     }
 
     @Override
@@ -138,6 +150,38 @@ public class AbisActivityService implements ActivityService {
 
         return ActivityMapper.activityDTOtoActivity(activityDTO, project, category);
     }
+
+    private void createInvoiceCheck(Activity activity) {
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, activity.getStartDate().getYear());
+        calendar.set(Calendar.MONTH, activity.getStartDate().getMonthValue()-1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        LocalDate startDateSelectedMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        LocalDate endDateSelectedMonth = calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //internal project is null
+
+        try{
+           if( invoiceService.findInvoiceByProjectIdAndStartAndEndDate(activity.getProject().getId(), startDateSelectedMonth, endDateSelectedMonth) == null) {
+
+                Invoice invoice = new Invoice();
+                invoice.setClosed(false);
+                invoice.setTotalPrice(0);
+                invoice.setProject(activity.getProject());
+                invoice.setDate(endDateSelectedMonth);
+                System.out.println("New invoice created");
+                invoiceService.createInvoice(invoice);
+
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Internal project");
+        }
+
+    }
+
 
     @Override
     public List<Activity> findActivitiesByProjectAfterDate(int projectId, LocalDate date) {

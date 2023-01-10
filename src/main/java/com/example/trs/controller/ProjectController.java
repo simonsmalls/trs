@@ -29,7 +29,6 @@ public class ProjectController {
     List<ProjectDTO> getAllOnGoing()  {
 
         List<Project> list= projectService.ongoingProjects();
-
         return list.stream().map(ProjectMapper::toDTO).collect(Collectors.toList());
     }
     @GetMapping("")

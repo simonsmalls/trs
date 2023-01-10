@@ -167,7 +167,7 @@ insert into companies (companyName) values ('ABIS');
 insert into companies (companyName)values ('SMALS');
 
 insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (2, 'projectnaam', 'projectomschrijving', 2000.00,'2022-08-31', '2022-12-20');
-insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'abisproject', 'abisprojectomschrijving', 1000.00,'2022-09-14', '2023-01-22');
+insert into projects (company_id, projectName, description, hourlyRate, startDate, endDate) values (1, 'abisproject', 'abisprojectomschrijving', 1000.00,'2022-09-14', '2023-03-22');
 
 insert into workingtimes (workingDate, startTime, endTime, timeWorked, employee_id) values('2022-12-21', '09:00:00', '14:30:00', 280, 9);
 
@@ -205,7 +205,11 @@ insert into categories (categoryName) values ('Studeren');
 insert into categories (categoryName) values ('Voorbereiding eten');
 
 insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2021-01-28', 20000.00, 1, true);
-insert into invoices  (invoiceDate, totalPrice, project_id, closed) values (null, 0, 2, false);
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2023-06-28', 0, 2, false);
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2022-06-28', 0, 2, false);
+
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) VALUES ('2022-01-28', 20000.00, 1, true);
+insert into invoices  (invoiceDate, totalPrice, project_id, closed) values ('2022-06-28', 30000.00, 2, true);
 
 insert into activities (description, employee_id,  project_id, category_id, startDate, startTime, endTime, timeSpent) values ('uh', 3, 2, 4, '2022-12-22', '14:00:00', '15:00:00', '60');
 insert into activities (description, employee_id, project_id, category_id, startDate, startTime, endTime, timeSpent) values (null,  4, 2, 6, '2022-12-22', '11:00:00',  '12:30:00', '90');

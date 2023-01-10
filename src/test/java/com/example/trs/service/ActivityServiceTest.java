@@ -34,7 +34,7 @@ public class ActivityServiceTest {
     ActivityDTO dto = new ActivityDTO();
 
     @BeforeEach
-    void sepUp() throws ProjectNotFoundException {
+    void setUp() throws ProjectNotFoundException {
         activity.setDescription("huh");
         activity.setProject(projectService.getProjectById(2));
         activity.setEmployee_id(1);

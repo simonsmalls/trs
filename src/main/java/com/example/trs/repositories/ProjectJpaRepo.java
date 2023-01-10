@@ -25,4 +25,7 @@ public interface ProjectJpaRepo extends JpaRepository<Project, Integer> {
     @Query(value = "select * from projects where enddate >:date or enddate is null", nativeQuery = true)
     List<Project> onGoingProjects(LocalDate date);
 
+    @Query(value = "select * from projects where enddate > CURRENT_DATE and startdate < CURRENT_DATE", nativeQuery = true)
+    List<Project> findAllOngoingProjects();
+
 }
