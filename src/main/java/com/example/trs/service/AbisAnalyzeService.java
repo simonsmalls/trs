@@ -155,7 +155,7 @@ public class AbisAnalyzeService implements AnalyzeService {
 
         }
         AnalyzeDTO total=new AnalyzeDTO();
-        total.setCategory("total");
+        total.setCategory("totaal");
         total.setPercent(100);
         total.setTimeWorked(dtoList.stream()
                         .map(x->x.getTimeWorked())
